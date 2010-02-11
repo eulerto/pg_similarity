@@ -1,0 +1,292 @@
+/* $PostgreSQL $ */
+
+-- Adjust this setting to control where the objects get created.
+SET search_path = public;
+
+-- Block
+CREATE OR REPLACE FUNCTION block (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'block'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION block_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'block_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~++ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = block_op,
+	COMMUTATOR = '~++',
+	JOIN = contjoinsel
+);
+
+-- Cosine
+CREATE OR REPLACE FUNCTION cosine (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'cosine'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION cosine_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'cosine_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~## (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = cosine_op,
+	COMMUTATOR = '~##',
+	JOIN = contjoinsel
+);
+
+-- Dice
+CREATE OR REPLACE FUNCTION dice (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'dice'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION dice_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'dice_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~-~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = dice_op,
+	COMMUTATOR = '~-~',
+	JOIN = contjoinsel
+);
+
+-- Euclidean
+CREATE OR REPLACE FUNCTION euclidean (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'euclidean'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION euclidean_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'euclidean_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~!! (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = euclidean_op,
+	COMMUTATOR = '~!!',
+	JOIN = contjoinsel
+);
+
+-- Hamming
+CREATE OR REPLACE FUNCTION hamming (varbit, varbit) RETURNS float4
+AS 'MODULE_PATHNAME','hamming'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION hamming_op (varbit, varbit) RETURNS bool
+AS 'MODULE_PATHNAME', 'hamming_op'
+LANGUAGE C STABLE STRICT;
+
+--CREATE OPERATOR ~@@ (
+--	LEFTARG = text,
+--	RIGHTARG = text,
+--	PROCEDURE = hamming_op,
+--	COMMUTATOR = '~@@',
+--	JOIN = contjoinsel
+--);
+
+-- Jaccard
+CREATE OR REPLACE FUNCTION jaccard (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'jaccard'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION jaccard_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'jaccard_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~?? (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = jaccard_op,
+	COMMUTATOR = '~??',
+	JOIN = contjoinsel
+);
+
+-- Jaro
+CREATE OR REPLACE FUNCTION jaro (text, text) RETURNS float4
+AS 'MODULE_PATHNAME','jaro'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION jaro_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'jaro_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~%% (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = jaro_op,
+	COMMUTATOR = '~%%',
+	JOIN = contjoinsel
+);
+
+-- Jaro-Winkler
+CREATE OR REPLACE FUNCTION jarowinkler (text, text) RETURNS float4
+AS 'MODULE_PATHNAME','jarowinkler'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION jarowinkler_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'jarowinkler_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~@@ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = jarowinkler_op,
+	COMMUTATOR = '~@@',
+	JOIN = contjoinsel
+);
+
+-- Levenshtein
+CREATE OR REPLACE FUNCTION lev (text, text) RETURNS float4
+AS 'MODULE_PATHNAME','lev'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION lev_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'lev_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~== (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = lev_op,
+	COMMUTATOR = '~==',
+	JOIN = contjoinsel
+);
+
+CREATE OR REPLACE FUNCTION levslow (text, text) RETURNS float4
+AS 'MODULE_PATHNAME','levslow'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION levslow_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'levslow_op'
+LANGUAGE C STABLE STRICT;
+
+--CREATE OPERATOR ~@@ (
+--	LEFTARG = text,
+--	RIGHTARG = text,
+--	PROCEDURE = levslow_op,
+--	COMMUTATOR = '~@@',
+--	JOIN = contjoinsel
+--);
+
+-- Matching Coefficient
+CREATE OR REPLACE FUNCTION matchingcoefficient (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'matchingcoefficient'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION matchingcoefficient_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'matchingcoefficient_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~^^ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = matchingcoefficient_op,
+	COMMUTATOR = '~^^',
+	JOIN = contjoinsel
+);
+
+-- Monge-Elkan
+CREATE OR REPLACE FUNCTION mongeelkan (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'mongeelkan'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION mongeelkan_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'mongeelkan_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~|| (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = mongeelkan_op,
+	COMMUTATOR = '~||',
+	JOIN = contjoinsel
+);
+
+-- Needleman-Wunsch
+CREATE OR REPLACE FUNCTION needlemanwunsch (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'needlemanwunsch'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION needlemanwunsch_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'needlemanwunsch_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~#~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = needlemanwunsch_op,
+	COMMUTATOR = '~#~',
+	JOIN = contjoinsel
+);
+
+-- Overlap Coefficient
+CREATE OR REPLACE FUNCTION overlapcoefficient (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'overlapcoefficient'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION overlapcoefficient_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'overlapcoefficient_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~** (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = overlapcoefficient_op,
+	COMMUTATOR = '~**',
+	JOIN = contjoinsel
+);
+
+-- Q-Gram
+CREATE OR REPLACE FUNCTION qgram (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'qgram'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION qgram_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'qgram_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~~~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = qgram_op,
+	COMMUTATOR = '~~~',
+	JOIN = contjoinsel
+);
+
+-- Smith-Waterman
+CREATE OR REPLACE FUNCTION smithwaterman (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'smithwaterman'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION smithwaterman_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'smithwaterman_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~=~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = smithwaterman_op,
+	COMMUTATOR = '~=~',
+	JOIN = contjoinsel
+);
+
+-- Smith-Waterman-Gotoh
+CREATE OR REPLACE FUNCTION smithwatermangotoh (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'smithwatermangotoh'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION smithwatermangotoh_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'smithwatermangotoh_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~!~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = smithwatermangotoh_op,
+	COMMUTATOR = '~!~',
+	JOIN = contjoinsel
+);

@@ -1,0 +1,93 @@
+#-----------------------------------------------------------------------
+# postgresql.conf
+#-----------------------------------------------------------------------
+# the former needs a restart every time you upgrade pg_similarity and 
+# the later needs that you create a $libdir/plugins directory and move 
+# pg_similarity.so to it (it doesn't require a restart; just open a new
+# connection).
+#shared_preload_libraries = 'pg_similarity'
+# - or -
+#local_preload_libraries = 'pg_similarity'
+
+# append 'pg_similarity' to it or uncomment this parameter
+#custom_variable_classes = 'pg_similarity'
+
+#-----------------------------------------------------------------------
+# pg_similarity
+#-----------------------------------------------------------------------
+
+# - Block -
+#pg_similarity.block_tokenizer = 'alnum'	# alnum, camelcase, gram, or word
+#pg_similarity.block_threshold = 0.7		# 0.0 .. 1.0
+#pg_similarity.block_is_normalized = true
+
+# - Cosine -
+#pg_similarity.cosine_tokenizer = 'alnum'
+#pg_similarity.cosine_threshold = 0.7
+#pg_similarity.cosine_is_normalized = true
+
+# - Dice -
+#pg_similarity.dice_tokenizer = 'alnum'
+#pg_similarity.dice_threshold = 0.7
+#pg_similarity.dice_is_normalized = true
+
+# - Euclidean -
+#pg_similarity.euclidean_tokenizer = 'alnum'
+#pg_similarity.euclidean_threshold = 0.7
+#pg_similarity.euclidean_is_normalized = true
+
+# - Hamming -
+#pg_similarity.hamming_threshold = 0.7
+#pg_similarity.hamming_is_normalized = true
+
+# - Jaccard -
+#pg_similarity.jaccard_tokenizer = 'alnum'
+#pg_similarity.jaccard_threshold = 0.7
+#pg_similarity.jaccard_is_normalized = true
+
+# - Jaro -
+#pg_similarity.jaro_threshold = 0.7
+#pg_similarity.jaro_is_normalized = true
+
+# - Jaro -
+#pg_similarity.jaro_threshold = 0.7
+#pg_similarity.jaro_is_normalized = true
+
+# - Jaro-Winkler -
+#pg_similarity.jarowinkler_threshold = 0.7
+#pg_similarity.jarowinkler_is_normalized = true
+
+# - Levenshtein -
+#pg_similarity.levenshtein_threshold = 0.7
+#pg_similarity.levenshtein_is_normalized = true
+
+# - Matching Coefficient -
+#pg_similarity.matching_tokenizer = 'alnum'
+#pg_similarity.matching_threshold = 0.7
+#pg_similarity.matching_is_normalized = true
+
+# - Monge-Elkan -
+#pg_similarity.mongeelkan_tokenizer = 'alnum'
+#pg_similarity.mongeelkan_threshold = 0.7
+#pg_similarity.mongeelkan_is_normalized = true
+
+# - Needleman-Wunsch -
+#pg_similarity.needlemanwunsch_threshold = 0.7
+#pg_similarity.needlemanwunsch_is_normalized = true
+
+# - Overlap Coefficient -
+#pg_similarity.overlap_tokenizer = 'alnum'
+#pg_similarity.overlap_threshold = 0.7
+#pg_similarity.overlap_is_normalized = true
+
+# - Q-Gram -
+#pg_similarity.qgram_threshold = 0.7
+#pg_similarity.qgram_is_normalized = true
+
+# - Smith-Waterman -
+#pg_similarity.smithwaterman_threshold = 0.7
+#pg_similarity.smithwaterman_is_normalized = true
+
+# - Smith-Waterman-Gotoh -
+#pg_similarity.smithwatermangotoh_threshold = 0.7
+#pg_similarity.smithwatermangotoh_is_normalized = true

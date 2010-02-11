@@ -1,0 +1,81 @@
++--------------+
+|     TODO     |
++--------------+
+
++ soundex pt_BR
++ tf/idf
+* fellegisunter
+* hellinger
+* jensenshannon
+* skew
+* harmonicmean
+* variational
+* confusion
+* fasta
+* blasta
+* ukkonen
+* taglink
+* taglinktoken
+
++ group base functions at similarity.c
++ write docs
++ test all functions
+
++--------------+
+|  Simmetrics  |
++--------------+
+
+- BlockDistance
++ ChapmanLengthDeviation
++ ChapmanMatchingSoundex
++ ChapmanMeanLength
++ ChapmanOrderedNameCompoundSimilarity
+- CosineSimilarity
+- DiceSimilarity
+- EuclideanDistance
+- JaccardSimilarity
+- Jaro
+- JaroWinkler
+- Levenshtein
+- MatchingCoefficient
+- MongeElkan
+- NeedlemanWunch
+- OverlapCoefficient
+- QGramsDistance
+- SmithWatermanGotoh
++ SmithWatermanGotohWindowedAffine
+- SmithWaterman
+- Soundex
++ TagLink
++ TagLinkToken
+
++-----------------+
+|  Second String  |
++-----------------+
+
++ ApproxNeedlemanWunsch
++ DirichletJS
+- Jaccard
+- Jaro
+- JaroWinkler
++ JaroWinklerTFIDF
++ JelinekMercerJS
++ JensenShannonDistance
++ Level2Jaro
++ Level2JaroWinkler
++ Level2
++ Level2Levenstein
++ Level2MongeElkan
+- Levenstein
++ Mixture
+- MongeElkan
+- NeedlemanWunsch
++ ScaledLevenstein
+- SmithWaterman
++ SoftTFIDF
++ SoftTokenFelligiSunter
++ TagLink
++ TFIDF
++ TokenFelligiSunter
++ UnsmoothedJS
++ WinklerRescorer
