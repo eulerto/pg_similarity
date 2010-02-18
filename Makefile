@@ -10,7 +10,7 @@ DATA = uninstall_pg_similarity.sql
 REGRESS = pg_similarity
 
 ifdef USE_PGXS
-PG_CONFIG = /a/pgsql/dev/install/bin/pg_config
+PG_CONFIG = pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 else

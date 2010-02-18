@@ -9,6 +9,8 @@
 
 #include "similarity.h"
 
+#include <limits.h>
+
 PG_MODULE_MAGIC;
 
 /*
