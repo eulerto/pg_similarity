@@ -187,10 +187,16 @@ static float _jaro(char *a, char *b)
 		}
 	}
 
+	pfree(amatch);
+	pfree(bmatch);
+
 	/* counting half-transpositions */
 	for (i = 0; i < cc; i++)
 		if (a[posa[i]] != b[posb[i]])
 			tr++;
+
+	pfree(posa);
+	pfree(posb);
 
 	elog(DEBUG1, "half transpositions: %d", tr);
 
