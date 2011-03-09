@@ -365,7 +365,7 @@ void tokenizeByGram(TokenList *t, char *s)
 	/*
 	 * n-grams with starting character
 	 */
-#ifdef FULL_NGRAM
+#ifdef PGS_FULL_NGRAM
 	for (i = (PGS_GRAM_LEN - 1); i > 0; i--)
 	{
 		char	*buf;
@@ -409,7 +409,7 @@ void tokenizeByGram(TokenList *t, char *s)
 	/*
 	 * n-grams with ending character
 	 */
-#ifdef FULL_NGRAM
+#ifdef PGS_FULL_NGRAM
 	for (i = 1; i < PGS_GRAM_LEN; i++)
 	{
 		char	*buf;

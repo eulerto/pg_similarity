@@ -19,7 +19,7 @@
 #define	PGS_GRAM_LEN		3
 #define	PGS_BLANK_CHAR		' '
 
-#define	FULL_NGRAM
+#define	PGS_FULL_NGRAM
 
 typedef struct Token
 {
