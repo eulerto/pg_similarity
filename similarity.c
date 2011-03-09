@@ -136,10 +136,12 @@ _PG_init(void)
 		{"alnum", PGS_UNIT_ALNUM, false},
 		{"gram", PGS_UNIT_GRAM, false},
 		{"word", PGS_UNIT_WORD, false},
-		{"camelcase", PGS_UNIT_CAMELCASE, false}
+		{"camelcase", PGS_UNIT_CAMELCASE, false},
+		{NULL, 0, false}
 	};
 	static const struct config_enum_entry pgs_gram_options[] = {
-		{"gram", PGS_UNIT_GRAM, false}
+		{"gram", PGS_UNIT_GRAM, false},
+		{NULL, 0, false}
 	};
 
 	/* Block */
