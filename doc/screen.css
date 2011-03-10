@@ -1,0 +1,115 @@
+/* basic classes */
+body {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background-color: #eeeeee;
+	color: #000000;
+	font-family: Georgia, Verdana, Arial;
+}
+
+h1, h2, h3, h4, h5, h6, p, li, td {
+	font-family: Georgia, Verdana, Arial;
+	color: #000000;
+	text-align: justify;
+}
+
+h1 {
+	font-size: 22px;
+	color: #338800;
+}
+
+h2 {
+	font-size: 18px;
+	color: #338800;
+}
+
+p, li, td {
+	font-size: 15px;
+}
+
+blockquote {
+	font-family: Courier, Georgia, "Times New Roman", Verdana, Arial;
+	font-size: 15px;
+}
+
+code, pre {
+	font-size: 13px;
+}
+
+a {
+	font-weight: bold;
+	color: #d4aa00;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #338800;
+	background-color: #ffffff;
+	text-decoration: none;
+}
+
+table {
+	width: 100%;
+	border: 1px solid #000000;
+	padding: 0px;
+}
+
+th {
+	border: 1px solid #000000;
+	font-weight: bold;
+	text-align: center;
+}
+
+td {
+	border: 1px solid #000000;
+}
+
+td.c {
+	text-align: center;
+}
+
+/* custom classes */
+#tmenu {
+	position: fixed;
+	width: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border: 0px;
+	background: #338000;
+	font-family: Georgia, "Times New Roman", Verdana, Arial;
+	font-size: 20px;
+	color: #ffffff;
+	text-align: center;
+}
+
+#tmenu a {
+	color: #eeeeee;
+	text-decoration: none;
+}
+
+#tmenu a:hover {
+	color: #d4aa00;
+	text-decoration: none;
+}
+
+#tcontent {
+	width: 90%;
+	text-align: justify;
+	padding-left: 40px;
+}
+
+#intro {
+	padding-top: 50px;
+}
+
+.dashedbox {
+	background-color: #ffffff;
+	border: 1px dashed #000000;
+	padding: 10px;
+}
+
+li.licenseblock {
+	font-family: Courier, Georgia, "Times New Roman", Verdana, Arial;
+	font-size: 15px;
+}
