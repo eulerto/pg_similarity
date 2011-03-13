@@ -290,3 +290,20 @@ CREATE OPERATOR ~!~ (
 	COMMUTATOR = '~!~',
 	JOIN = contjoinsel
 );
+
+-- Soundex
+CREATE OR REPLACE FUNCTION soundex (text, text) RETURNS float4
+AS 'MODULE_PATHNAME', 'soundex'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION soundex_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'soundex_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~*~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = soundex_op,
+	COMMUTATOR = '~*~',
+	JOIN = contjoinsel
+);

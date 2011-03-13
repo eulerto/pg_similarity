@@ -70,3 +70,7 @@ DROP FUNCTION smithwaterman_op (text, text);
 DROP OPERATOR ~!~ (text, text);
 DROP FUNCTION smithwatermangotoh (text, text);
 DROP FUNCTION smithwatermangotoh_op (text, text);
+
+DROP OPERATOR ~*~ (text, text);
+DROP FUNCTION soundex (text, text);
+DROP FUNCTION soundex_op (text, text);

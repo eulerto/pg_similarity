@@ -27,12 +27,12 @@ static char convert_soundex(char a)
 		return a;
 }
 
-static char *_soundex(const char *a)
+static char *_soundex(char *a)
 {
 	int		alen;
 	int		i;
 	int		len;
-	char	scode[PGS_SOUNDEX_LEN + 1];
+	char	*scode;
 	int		lastcode = PGS_SOUNDEX_INV_CODE;
 
 	alen = strlen(a);
@@ -47,6 +47,8 @@ static char *_soundex(const char *a)
 	for (i = 0; i < alen; i++)
 		a[i] = toupper(a[i]);
 #endif
+
+	scode = palloc(PGS_SOUNDEX_LEN + 1);
 
 	scode[PGS_SOUNDEX_LEN] = '\0';
 
@@ -67,7 +69,7 @@ static char *_soundex(const char *a)
 	{
 		int curcode = convert_soundex(*a);
 
-		elog(DEBUG3, "The code for '%c' is: %d", *a, c);
+		elog(DEBUG3, "The code for '%c' is: %d", *a, curcode);
 
 		if (isalpha(*a) && (curcode != lastcode) && curcode != '0')
 		{
@@ -95,22 +97,48 @@ PG_FUNCTION_INFO_V1(soundex);
 Datum
 soundex(PG_FUNCTION_ARGS)
 {
-	char	*a;
-	char	res[PGS_SOUNDEX_LEN];
-
-	res = palloc(PGS_SOUNDEX_LEN + 1);
+	char	*a, *b;
+	char	*resa;
+	char	*resb;
+	float4	res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
-	if (strlen(a) > PGS_MAX_STR_LEN)
+	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
 				 errmsg("argument exceeds the maximum length of %d bytes",
 					 PGS_MAX_STR_LEN)));
 
-	res = _soundex(a);
+	resa = _soundex(a);
+	resb = _soundex(b);
 
-	elog(DEBUG1, "soundex(%s) = %s", a, res);
+	elog(DEBUG1, "soundex(%s) = %s", a, resa);
+	elog(DEBUG1, "soundex(%s) = %s", b, resb);
 
-	PG_RETURN_TEXT_P(cstring_to_text(res));
+	/*
+	 * we don't have threshold in soundex algorithm, instead same code means strings
+	 * are similar (i.e. threshold is 1.0) or it is not (i.e. threshold is 0.0).
+	 */
+	if (strncmp(resa, resb, PGS_SOUNDEX_LEN) == 0)
+		res = 1.0;
+	else
+		res = 0.0;
+
+	PG_RETURN_FLOAT4(res);
+}
+
+PG_FUNCTION_INFO_V1(soundex_op);
+
+Datum soundex_op(PG_FUNCTION_ARGS)
+{
+	float4	res;
+
+	res = DatumGetFloat4(DirectFunctionCall2(
+					soundex,
+					PG_GETARG_DATUM(0),
+					PG_GETARG_DATUM(1)));
+
+	PG_RETURN_BOOL(res == 1.0);
 }

@@ -238,5 +238,7 @@ extern Datum PGS_EXPORT smithwaterman(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT smithwaterman_op(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT smithwatermangotoh(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT smithwatermangotoh_op(PG_FUNCTION_ARGS);
+extern Datum PGS_EXPORT soundex(PG_FUNCTION_ARGS);
+extern Datum PGS_EXPORT soundex_op(PG_FUNCTION_ARGS);
 
 #endif
