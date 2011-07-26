@@ -48,6 +48,7 @@ hamming(PG_FUNCTION_ARGS)
 	int		maxlen;
 	float4		res = 0.0;
 	int		i;
+	int		n;
 
 	a = PG_GETARG_VARBIT_P(0);
 	b = PG_GETARG_VARBIT_P(1);
@@ -69,8 +70,14 @@ hamming(PG_FUNCTION_ARGS)
 	pb = VARBITS(b);
 
 	for (i = 0; i < VARBITBYTES(a); i++)
-		if ((*pa++ ^ *pb++) == 1)
-			res += 1.0;
+	{
+		n = *pa++ ^ *pb++;
+		while (n)
+		{
+			res += n & 1;
+			n >>= 1;
+		}
+	}
 
 	elog(DEBUG1, "is normalized: %d", pgs_hamming_is_normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
