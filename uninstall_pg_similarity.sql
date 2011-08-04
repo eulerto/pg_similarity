@@ -19,7 +19,9 @@ DROP OPERATOR ~!! (text, text);
 DROP FUNCTION euclidean (text, text);
 DROP FUNCTION euclidean_op (text, text);
 
---DROP OPERATOR ~@@ (text, text);
+DROP OPERATOR ~@~ (text, text);
+DROP FUNCTION hamming_text (text, text);
+DROP FUNCTION hamming_text_op (text, text);
 DROP FUNCTION hamming (varbit, varbit);
 DROP FUNCTION hamming_op (varbit, varbit);
 

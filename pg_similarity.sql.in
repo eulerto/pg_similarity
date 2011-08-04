@@ -80,13 +80,21 @@ CREATE OR REPLACE FUNCTION hamming_op (varbit, varbit) RETURNS bool
 AS 'MODULE_PATHNAME', 'hamming_op'
 LANGUAGE C STABLE STRICT;
 
---CREATE OPERATOR ~@@ (
---	LEFTARG = text,
---	RIGHTARG = text,
---	PROCEDURE = hamming_op,
---	COMMUTATOR = '~@@',
---	JOIN = contjoinsel
---);
+CREATE OR REPLACE FUNCTION hamming_text (text, text) RETURNS float4
+AS 'MODULE_PATHNAME','hamming_text'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION hamming_text_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'hamming_text_op'
+LANGUAGE C STABLE STRICT;
+
+CREATE OPERATOR ~@~ (
+	LEFTARG = text,
+	RIGHTARG = text,
+	PROCEDURE = hamming_text_op,
+	COMMUTATOR = '~@~',
+	JOIN = contjoinsel
+);
 
 -- Jaccard
 CREATE OR REPLACE FUNCTION jaccard (text, text) RETURNS float4
