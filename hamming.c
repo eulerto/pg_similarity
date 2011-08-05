@@ -171,11 +171,6 @@ hamming_text(PG_FUNCTION_ARGS)
 	{
 		elog(DEBUG4, "a: %c ; b: %c", *pa, *pb);
 
-		/* are these bit strings? */
-		if ((*pa != '0' && *pa != '1') || (*pb != '0' && *pb != '1'))
-			ereport(ERROR,
-					(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-					errmsg("arguments must contain only 0 or 1")));
 		if (*pa++ != *pb++)
 			res++;
 	}
