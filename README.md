@@ -34,16 +34,7 @@ $ USE_PGXS=1 make install
 $ psql -f SHAREDIR/contrib/pg_similarity.sql mydb # SHAREDIR is pg_config --sharedir
 ```
 
-To use it, simply load it to the server. You can load it into and individual session.
-
-```
-$ psql mydb
-psql (9.0.3)
-Type "help" for help.
-
-mydb=# load 'pg_similarity';
-LOAD
-```
+The module will be automatically loaded if any of the defined functions is called.
 
 But the typical usage is to preload it into all sessions by including pg_similarity in [shared_preload_libraries](http://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-PRELOAD-LIBRARIES) at postgresql.conf. Keep in mind that there is an overhead added to each new connection.
 
