@@ -36,7 +36,7 @@ $ psql -f SHAREDIR/contrib/pg_similarity.sql mydb # SHAREDIR is pg_config --shar
 
 The module will be automatically loaded if any of the defined functions is called.
 
-But the typical usage is to preload it into all sessions by including pg_similarity in [shared_preload_libraries](http://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-PRELOAD-LIBRARIES) at postgresql.conf. Keep in mind that there is an overhead added to each new connection.
+In order to be able to set the parameters **before** calling any function you will also need to add "pg_similarity" to [custom_variable_classes](http://www.postgresql.org/docs/current/static/runtime-config-custom.html) in **postgresql.conf**.
 
 Windows
 -------
