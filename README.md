@@ -28,7 +28,7 @@ Before you are able to use your extension, you should build it and load it at th
 ```
 $ tar -zxf pg_similarity-0.0.19.tgz
 $ cd pg_similarity-0.0.19
-$ $EDITOR Makefile # edit PG_CONFIG iif necessary
+$ $EDITOR Makefile # edit PG_CONFIG if necessary
 $ USE_PGXS=1 make
 $ USE_PGXS=1 make install
 $ psql -f SHAREDIR/contrib/pg_similarity.sql mydb # SHAREDIR is pg_config --sharedir
