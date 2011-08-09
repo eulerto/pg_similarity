@@ -158,7 +158,7 @@ hamming_text(PG_FUNCTION_ARGS)
 	if (alen != blen)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("bit strings must have the same length")));
+				errmsg("text strings must have the same length")));
 
 	elog(DEBUG1, "a: %s ; b: %s", a, b);
 
