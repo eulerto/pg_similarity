@@ -184,8 +184,8 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>needlemanwunsch(text, text) returns float4</td>
     <td>~#~</td>
     <td>
-      pg_similarity.needlemanwunsch_threshold (float4)<br/>
-      pg_similarity.needlemanwunsch_is_normalized (bool)
+      pg_similarity.nw_threshold (float4)<br/>
+      pg_similarity.nw_is_normalized (bool)
     </td>
   </tr>
   <tr>
@@ -212,8 +212,8 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>smithwaterman(text, text) returns float4</td>
     <td>~=~</td>
     <td>
-      pg_similarity.smithwaterman_threshold (float4)<br/>
-      pg_similarity.smithwaterman_is_normalized (bool)
+      pg_similarity.sw_threshold (float4)<br/>
+      pg_similarity.sw_is_normalized (bool)
     </td>
   </tr>
   <tr>
@@ -221,8 +221,8 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>smithwatermangotoh(text, text) returns float4</td>
     <td>~!~</td>
     <td>
-      pg_similarity.smithwatermangotoh_threshold (float4)<br/>
-      pg_similarity.smithwatermangotoh_is_normalized (bool)
+      pg_similarity.swg_threshold (float4)<br/>
+      pg_similarity.swg_is_normalized (bool)
     </td>
   </tr>
   <tr>
