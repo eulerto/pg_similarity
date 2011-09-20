@@ -64,6 +64,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
  - Q-Gram Distance;
  - Smith-Waterman Coefficient;
  - Smith-Waterman-Gotoh Coefficient.
+ - Soundex Distance.
 
 <table>
   <tr>
