@@ -153,6 +153,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.block_threshold",
@@ -164,6 +167,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.block_is_normalized",
@@ -173,6 +179,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -185,6 +194,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.cosine_threshold",
@@ -196,6 +208,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.cosine_is_normalized",
@@ -205,6 +220,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -217,6 +235,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.dice_threshold",
@@ -228,6 +249,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.dice_is_normalized",
@@ -237,6 +261,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -249,6 +276,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.euclidean_threshold",
@@ -260,6 +290,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.euclidean_is_normalized",
@@ -269,6 +302,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -282,6 +318,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.hamming_is_normalized",
@@ -291,6 +330,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -303,6 +345,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.jaccard_threshold",
@@ -314,6 +359,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.jaccard_is_normalized",
@@ -323,6 +371,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -336,6 +387,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.jaro_is_normalized",
@@ -345,6 +399,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -358,6 +415,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.jarowinkler_is_normalized",
@@ -367,6 +427,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -380,6 +443,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.levenshtein_is_normalized",
@@ -389,6 +455,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -401,6 +470,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.matching_threshold",
@@ -412,6 +484,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.matching_is_normalized",
@@ -421,6 +496,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -433,6 +511,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.mongeelkan_threshold",
@@ -444,6 +525,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.mongeelkan_is_normalized",
@@ -453,6 +537,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -466,6 +553,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.nw_is_normalized",
@@ -475,6 +565,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.nw_gap_penalty",
@@ -486,6 +579,9 @@ _PG_init(void)
 			LONG_MAX,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -498,6 +594,9 @@ _PG_init(void)
 			pgs_tokenizer_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.overlap_threshold",
@@ -509,6 +608,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.overlap_is_normalized",
@@ -518,6 +620,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -530,6 +635,9 @@ _PG_init(void)
 			pgs_gram_options,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomRealVariable("pg_similarity.qgram_threshold",
@@ -541,6 +649,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.qgram_is_normalized",
@@ -550,6 +661,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -563,6 +677,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.sw_is_normalized",
@@ -572,6 +689,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 
@@ -585,6 +705,9 @@ _PG_init(void)
 			1.0,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 	DefineCustomBoolVariable("pg_similarity.swg_is_normalized",
@@ -594,6 +717,9 @@ _PG_init(void)
 			true,
 			PGC_USERSET,
 			0,
+#if	PG_VERSION_NUM >= 90100
+			NULL,
+#endif
 			NULL,
 			NULL);
 }
