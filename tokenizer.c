@@ -242,12 +242,12 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
-			elog(DEBUG3, "token: \"%s\"; size: %d", tok, sizeof(char) * c);
+			elog(DEBUG3, "token: \"%s\"; size: %lu", tok, sizeof(char) * c);
 
 			addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
-			elog(DEBUG4, "tok: \"%s\"; size: %d", tok, strlen(tok));
+			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
@@ -328,12 +328,12 @@ void tokenizeBySpace(TokenList *t, char *s)
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
-			elog(DEBUG3, "token: \"%s\"; size: %d", tok, sizeof(char) * c);
+			elog(DEBUG3, "token: \"%s\"; size: %lu", tok, sizeof(char) * c);
 
 			addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
-			elog(DEBUG4, "tok: \"%s\"; size: %d", tok, strlen(tok));
+			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
@@ -515,12 +515,12 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
-			elog(DEBUG3, "token: \"%s\"; size: %d", tok, sizeof(char) * c);
+			elog(DEBUG3, "token: \"%s\"; size: %lu", tok, sizeof(char) * c);
 
 			addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
-			elog(DEBUG4, "tok: \"%s\"; size: %d", tok, strlen(tok));
+			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
