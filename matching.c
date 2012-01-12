@@ -46,7 +46,7 @@ matchingcoefficient(PG_FUNCTION_ARGS)
 	TokenList	*s, *t;
 	Token		*p, *q;
 	int		atok, btok, comtok, maxtok;
-	float4		res;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -130,18 +130,18 @@ matchingcoefficient(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "maximum token size: %d", maxtok);
 
 	if (pgs_matching_is_normalized)
-		res = (float) comtok / maxtok;
+		res = (float8) comtok / maxtok;
 	else
 		res = comtok;
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(matchingcoefficient_op);
 
 Datum matchingcoefficient_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -150,7 +150,7 @@ Datum matchingcoefficient_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_matching_is_normalized;
 	pgs_matching_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					matchingcoefficient,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

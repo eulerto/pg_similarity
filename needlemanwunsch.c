@@ -148,8 +148,8 @@ Datum
 needlemanwunsch(PG_FUNCTION_ARGS)
 {
 	char		*a, *b;
-	float		minvalue, maxvalue;
-	float4		res;
+	double		minvalue, maxvalue;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -160,9 +160,9 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 				errmsg("argument exceeds the maximum length of %d bytes",
 					PGS_MAX_STR_LEN)));
 
-	maxvalue = (float) max2(strlen(a), strlen(b));
+	maxvalue = (float8) max2(strlen(a), strlen(b));
 
-	res = (float) _nwunsch(a, b, pgs_nw_gap_penalty);
+	res = (float8) _nwunsch(a, b, pgs_nw_gap_penalty);
 
 	elog(DEBUG1, "is normalized: %d", pgs_nw_is_normalized);
 	elog(DEBUG1, "maximum length: %.3f", maxvalue);
@@ -170,7 +170,7 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 
 	if (maxvalue == 0.0)
 	{
-		PG_RETURN_FLOAT4(1.0);
+		PG_RETURN_FLOAT8(1.0);
 	}
 	else if (pgs_nw_is_normalized)
 	{
@@ -195,18 +195,18 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 		/* paranoia ? */
 		if (maxvalue == 0.0)
 		{
-			PG_RETURN_FLOAT4(0.0);
+			PG_RETURN_FLOAT8(0.0);
 		}
 		else
 		{
 			res = 1.0 - (res / maxvalue);
 			elog(DEBUG1, "nw(%s, %s) = %.3f", a, b, res);
-			PG_RETURN_FLOAT4(res);
+			PG_RETURN_FLOAT8(res);
 		}
 	}
 	else
 	{
-		PG_RETURN_FLOAT4(res);
+		PG_RETURN_FLOAT8(res);
 	}
 }
 
@@ -214,7 +214,7 @@ PG_FUNCTION_INFO_V1(needlemanwunsch_op);
 
 Datum needlemanwunsch_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -223,7 +223,7 @@ Datum needlemanwunsch_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_nw_is_normalized;
 	pgs_nw_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					needlemanwunsch,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

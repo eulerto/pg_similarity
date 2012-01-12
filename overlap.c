@@ -46,7 +46,7 @@ overlapcoefficient(PG_FUNCTION_ARGS)
 	TokenList	*s, *t;
 	int		atok, btok, comtok, alltok;
 	int		mintok;
-	float4		res;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -128,16 +128,16 @@ overlapcoefficient(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "min between A and B sizes: %d", mintok);
 
 	/* normalized and unnormalized version are the same */
-	res = (float) comtok / mintok;
+	res = (float8) comtok / mintok;
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(overlapcoefficient_op);
 
 Datum overlapcoefficient_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -146,7 +146,7 @@ Datum overlapcoefficient_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_overlap_is_normalized;
 	pgs_overlap_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					overlapcoefficient,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

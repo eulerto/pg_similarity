@@ -45,7 +45,7 @@ jaccard(PG_FUNCTION_ARGS)
 	char		*a, *b;
 	TokenList	*s, *t;
 	int		atok, btok, comtok, alltok;
-	float4		res;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -124,16 +124,16 @@ jaccard(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "common tokens size: %d", comtok);
 
 	/* normalized and unnormalized version are the same */
-	res = (float) comtok / alltok;
+	res = (float8) comtok / alltok;
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(jaccard_op);
 
 Datum jaccard_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -142,7 +142,7 @@ Datum jaccard_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_jaccard_is_normalized;
 	pgs_jaccard_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					jaccard,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

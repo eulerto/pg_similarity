@@ -49,9 +49,9 @@ block(PG_FUNCTION_ARGS)
 	char		*a, *b;
 	TokenList	*s, *t, *u;
 	Token		*p, *q, *r;
-	float		totpossible;
-	float		totdistance;
-	float4		res;
+	int			totpossible;
+	int			totdistance;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -149,26 +149,26 @@ block(PG_FUNCTION_ARGS)
 	}
 
 	elog(DEBUG1, "is normalized: %d", pgs_block_is_normalized);
-	elog(DEBUG1, "total possible: %.2f", totpossible);
-	elog(DEBUG1, "total distance: %.2f", totdistance);
+	elog(DEBUG1, "total possible: %d", totpossible);
+	elog(DEBUG1, "total distance: %d", totdistance);
 
 	destroyTokenList(s);
 	destroyTokenList(t);
 	destroyTokenList(u);
 
 	if (pgs_block_is_normalized)
-		res = (totpossible - totdistance) / totpossible;
+		res = (float8) (totpossible - totdistance) / totpossible;
 	else
 		res = totdistance;
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(block_op);
 
 Datum block_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -177,7 +177,7 @@ Datum block_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_block_is_normalized;
 	pgs_block_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					block,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

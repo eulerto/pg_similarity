@@ -66,7 +66,7 @@ double	pgs_jarowinkler_threshold = 0.7f;
 bool	pgs_jarowinkler_is_normalized = true;
 
 
-static float _jaro(char *a, char *b)
+static double _jaro(char *a, char *b)
 {
 	int		alen, blen;
 	int		i, j, k;
@@ -74,7 +74,7 @@ static float _jaro(char *a, char *b)
 	int		cd;		/* common window distance */
 	int		cc = 0;		/* number of common characters */
 	int		tr = 0;		/* number of transpositions */
-	float		res;
+	double	res;
 	int		*amatch;	/* matchs in string a; match = 1; unmatch = 0  !! USED? !!*/
 	int		*bmatch;	/* matchs in string b; match = 1; unmatch = 0 */
 	int		*posa;		/* positions of matched characters in a */
@@ -219,7 +219,7 @@ Datum
 jaro(PG_FUNCTION_ARGS)
 {
 	char	*a, *b;
-	float4	res;
+	float8	res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -230,14 +230,14 @@ jaro(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "jaro(%s, %s) = %f", a, b, res);
 
 	/* normalized and unnormalized version are the same */
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(jaro_op);
 
 Datum jaro_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -246,7 +246,7 @@ Datum jaro_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_jaro_is_normalized;
 	pgs_jaro_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					jaro,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));
@@ -263,7 +263,7 @@ Datum
 jarowinkler(PG_FUNCTION_ARGS)
 {
 	char	*a, *b;
-	float4	resj, res;
+	float8	resj, res;
 	int	i;
 	int	plen = 0;
 
@@ -296,14 +296,14 @@ jarowinkler(PG_FUNCTION_ARGS)
 			a, b, resj, plen, PGS_JARO_SCALING_FACTOR, resj, res);
 
 	/* normalized and unnormalized version are the same */
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(jarowinkler_op);
 
 Datum jarowinkler_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -312,7 +312,7 @@ Datum jarowinkler_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_jarowinkler_is_normalized;
 	pgs_jarowinkler_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					jarowinkler,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

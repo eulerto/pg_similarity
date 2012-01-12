@@ -20,12 +20,12 @@ bool	pgs_mongeelkan_is_normalized = true;
  * TODO move this function to similarity.c
  * TODO this function is a smithwatermangotoh() clone
  */
-static float _mongeelkan(char *a, char *b)
+static double _mongeelkan(char *a, char *b)
 {
 	float		**matrix;		/* dynamic programming matrix */
 	int		alen, blen;
 	int		i, j;
-	float		maxvalue;
+	double		maxvalue;
 
 	alen = strlen(a);
 	blen = strlen(b);
@@ -165,9 +165,9 @@ mongeelkan(PG_FUNCTION_ARGS)
 	char		*a, *b;
 	TokenList	*s, *t;
 	Token		*p, *q;
-	float		summatches;
-	float		maxvalue;
-	float4		res;
+	double		summatches;
+	double		maxvalue;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -213,7 +213,7 @@ mongeelkan(PG_FUNCTION_ARGS)
 		q = t->head;
 		while (q != NULL)
 		{
-			float val = _mongeelkan(p->data, q->data);
+			double val = _mongeelkan(p->data, q->data);
 			elog(DEBUG3, "p: %s; q: %s", p->data, q->data);
 			if (val > maxvalue)
 				maxvalue = val;
@@ -236,14 +236,14 @@ mongeelkan(PG_FUNCTION_ARGS)
 	destroyTokenList(s);
 	destroyTokenList(t);
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(mongeelkan_op);
 
 Datum mongeelkan_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -252,7 +252,7 @@ Datum mongeelkan_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_mongeelkan_is_normalized;
 	pgs_mongeelkan_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					mongeelkan,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

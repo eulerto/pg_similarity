@@ -209,7 +209,7 @@ lev(PG_FUNCTION_ARGS)
 {
 	char		*a, *b;
 	int		maxlen;
-	float4		res;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -222,7 +222,7 @@ lev(PG_FUNCTION_ARGS)
 
 	maxlen = max2(strlen(a), strlen(b));
 
-	res = (float) _lev(a, b, PGS_LEV_MAX_COST, PGS_LEV_MAX_COST);
+	res = (float8) _lev(a, b, PGS_LEV_MAX_COST, PGS_LEV_MAX_COST);
 
 	elog(DEBUG1, "is normalized: %d", pgs_levenshtein_is_normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
@@ -230,17 +230,17 @@ lev(PG_FUNCTION_ARGS)
 
 	if (maxlen == 0)
 	{
-		PG_RETURN_FLOAT4(1.0);
+		PG_RETURN_FLOAT8(1.0);
 	}
 	else if (pgs_levenshtein_is_normalized)
 	{
 		res = 1.0 - (res / maxlen);
 		elog(DEBUG1, "lev(%s, %s) = %.3f", a, b, res);
-		PG_RETURN_FLOAT4(res);
+		PG_RETURN_FLOAT8(res);
 	}
 	else
 	{
-		PG_RETURN_FLOAT4(res);
+		PG_RETURN_FLOAT8(res);
 	}
 }
 
@@ -248,7 +248,7 @@ PG_FUNCTION_INFO_V1(lev_op);
 
 Datum lev_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -257,13 +257,15 @@ Datum lev_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_levenshtein_is_normalized;
 	pgs_levenshtein_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					lev,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_levenshtein_is_normalized = tmp;
+
+	elog(NOTICE, "res: %f ; threshold: %f", res, pgs_levenshtein_threshold);
 
 	PG_RETURN_BOOL(res >= pgs_levenshtein_threshold);
 }
@@ -275,7 +277,7 @@ levslow(PG_FUNCTION_ARGS)
 {
 	char		*a, *b;
 	int		maxlen;
-	float4		res;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -288,7 +290,7 @@ levslow(PG_FUNCTION_ARGS)
 
 	maxlen = max2(strlen(a), strlen(b));
 
-	res = (float) _lev_slow(a, b, PGS_LEV_MAX_COST, PGS_LEV_MAX_COST);
+	res = (float8) _lev_slow(a, b, PGS_LEV_MAX_COST, PGS_LEV_MAX_COST);
 
 	elog(DEBUG1, "is normalized: %d", pgs_levenshtein_is_normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
@@ -296,17 +298,17 @@ levslow(PG_FUNCTION_ARGS)
 
 	if (maxlen == 0)
 	{
-		PG_RETURN_FLOAT4(1.0);
+		PG_RETURN_FLOAT8(1.0);
 	}
 	else if (pgs_levenshtein_is_normalized)
 	{
 		res = 1.0 - (res / maxlen);
 		elog(DEBUG1, "lev(%s, %s) = %.3f", a, b, res);
-		PG_RETURN_FLOAT4(res);
+		PG_RETURN_FLOAT8(res);
 	}
 	else
 	{
-		PG_RETURN_FLOAT4(res);
+		PG_RETURN_FLOAT8(res);
 	}
 }
 
@@ -314,7 +316,7 @@ PG_FUNCTION_INFO_V1(levslow_op);
 
 Datum levslow_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -323,7 +325,7 @@ Datum levslow_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_levenshtein_is_normalized;
 	pgs_levenshtein_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					levslow,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

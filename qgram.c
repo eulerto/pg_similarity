@@ -40,7 +40,7 @@ PG_FUNCTION_INFO_V1(qgram);
 Datum
 qgram(PG_FUNCTION_ARGS)
 {
-	float4		res;
+	float8		res;
 	bool		tmp;
 	int			tmp2;
 
@@ -58,7 +58,7 @@ qgram(PG_FUNCTION_ARGS)
 	tmp2 = pgs_block_tokenizer;
 	pgs_block_tokenizer = pgs_qgram_tokenizer;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 				block,
 				PG_GETARG_DATUM(0),
 				PG_GETARG_DATUM(1)));
@@ -67,14 +67,14 @@ qgram(PG_FUNCTION_ARGS)
 	pgs_block_is_normalized = tmp;
 	pgs_block_tokenizer = tmp2;
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(qgram_op);
 
 Datum qgram_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -83,7 +83,7 @@ Datum qgram_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_qgram_is_normalized;
 	pgs_qgram_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					qgram,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

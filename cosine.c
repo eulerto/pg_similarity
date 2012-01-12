@@ -32,7 +32,7 @@ cosine(PG_FUNCTION_ARGS)
 	char		*a, *b;
 	TokenList	*s, *t;
 	int			atok, btok, comtok, alltok;
-	float4		res;
+	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -111,16 +111,16 @@ cosine(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "common tokens size: %d", comtok);
 
 	/* normalized and unnormalized version are the same */
-	res = (float) comtok / (sqrt(atok) * sqrt(btok));
+	res = (float8) comtok / (sqrt(atok) * sqrt(btok));
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(cosine_op);
 
 Datum cosine_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
 	/*
 	 * store *_is_normalized value temporarily 'cause
@@ -129,7 +129,7 @@ Datum cosine_op(PG_FUNCTION_ARGS)
 	bool	tmp = pgs_cosine_is_normalized;
 	pgs_cosine_is_normalized = true;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					cosine,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));

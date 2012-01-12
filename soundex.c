@@ -100,7 +100,7 @@ soundex(PG_FUNCTION_ARGS)
 	char	*a, *b;
 	char	*resa;
 	char	*resb;
-	float4	res;
+	float8	res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
 	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
@@ -126,16 +126,16 @@ soundex(PG_FUNCTION_ARGS)
 	else
 		res = 0.0;
 
-	PG_RETURN_FLOAT4(res);
+	PG_RETURN_FLOAT8(res);
 }
 
 PG_FUNCTION_INFO_V1(soundex_op);
 
 Datum soundex_op(PG_FUNCTION_ARGS)
 {
-	float4	res;
+	float8	res;
 
-	res = DatumGetFloat4(DirectFunctionCall2(
+	res = DatumGetFloat8(DirectFunctionCall2(
 					soundex,
 					PG_GETARG_DATUM(0),
 					PG_GETARG_DATUM(1)));
