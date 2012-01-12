@@ -74,7 +74,7 @@ hamming(PG_FUNCTION_ARGS)
 		n = *pa++ ^ *pb++;
 		while (n)
 		{
-			res += (float8) n & 1;
+			res += n & 1;
 			n >>= 1;
 		}
 	}
