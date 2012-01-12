@@ -265,8 +265,6 @@ Datum lev_op(PG_FUNCTION_ARGS)
 	/* we're done; back to the previous value */
 	pgs_levenshtein_is_normalized = tmp;
 
-	elog(NOTICE, "res: %f ; threshold: %f", res, pgs_levenshtein_threshold);
-
 	PG_RETURN_BOOL(res >= pgs_levenshtein_threshold);
 }
 
