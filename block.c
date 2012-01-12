@@ -142,7 +142,7 @@ block(PG_FUNCTION_ARGS)
 			totdistance += (bcnt - acnt);
 
 		elog(DEBUG2,
-			"\"%s\" => acnt(%d); bcnt(%d); totdistance(%.2f)",
+			"\"%s\" => acnt(%d); bcnt(%d); totdistance(%d)",
 					p->data, acnt, bcnt, totdistance);
 
 		p = p->next;
