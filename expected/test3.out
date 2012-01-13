@@ -1,0 +1,116 @@
+--
+-- pg_similarity
+-- testing similarity functions and operators
+--
+--
+-- Clean up in case a prior regression run failed
+--
+RESET client_min_messages;
+\set ECHO all
+\set a '\'Euler Taveira de Oliveira\''
+CREATE TABLE simtst (a text);
+INSERT INTO simtst (a) VALUES
+('Euler Taveira de Oliveira'),
+('EULER TAVEIRA DE OLIVEIRA'),
+('Euler T. de Oliveira'),
+('Oliveira, Euler T.'),
+('Euler Oliveira'),
+('Euler Taveira'),
+('EULER TAVEIRA OLIVEIRA'),
+('Oliveira, Euler'),
+('Oliveira, E. T.'),
+('ETO');
+-- Levenshtein
+SHOW pg_similarity.levenshtein_threshold;
+ pg_similarity.levenshtein_threshold 
+-------------------------------------
+ 0.7
+(1 row)
+
+SELECT a FROM simtst WHERE a ~== :a;
+             a             
+---------------------------
+ Euler Taveira de Oliveira
+ EULER TAVEIRA DE OLIVEIRA
+ Euler T. de Oliveira
+ EULER TAVEIRA OLIVEIRA
+(4 rows)
+
+SET pg_similarity.levenshtein_threshold to 0.4;
+SHOW pg_similarity.levenshtein_threshold;
+ pg_similarity.levenshtein_threshold 
+-------------------------------------
+ 0.4
+(1 row)
+
+SELECT a FROM simtst WHERE a ~== :a;
+             a             
+---------------------------
+ Euler Taveira de Oliveira
+ EULER TAVEIRA DE OLIVEIRA
+ Euler T. de Oliveira
+ Euler Oliveira
+ Euler Taveira
+ EULER TAVEIRA OLIVEIRA
+ Oliveira, Euler
+(7 rows)
+
+-- Cosine
+SHOW pg_similarity.cosine_threshold;
+ pg_similarity.cosine_threshold 
+--------------------------------
+ 0.7
+(1 row)
+
+SELECT a FROM simtst WHERE a ~## :a;
+             a             
+---------------------------
+ Euler Taveira de Oliveira
+ Euler T. de Oliveira
+ Euler Oliveira
+ Euler Taveira
+ Oliveira, Euler
+(5 rows)
+
+SET pg_similarity.cosine_threshold to 0.9;
+SHOW pg_similarity.cosine_threshold;
+ pg_similarity.cosine_threshold 
+--------------------------------
+ 0.9
+(1 row)
+
+SELECT a FROM simtst WHERE a ~## :a;
+             a             
+---------------------------
+ Euler Taveira de Oliveira
+(1 row)
+
+-- Overlap Coefficient
+SHOW pg_similarity.overlap_tokenizer;
+ pg_similarity.overlap_tokenizer 
+---------------------------------
+ alnum
+(1 row)
+
+SELECT a FROM simtst WHERE a ~** :a;
+             a             
+---------------------------
+ Euler Taveira de Oliveira
+ Euler T. de Oliveira
+ Euler Oliveira
+ Euler Taveira
+ Oliveira, Euler
+(5 rows)
+
+SET pg_similarity.overlap_tokenizer to 'gram';
+SET pg_similarity.overlap_threshold to 0.8;
+SELECT a FROM simtst WHERE a ~** :a;
+             a             
+---------------------------
+ Euler Taveira de Oliveira
+ Euler T. de Oliveira
+ Euler Oliveira
+ Euler Taveira
+(4 rows)
+
+DROP TABLE simtst;

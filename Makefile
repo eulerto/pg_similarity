@@ -7,7 +7,7 @@ OBJS = tokenizer.o similarity.o \
 	   overlap.o qgram.o smithwaterman.o smithwatermangotoh.o soundex.o
 DATA_built = pg_similarity.sql
 DATA = uninstall_pg_similarity.sql
-REGRESS = pg_similarity
+REGRESS = test1 test2 test3
 
 ifdef USE_PGXS
 PG_CONFIG = pg_config

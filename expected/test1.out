@@ -1,0 +1,101 @@
+--
+-- pg_similarity
+-- testing similarity functions and operators
+--
+--
+-- Turn off echoing so that expected file does not depend on contents of
+-- this file
+--
+SET client_min_messages to warning;
+\set ECHO none
+\set a '\'Euler Taveira de Oliveira\''
+\set b '\'Euler T Oliveira\''
+\set c '\'Oiler Taviera do Oliviera\''
+select block(:a, :b), block_op(:a, :b), :a ~++ :b as operator;
+       block       | block_op | operator 
+-------------------+----------+----------
+ 0.571428571428571 | f        | f
+(1 row)
+
+select cosine(:a, :b), cosine_op(:a, :b), :a ~## :b as operator;
+      cosine       | cosine_op | operator 
+-------------------+-----------+----------
+ 0.577350269189626 | f         | f
+(1 row)
+
+select dice(:a, :b), dice_op(:a, :b), :a ~-~ :b as operator;
+       dice        | dice_op | operator 
+-------------------+---------+----------
+ 0.571428571428571 | f       | f
+(1 row)
+
+select euclidean(:a, :b), euclidean_op(:a, :b), :a ~!! :b as operator;
+     euclidean     | euclidean_op | operator 
+-------------------+--------------+----------
+ 0.653589838486225 | f            | f
+(1 row)
+
+select hamming_text(:a, :c), hamming_text_op(:a, :c), :a ~@~ :c as operator;
+ hamming_text | hamming_text_op | operator 
+--------------+-----------------+----------
+         0.72 | t               | t
+(1 row)
+
+select jaccard(:a, :b), jaccard_op(:a, :b), :a ~?? :b as operator;
+ jaccard | jaccard_op | operator 
+---------+------------+----------
+     0.4 | f          | f
+(1 row)
+
+select jaro(:a, :b), jaro_op(:a, :b), :a ~%% :b as operator;
+       jaro        | jaro_op | operator 
+-------------------+---------+----------
+ 0.796666666666667 | t       | t
+(1 row)
+
+select jarowinkler(:a, :b), jarowinkler_op(:a, :b), :a ~@@ :b as operator;
+ jarowinkler | jarowinkler_op | operator 
+-------------+----------------+----------
+       0.878 | t              | t
+(1 row)
+
+select lev(:a, :b), lev_op(:a, :b), :a ~== :b as operator;
+ lev  | lev_op | operator 
+------+--------+----------
+ 0.64 | f      | f
+(1 row)
+
+select levslow(:a, :b), levslow_op(:a, :b);
+ levslow | levslow_op 
+---------+------------
+    0.64 | f
+(1 row)
+
+select matchingcoefficient(:a, :b), matchingcoefficient_op(:a, :b), :a ~^^ :b as operator;
+ matchingcoefficient | matchingcoefficient_op | operator 
+---------------------+------------------------+----------
+                 0.5 | f                      | f
+(1 row)
+
+--select mongeelkan(:a, :b), mongeelkan_op(:a, :b), :a ~|| :b as operator;
+--select needlemanwunsch(:a, :b), needlemanwunsch_op(:a, :b), :a ~#~ :b as operator;
+select overlapcoefficient(:a, :b), overlapcoefficient_op(:a, :b), :a ~** :b as operator;
+ overlapcoefficient | overlapcoefficient_op | operator 
+--------------------+-----------------------+----------
+  0.666666666666667 | f                     | f
+(1 row)
+
+select qgram(:a, :b), qgram_op(:a, :b), :a ~~~ :b as operator;
+       qgram       | qgram_op | operator 
+-------------------+----------+----------
+ 0.711111111111111 | t        | t
+(1 row)
+
+--select smithwaterman(:a, :b), smithwaterman_op(:a, :b), :a ~=~ :b as operator;
+--select smithwatermangotoh(:a, :b), smithwatermangotoh_op(:a, :b), :a ~!~ :b as operator;
+select soundex(:a, :b), soundex_op(:a, :b), :a ~*~ :b as operator;
+ soundex | soundex_op | operator 
+---------+------------+----------
+       1 | t          | t
+(1 row)
+
