@@ -2,7 +2,7 @@
  *
  * soundex.c
  *
- * Copyright (c) 2008-2010, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2012, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */

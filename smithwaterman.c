@@ -57,7 +57,7 @@
  * http://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
  *
  *
- * Copyright (c) 2008-2010, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2012, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */
