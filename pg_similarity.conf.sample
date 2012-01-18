@@ -9,9 +9,6 @@
 # - or -
 #local_preload_libraries = 'pg_similarity'
 
-# append 'pg_similarity' to it or uncomment this parameter
-#custom_variable_classes = 'pg_similarity'
-
 #-----------------------------------------------------------------------
 # pg_similarity
 #-----------------------------------------------------------------------
@@ -72,8 +69,8 @@
 #pg_similarity.mongeelkan_is_normalized = true
 
 # - Needleman-Wunsch -
-#pg_similarity.needlemanwunsch_threshold = 0.7
-#pg_similarity.needlemanwunsch_is_normalized = true
+#pg_similarity.nw_threshold = 0.7
+#pg_similarity.nw_is_normalized = true
 
 # - Overlap Coefficient -
 #pg_similarity.overlap_tokenizer = 'alnum'
@@ -81,13 +78,14 @@
 #pg_similarity.overlap_is_normalized = true
 
 # - Q-Gram -
+#pg_similarity.qgram_tokenizer = 'qgram'
 #pg_similarity.qgram_threshold = 0.7
 #pg_similarity.qgram_is_normalized = true
 
 # - Smith-Waterman -
-#pg_similarity.smithwaterman_threshold = 0.7
-#pg_similarity.smithwaterman_is_normalized = true
+#pg_similarity.sw_threshold = 0.7
+#pg_similarity.sw_is_normalized = true
 
 # - Smith-Waterman-Gotoh -
-#pg_similarity.smithwatermangotoh_threshold = 0.7
-#pg_similarity.smithwatermangotoh_is_normalized = true
+#pg_similarity.swg_threshold = 0.7
+#pg_similarity.swg_is_normalized = true
