@@ -45,7 +45,11 @@ mydb=# load 'pg_similarity';
 LOAD
 ```
 
-But the typical usage is to preload it into all sessions by including pg_similarity in [shared_preload_libraries](http://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-PRELOAD-LIBRARIES) at postgresql.conf. Keep in mind that there is an overhead added to each new connection.
+But the typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
+
+```
+include 'pg_similarity.conf'
+```
 
 Windows
 -------
