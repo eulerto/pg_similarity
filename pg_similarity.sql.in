@@ -356,22 +356,22 @@ LANGUAGE C IMMUTABLE STRICT;
 CREATE OPERATOR CLASS gin_similarity_ops
 FOR TYPE text USING gin
 AS
-    OPERATOR    1   ~++,
-    OPERATOR    2   ~##,
-    OPERATOR    3   ~-~,
-    OPERATOR    4   ~!!,
-    OPERATOR    5   ~??,
-    OPERATOR    6   ~%%,
-    OPERATOR    7   ~@@,
-    OPERATOR    8   ~==,
-    OPERATOR    9   ~^^,
-    OPERATOR    10  ~||,
-    OPERATOR    11  ~#~,
-    OPERATOR    12  ~**,
-    OPERATOR    13  ~~~,
-    OPERATOR    14  ~=~,
-    OPERATOR    15  ~!~,
-    OPERATOR    16  ~*~,
+    OPERATOR    1   ~++,		-- block
+    OPERATOR    2   ~##,		-- cosine
+    OPERATOR    3   ~-~,		-- dice
+    OPERATOR    4   ~!!,		-- euclidean
+    OPERATOR    5   ~??,		-- jaccard
+--    OPERATOR    6   ~%%,		-- jaro
+--    OPERATOR    7   ~@@,		-- jarowinkler
+--    OPERATOR    8   ~==,		-- lev
+    OPERATOR    9   ~^^,		-- matchingcoefficient
+--    OPERATOR    10  ~||,		-- mongeelkan
+--    OPERATOR    11  ~#~,		-- needlemanwunsch
+    OPERATOR    12  ~**,		-- overlapcoefficient
+    OPERATOR    13  ~~~,		-- qgram
+--    OPERATOR    14  ~=~,		-- smithwaterman
+--    OPERATOR    15  ~!~,		-- smithwatermangotoh
+--    OPERATOR    16  ~*~,		-- soundex
     FUNCTION    1   bttextcmp(text, text),
     FUNCTION    2   gin_extract_value_token(internal, internal, internal),
     FUNCTION    3   gin_extract_query_token(internal, internal, int2, internal, internal, internal, internal),
