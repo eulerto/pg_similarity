@@ -84,12 +84,14 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <th>Algorithm</th>
     <th>Function</th>
     <th>Operator</th>
+	<th>Use Index?</th>
     <th>Parameters</th>
   </tr>
   <tr>
     <td>L1 Distance</td>
     <td>block(text, text) returns float8</td>
     <td>~++</td>
+	<td>yes</td>
     <td>
         pg_similarity.block_tokenizer (enum)<br/>
         pg_similarity.block_threshold (float8)<br/>
@@ -100,6 +102,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Cosine Distance</td>
     <td>cosine(text, text) returns float8</td>
     <td>~##</td>
+	<td>yes</td>
     <td>
       pg_similarity.cosine_tokenizer (enum)<br/>
       pg_similarity.cosine_threshold (float8)<br/>
@@ -110,6 +113,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Dice Coefficient</td>
     <td>dice(text, text) returns float8</td>
     <td>~-~</td>
+	<td>yes</td>
     <td>
       pg_similarity.dice_tokenizer (enum)<br/>
       pg_similarity.dice_threshold (float8)<br/>
@@ -120,6 +124,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Euclidean Distance</td>
     <td>euclidean(text, text) returns float8</td>
     <td>~!!</td>
+	<td>yes</td>
     <td>
       pg_similarity.euclidean_tokenizer (enum)<br/>
       pg_similarity.euclidean_threshold (float8)<br/>
@@ -131,6 +136,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>hamming(bit varying, bit varying) returns float8<br/>
     hamming_text(text, text) returns float8</td>
     <td>~@~</td>
+	<td>no</td>
     <td>
       pg_similarity.hamming_threshold (float8)<br/>
       pg_similarity.hamming_is_normalized (bool)
@@ -140,6 +146,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Jaccard Coefficient</td>
     <td>jaccard(text, text) returns float8</td>
     <td>~??</td>
+	<td>yes</td>
     <td>
       pg_similarity.jaccard_tokenizer (enum)<br/>
       pg_similarity.jaccard_threshold (float8)<br/>
@@ -150,6 +157,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Jaro Distance</td>
     <td>jaro(text, text) returns float8</td>
     <td>~%%</td>
+	<td>no</td>
     <td>
       pg_similarity.jaro_threshold (float8)<br/>
       pg_similarity.jaro_is_normalized (bool)
@@ -159,6 +167,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Jaro-Winkler Distance</td>
     <td>jarowinkler(text, text) returns float8</td>
     <td>~@@</td>
+	<td>no</td>
     <td>
       pg_similarity.jarowinkler_threshold (float8)<br/>
       pg_similarity.jarowinkler_is_normalized (bool)
@@ -168,6 +177,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Levenshtein Distance</td>
     <td>lev(text, text) returns float8</td>
     <td>~==</td>
+	<td>no</td>
     <td>
       pg_similarity.levenshtein_threshold (float8)<br/>
       pg_similarity.levenshtein_is_normalized (bool)
@@ -177,6 +187,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Matching Coefficient</td>
     <td>matchingcoefficient(text, text) returns float8</td>
     <td>~^^</td>
+	<td>yes</td>
     <td>
       pg_similarity.matching_tokenizer (enum)<br/>
       pg_similarity.matching_threshold (float8)<br/>
@@ -187,6 +198,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Monge-Elkan Coefficient</td>
     <td>mongeelkan(text, text) returns float8</td>
     <td>~||</td>
+	<td>no</td>
     <td>
       pg_similarity.mongeelkan_tokenizer (enum)<br/>
       pg_similarity.mongeelkan_threshold (float8)<br/>
@@ -197,6 +209,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Needleman-Wunsch Coefficient</td>
     <td>needlemanwunsch(text, text) returns float8</td>
     <td>~#~</td>
+	<td>no</td>
     <td>
       pg_similarity.nw_threshold (float8)<br/>
       pg_similarity.nw_is_normalized (bool)
@@ -206,6 +219,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Overlap Coefficient</td>
     <td>overlapcoefficient(text, text) returns float8</td>
     <td>~**</td>
+	<td>yes</td>
     <td>
       pg_similarity.overlap_tokenizer (enum)<br/>
       pg_similarity.overlap_threshold (float8)<br/>
@@ -216,6 +230,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Q-Gram Distance</td>
     <td>qgram(text, text) returns float8</td>
     <td>~~~</td>
+	<td>yes</td>
     <td>
       pg_similarity.qgram_threshold (float8)<br/>
       pg_similarity.qgram_is_normalized (bool)
@@ -225,6 +240,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Smith-Waterman Coefficient</td>
     <td>smithwaterman(text, text) returns float8</td>
     <td>~=~</td>
+	<td>no</td>
     <td>
       pg_similarity.sw_threshold (float8)<br/>
       pg_similarity.sw_is_normalized (bool)
@@ -234,6 +250,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Smith-Waterman-Gotoh Coefficient</td>
     <td>smithwatermangotoh(text, text) returns float8</td>
     <td>~!~</td>
+	<td>no</td>
     <td>
       pg_similarity.swg_threshold (float8)<br/>
       pg_similarity.swg_is_normalized (bool)
@@ -243,6 +260,7 @@ This extension supports a set of similarity algorithms. The most known algorithm
     <td>Soundex Distance</td>
     <td>soundex(text, text) returns float8</td>
     <td>~*~</td>
+	<td>no</td>
     <td>
     </td>
   </tr>
