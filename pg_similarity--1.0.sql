@@ -1,14 +1,14 @@
--- keep this in sync with the pg_similarity--x.y.sql extension install file
+-- keep this file in sync with the pg_similarity.sql.in legacy install file
 
--- Adjust this setting to control where the objects get created.
-SET search_path = public;
+-- complain if script is sourced in psql, rather than via CREATE EXTENSION
+\echo Use "CREATE EXTENSION pg_similarity" to load this file. \quit
 
 -- Block
-CREATE OR REPLACE FUNCTION block (text, text) RETURNS float8
+CREATE FUNCTION block (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'block'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION block_op (text, text) RETURNS bool
+CREATE FUNCTION block_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'block_op'
 LANGUAGE C STABLE STRICT;
 
@@ -22,11 +22,11 @@ CREATE OPERATOR ~++ (
 );
 
 -- Cosine
-CREATE OR REPLACE FUNCTION cosine (text, text) RETURNS float8
+CREATE FUNCTION cosine (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'cosine'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION cosine_op (text, text) RETURNS bool
+CREATE FUNCTION cosine_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'cosine_op'
 LANGUAGE C STABLE STRICT;
 
@@ -40,11 +40,11 @@ CREATE OPERATOR ~## (
 );
 
 -- Dice
-CREATE OR REPLACE FUNCTION dice (text, text) RETURNS float8
+CREATE FUNCTION dice (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'dice'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION dice_op (text, text) RETURNS bool
+CREATE FUNCTION dice_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'dice_op'
 LANGUAGE C STABLE STRICT;
 
@@ -58,11 +58,11 @@ CREATE OPERATOR ~-~ (
 );
 
 -- Euclidean
-CREATE OR REPLACE FUNCTION euclidean (text, text) RETURNS float8
+CREATE FUNCTION euclidean (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'euclidean'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION euclidean_op (text, text) RETURNS bool
+CREATE FUNCTION euclidean_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'euclidean_op'
 LANGUAGE C STABLE STRICT;
 
@@ -76,19 +76,19 @@ CREATE OPERATOR ~!! (
 );
 
 -- Hamming
-CREATE OR REPLACE FUNCTION hamming (varbit, varbit) RETURNS float8
+CREATE FUNCTION hamming (varbit, varbit) RETURNS float8
 AS 'MODULE_PATHNAME','hamming'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION hamming_op (varbit, varbit) RETURNS bool
+CREATE FUNCTION hamming_op (varbit, varbit) RETURNS bool
 AS 'MODULE_PATHNAME', 'hamming_op'
 LANGUAGE C STABLE STRICT;
 
-CREATE OR REPLACE FUNCTION hamming_text (text, text) RETURNS float8
+CREATE FUNCTION hamming_text (text, text) RETURNS float8
 AS 'MODULE_PATHNAME','hamming_text'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION hamming_text_op (text, text) RETURNS bool
+CREATE FUNCTION hamming_text_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'hamming_text_op'
 LANGUAGE C STABLE STRICT;
 
@@ -102,11 +102,11 @@ CREATE OPERATOR ~@~ (
 );
 
 -- Jaccard
-CREATE OR REPLACE FUNCTION jaccard (text, text) RETURNS float8
+CREATE FUNCTION jaccard (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'jaccard'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION jaccard_op (text, text) RETURNS bool
+CREATE FUNCTION jaccard_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'jaccard_op'
 LANGUAGE C STABLE STRICT;
 
@@ -120,11 +120,11 @@ CREATE OPERATOR ~?? (
 );
 
 -- Jaro
-CREATE OR REPLACE FUNCTION jaro (text, text) RETURNS float8
+CREATE FUNCTION jaro (text, text) RETURNS float8
 AS 'MODULE_PATHNAME','jaro'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION jaro_op (text, text) RETURNS bool
+CREATE FUNCTION jaro_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'jaro_op'
 LANGUAGE C STABLE STRICT;
 
@@ -138,11 +138,11 @@ CREATE OPERATOR ~%% (
 );
 
 -- Jaro-Winkler
-CREATE OR REPLACE FUNCTION jarowinkler (text, text) RETURNS float8
+CREATE FUNCTION jarowinkler (text, text) RETURNS float8
 AS 'MODULE_PATHNAME','jarowinkler'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION jarowinkler_op (text, text) RETURNS bool
+CREATE FUNCTION jarowinkler_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'jarowinkler_op'
 LANGUAGE C STABLE STRICT;
 
@@ -156,11 +156,11 @@ CREATE OPERATOR ~@@ (
 );
 
 -- Levenshtein
-CREATE OR REPLACE FUNCTION lev (text, text) RETURNS float8
+CREATE FUNCTION lev (text, text) RETURNS float8
 AS 'MODULE_PATHNAME','lev'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION lev_op (text, text) RETURNS bool
+CREATE FUNCTION lev_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'lev_op'
 LANGUAGE C STABLE STRICT;
 
@@ -173,29 +173,30 @@ CREATE OPERATOR ~== (
 	JOIN = contjoinsel
 );
 
-CREATE OR REPLACE FUNCTION levslow (text, text) RETURNS float8
-AS 'MODULE_PATHNAME','levslow'
-LANGUAGE C IMMUTABLE STRICT;
+-- Those functions are here just for academic purposes
+--CREATE FUNCTION levslow (text, text) RETURNS float8
+--AS 'MODULE_PATHNAME','levslow'
+--LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION levslow_op (text, text) RETURNS bool
-AS 'MODULE_PATHNAME', 'levslow_op'
-LANGUAGE C STABLE STRICT;
+--CREATE FUNCTION levslow_op (text, text) RETURNS bool
+--AS 'MODULE_PATHNAME', 'levslow_op'
+--LANGUAGE C STABLE STRICT;
 
---CREATE OPERATOR ~=^ (
+--CREATE OPERATOR ~@@ (
 --	LEFTARG = text,
 --	RIGHTARG = text,
 --	PROCEDURE = levslow_op,
---	COMMUTATOR = '~=^',
+--	COMMUTATOR = '~@@',
 --	RESTRICT = contsel,
 --	JOIN = contjoinsel
 --);
 
 -- Matching Coefficient
-CREATE OR REPLACE FUNCTION matchingcoefficient (text, text) RETURNS float8
+CREATE FUNCTION matchingcoefficient (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'matchingcoefficient'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION matchingcoefficient_op (text, text) RETURNS bool
+CREATE FUNCTION matchingcoefficient_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'matchingcoefficient_op'
 LANGUAGE C STABLE STRICT;
 
@@ -209,11 +210,11 @@ CREATE OPERATOR ~^^ (
 );
 
 -- Monge-Elkan
-CREATE OR REPLACE FUNCTION mongeelkan (text, text) RETURNS float8
+CREATE FUNCTION mongeelkan (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'mongeelkan'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION mongeelkan_op (text, text) RETURNS bool
+CREATE FUNCTION mongeelkan_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'mongeelkan_op'
 LANGUAGE C STABLE STRICT;
 
@@ -227,11 +228,11 @@ CREATE OPERATOR ~|| (
 );
 
 -- Needleman-Wunsch
-CREATE OR REPLACE FUNCTION needlemanwunsch (text, text) RETURNS float8
+CREATE FUNCTION needlemanwunsch (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'needlemanwunsch'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION needlemanwunsch_op (text, text) RETURNS bool
+CREATE FUNCTION needlemanwunsch_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'needlemanwunsch_op'
 LANGUAGE C STABLE STRICT;
 
@@ -245,11 +246,11 @@ CREATE OPERATOR ~#~ (
 );
 
 -- Overlap Coefficient
-CREATE OR REPLACE FUNCTION overlapcoefficient (text, text) RETURNS float8
+CREATE FUNCTION overlapcoefficient (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'overlapcoefficient'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION overlapcoefficient_op (text, text) RETURNS bool
+CREATE FUNCTION overlapcoefficient_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'overlapcoefficient_op'
 LANGUAGE C STABLE STRICT;
 
@@ -263,11 +264,11 @@ CREATE OPERATOR ~** (
 );
 
 -- Q-Gram
-CREATE OR REPLACE FUNCTION qgram (text, text) RETURNS float8
+CREATE FUNCTION qgram (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'qgram'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION qgram_op (text, text) RETURNS bool
+CREATE FUNCTION qgram_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'qgram_op'
 LANGUAGE C STABLE STRICT;
 
@@ -281,11 +282,11 @@ CREATE OPERATOR ~~~ (
 );
 
 -- Smith-Waterman
-CREATE OR REPLACE FUNCTION smithwaterman (text, text) RETURNS float8
+CREATE FUNCTION smithwaterman (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'smithwaterman'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION smithwaterman_op (text, text) RETURNS bool
+CREATE FUNCTION smithwaterman_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'smithwaterman_op'
 LANGUAGE C STABLE STRICT;
 
@@ -299,11 +300,11 @@ CREATE OPERATOR ~=~ (
 );
 
 -- Smith-Waterman-Gotoh
-CREATE OR REPLACE FUNCTION smithwatermangotoh (text, text) RETURNS float8
+CREATE FUNCTION smithwatermangotoh (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'smithwatermangotoh'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION smithwatermangotoh_op (text, text) RETURNS bool
+CREATE FUNCTION smithwatermangotoh_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'smithwatermangotoh_op'
 LANGUAGE C STABLE STRICT;
 
@@ -317,11 +318,11 @@ CREATE OPERATOR ~!~ (
 );
 
 -- Soundex
-CREATE OR REPLACE FUNCTION soundex (text, text) RETURNS float8
+CREATE FUNCTION soundex (text, text) RETURNS float8
 AS 'MODULE_PATHNAME', 'soundex'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION soundex_op (text, text) RETURNS bool
+CREATE FUNCTION soundex_op (text, text) RETURNS bool
 AS 'MODULE_PATHNAME', 'soundex_op'
 LANGUAGE C STABLE STRICT;
 
@@ -338,17 +339,17 @@ CREATE OPERATOR ~*~ (
 -- GIN support
 --
 
-CREATE OR REPLACE FUNCTION gin_extract_value_token(internal, internal, internal)
+CREATE FUNCTION gin_extract_value_token(internal, internal, internal)
 RETURNS internal
 AS 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION gin_extract_query_token(internal, internal, int2, internal, internal, internal, internal)
+CREATE FUNCTION gin_extract_query_token(internal, internal, int2, internal, internal, internal, internal)
 RETURNS internal
 AS 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION gin_token_consistent(internal, int2, internal, int4, internal, internal, internal, internal)
+CREATE FUNCTION gin_token_consistent(internal, int2, internal, int4, internal, internal, internal, internal)
 RETURNS bool
 AS 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
