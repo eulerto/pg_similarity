@@ -1,0 +1,5 @@
+# pg_similarity extension
+comment = 'support similarity queries'
+default_version = '1.0'
+module_pathname = '$libdir/pg_similarity'
+relocatable = true
