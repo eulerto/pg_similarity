@@ -133,7 +133,11 @@ Token *searchToken(TokenList *t, char *s)
 	while (n != NULL)
 	{
 #ifdef PGS_IGNORE_CASE
-		if (strcasecmp(n->data, s) == 0)
+		/*
+		 * For portability reason, use pg_strcasecmp instead of strcasecmp
+		 * (Windows doesn't provide this function).
+		 */
+		if (pg_strcasecmp(n->data, s) == 0)
 #else
 		if (strcmp(n->data, s) == 0)
 #endif

@@ -11,7 +11,6 @@
 
 #include <ctype.h>
 #include <string.h>
-#include <strings.h>
 #include <stdlib.h>
 
 #define	PGS_MAX_TOKEN_LEN	1024
