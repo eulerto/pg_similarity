@@ -169,8 +169,10 @@ void printToken(TokenList *t)
 		n = n->next;
 	}
 
-	elog(DEBUG3, "head: %s", t->head->data);
-	elog(DEBUG3, "tail: %s", t->tail->data);
+	if (t->head != NULL)
+		elog(DEBUG3, "head: %s", t->head->data);
+	if (t->tail != NULL)
+		elog(DEBUG3, "tail: %s", t->tail->data);
 	elog(DEBUG3, "===================================================");
 }
 
