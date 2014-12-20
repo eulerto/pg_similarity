@@ -34,18 +34,7 @@ $ USE_PGXS=1 make install
 $ psql -f SHAREDIR/contrib/pg_similarity.sql mydb # SHAREDIR is pg_config --sharedir
 ```
 
-To use it, simply load it to the server. You can load it into and individual session:
-
-```
-$ psql mydb
-psql (9.1.2)
-Type "help" for help.
-
-mydb=# load 'pg_similarity';
-LOAD
-```
-
-But the typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
+The typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
 
 ```
 include 'pg_similarity.conf'
