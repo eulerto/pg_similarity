@@ -25,7 +25,23 @@ UNIX based Operating Systems
 
 Before you are able to use your extension, you should build it and load it at the desirable database.
 
-The old way:
+The new way (9.1 or later):
+
+```
+$ tar -zxf pg_similarity-0.0.19.tgz
+$ cd pg_similarity-0.0.19
+$ $EDITOR Makefile # edit PG_CONFIG iif necessary
+$ USE_PGXS=1 make
+$ USE_PGXS=1 make install
+$ psql mydb
+psql (9.3.5)
+Type "help" for help.
+
+mydb=# CREATE EXTENSION pg_similarity;
+CREATE EXTENSION
+```
+
+And the old way:
 
 ```
 $ tar -zxf pg_similarity-0.0.19.tgz
@@ -36,36 +52,7 @@ $ USE_PGXS=1 make install
 $ psql -f SHAREDIR/contrib/pg_similarity.sql mydb # SHAREDIR is pg_config --sharedir
 ```
 
-And the new way:
-
-```
-$ tar -zxf pg_similarity-0.0.19.tgz
-$ cd pg_similarity-0.0.19
-$ $EDITOR Makefile # edit PG_CONFIG iif necessary
-$ USE_PGXS=1 make
-$ USE_PGXS=1 make install
-$ psql mydb
-psql (9.1.2)
-Type "help" for help.
-
-mydb=# CREATE EXTENSION pg_similarity FROM unpackaged;
-CREATE EXTENSION
-mydb=# ALTER EXTENSION pg_similarity UPDATE;
-ALTER EXTENSION
-```
-
-To use it, simply load it to the server. You can load it into and individual session:
-
-```
-$ psql mydb
-psql (9.1.2)
-Type "help" for help.
-
-mydb=# load 'pg_similarity';
-LOAD
-```
-
-But the typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
+The typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
 
 ```
 include 'pg_similarity.conf'
