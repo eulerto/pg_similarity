@@ -53,10 +53,10 @@ static char *_soundex(char *a)
 	scode[PGS_SOUNDEX_LEN] = '\0';
 
 	/* ignoring non-alpha characters */
-	while (!isalpha(*a) && a)
+	while (!isalpha(*a) && *a != '\0')
 		a++;
 
-	if (!a)
+	if (*a != '\0')
 		elog(ERROR, "string doesn't contain non-alpha character(s)");
 
 	/* get the first letter */

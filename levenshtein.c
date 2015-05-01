@@ -156,7 +156,7 @@ int _lev_slow(char *a, char *b, int icost, int dcost)
 	for (i = 0; i <= alen; i++)
 	{
 		matrix[i] = (int *) malloc((blen + 1) * sizeof(int));
-		if (matrix == NULL)
+		if (matrix[i] == NULL)
 			elog(ERROR, "memory exaushted for array size %d", (blen + 1));
 	}
 

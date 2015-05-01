@@ -45,7 +45,7 @@ static double _mongeelkan(char *a, char *b)
 	for (i = 0; i <= alen; i++)
 	{
 		matrix[i] = (float *) malloc((blen + 1) * sizeof(float));
-		if (matrix == NULL)
+		if (matrix[i] == NULL)
 			elog(ERROR, "memory exaushted for array size %d", blen);
 	}
 
