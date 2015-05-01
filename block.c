@@ -110,7 +110,7 @@ block(PG_FUNCTION_ARGS)
 
 	totpossible = s->size + t->size;
 
-	totdistance = 0.0;
+	totdistance = 0;
 
 	p = u->head;
 	while (p != NULL)
