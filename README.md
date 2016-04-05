@@ -1,3 +1,5 @@
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/4830/badge.svg)](https://scan.coverity.com/projects/pg_similarity)
+
 Introduction
 ============
 
