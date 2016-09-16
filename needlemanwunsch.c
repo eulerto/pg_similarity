@@ -103,22 +103,22 @@ static int _nwunsch(char *a, char *b, int gap)
 	for (i = 0; i <= blen; i++)
 		arow[i] = gap * i;
 
-	for (i = 1; i <= blen; i++)
+	for (i = 1; i <= alen; i++)
 	{
 		/* first value is 'i' */
 		brow[0] = gap * i;
 
-		for (j = 1; j <= alen; j++)
+		for (j = 1; j <= blen; j++)
 		{
 			/* TODO change it to a callback function */
 			/* get operation cost */
-			int scost = nwcost(a[j-1], b[i-1]);
+			int scost = nwcost(a[i-1], b[j-1]);
 
 			brow[j] = max3(brow[j-1] + gap,
 							arow[j] + gap,
 							arow[j-1] + scost);
 			elog(DEBUG2, "(i, j) = (%d, %d); cost(%c, %c): %d; max(top, left, diag) = (%d, %d, %d) = %d",
-							i, j, a[j-1], b[i-1], scost,
+							i, j, a[i-1], b[j-1], scost,
 							brow[j-1] + gap,
 							arow[j] + gap,
 							arow[j-1] + scost,
@@ -134,7 +134,7 @@ static int _nwunsch(char *a, char *b, int gap)
 		brow = trow;
 	}
 
-	res = arow[alen];
+	res = arow[blen];
 
 	free(arow);
 	free(brow);
