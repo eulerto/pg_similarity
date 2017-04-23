@@ -214,6 +214,8 @@ extern Datum PGS_EXPORT euclidean(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT euclidean_op(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT hamming(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT hamming_op(PG_FUNCTION_ARGS);
+extern Datum PGS_EXPORT hamming_int(PG_FUNCTION_ARGS);
+extern Datum PGS_EXPORT hamming_int_op(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT hamming_text(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT hamming_text_op(PG_FUNCTION_ARGS);
 extern Datum PGS_EXPORT jaccard(PG_FUNCTION_ARGS);
