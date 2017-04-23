@@ -84,6 +84,14 @@ CREATE FUNCTION hamming_op (varbit, varbit) RETURNS bool
 AS 'MODULE_PATHNAME', 'hamming_op'
 LANGUAGE C STABLE STRICT;
 
+CREATE FUNCTION hamming_int (integer, integer) RETURNS float8
+AS 'MODULE_PATHNAME','hamming_int'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION hamming_int_op (integer, integer) RETURNS bool
+AS 'MODULE_PATHNAME', 'hamming_int_op'
+LANGUAGE C STABLE STRICT;
+
 CREATE FUNCTION hamming_text (text, text) RETURNS float8
 AS 'MODULE_PATHNAME','hamming_text'
 LANGUAGE C IMMUTABLE STRICT;

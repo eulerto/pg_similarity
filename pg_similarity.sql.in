@@ -77,15 +77,23 @@ CREATE OPERATOR ~!! (
 
 -- Hamming
 CREATE OR REPLACE FUNCTION hamming (varbit, varbit) RETURNS float8
-AS 'MODULE_PATHNAME','hamming'
+AS 'MODULE_PATHNAME', 'hamming'
 LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION hamming_op (varbit, varbit) RETURNS bool
 AS 'MODULE_PATHNAME', 'hamming_op'
 LANGUAGE C STABLE STRICT;
 
+CREATE OR REPLACE FUNCTION hamming_int (integer, integer) RETURNS float8
+AS 'MODULE_PATHNAME', 'hamming_int'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION hamming_int_op (integer, integer) RETURNS bool
+AS 'MODULE_PATHNAME', 'hamming_int_op'
+LANGUAGE C STABLE STRICT;
+
 CREATE OR REPLACE FUNCTION hamming_text (text, text) RETURNS float8
-AS 'MODULE_PATHNAME','hamming_text'
+AS 'MODULE_PATHNAME', 'hamming_text'
 LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION hamming_text_op (text, text) RETURNS bool

@@ -24,6 +24,8 @@ ALTER EXTENSION pg_similarity ADD operator ~!!(text, text);
 -- Hamming
 ALTER EXTENSION pg_similarity ADD function hamming(varbit, varbit);
 ALTER EXTENSION pg_similarity ADD function hamming_op(varbit, varbit);
+ALTER EXTENSION pg_similarity ADD function hamming_int(integer, integer);
+ALTER EXTENSION pg_similarity ADD function hamming_int_op(integer, integer);
 ALTER EXTENSION pg_similarity ADD function hamming_text(text, text);
 ALTER EXTENSION pg_similarity ADD function hamming_text_op(text, text);
 ALTER EXTENSION pg_similarity ADD operator ~@~(text, text);
