@@ -130,6 +130,48 @@ Datum hamming_op(PG_FUNCTION_ARGS)
 	PG_RETURN_BOOL(res >= pgs_hamming_threshold);
 }
 
+PG_FUNCTION_INFO_V1(hamming_int);
+
+Datum
+hamming_int(PG_FUNCTION_ARGS)
+{
+	int32 a = PG_GETARG_INT32(0);
+	int32 b = PG_GETARG_INT32(1);
+	float8 res = __builtin_popcount(a ^ b);
+
+	elog(DEBUG1, "is normalized: %d", pgs_hamming_is_normalized);
+
+	if (pgs_hamming_is_normalized)
+	{
+		res = 1.0 - (res / 32.0);
+	}
+
+	PG_RETURN_FLOAT8(res);
+}
+
+PG_FUNCTION_INFO_V1(hamming_int_op);
+
+Datum
+hamming_int_op(PG_FUNCTION_ARGS)
+{
+	/*
+	 * store *_is_normalized value temporarily 'cause
+	 * threshold (we're comparing against) is normalized
+	 */
+	bool tmp = pgs_hamming_is_normalized;
+	pgs_hamming_is_normalized = true;
+
+	float8 res = DatumGetFloat8(DirectFunctionCall2(
+					hamming,
+					PG_GETARG_DATUM(0),
+					PG_GETARG_DATUM(1)));
+
+	/* we're done; back to the previous value */
+	pgs_hamming_is_normalized = tmp;
+
+	PG_RETURN_BOOL(res >= pgs_hamming_threshold);
+}
+
 PG_FUNCTION_INFO_V1(hamming_text);
 
 Datum
@@ -199,7 +241,8 @@ hamming_text(PG_FUNCTION_ARGS)
 
 PG_FUNCTION_INFO_V1(hamming_text_op);
 
-Datum hamming_text_op(PG_FUNCTION_ARGS)
+Datum
+hamming_text_op(PG_FUNCTION_ARGS)
 {
 	float8	res;
 
