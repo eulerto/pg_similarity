@@ -26,6 +26,7 @@ UNIX based Operating Systems
 ----------------------------
 
 Before you are able to use your extension, you should build it and load it at the desirable database.
+Beware make requires `postgres-server-dev-all` and `postgres-common` to be [installed](https://github.com/travis-ci/travis-ci/issues/2864#issuecomment-59109575).
 
 The new way (9.1 or later):
 
