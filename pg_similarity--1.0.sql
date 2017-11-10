@@ -174,13 +174,13 @@ CREATE OPERATOR ~== (
 );
 
 -- Those functions are here just for academic purposes
---CREATE FUNCTION levslow (text, text) RETURNS float8
---AS 'MODULE_PATHNAME','levslow'
---LANGUAGE C IMMUTABLE STRICT;
+CREATE FUNCTION levslow (text, text) RETURNS float8
+AS 'MODULE_PATHNAME','levslow'
+LANGUAGE C IMMUTABLE STRICT;
 
---CREATE FUNCTION levslow_op (text, text) RETURNS bool
---AS 'MODULE_PATHNAME', 'levslow_op'
---LANGUAGE C STABLE STRICT;
+CREATE FUNCTION levslow_op (text, text) RETURNS bool
+AS 'MODULE_PATHNAME', 'levslow_op'
+LANGUAGE C STABLE STRICT;
 
 --CREATE OPERATOR ~@@ (
 --	LEFTARG = text,
