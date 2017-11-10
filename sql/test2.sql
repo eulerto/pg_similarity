@@ -9,6 +9,8 @@
 RESET client_min_messages;
 \set ECHO all
 
+LOAD 'pg_similarity';
+
 --
 -- errors
 --
