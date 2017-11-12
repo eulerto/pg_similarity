@@ -56,7 +56,7 @@ static char *_soundex(char *a)
 	while (!isalpha(*a) && *a != '\0')
 		a++;
 
-	if (*a != '\0')
+	if (*a == '\0')
 		elog(ERROR, "string doesn't contain non-alpha character(s)");
 
 	/* get the first letter */
