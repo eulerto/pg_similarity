@@ -62,7 +62,7 @@ void destroyTokenList(TokenList *t)
 int addToken(TokenList *t, char *s)
 {
 	Token	*n;
-	
+
 	if (t->isset)
 	{
 		Token *x = searchToken(t, s);
@@ -72,7 +72,8 @@ int addToken(TokenList *t, char *s)
 
 			elog(DEBUG3, "token \"%s\" is already in the list; frequency: %d", s, x->freq);
 
-			return -1;
+			/* Different error code to allow memory to be freed by calling function */
+			return -2;
 		}
 	}
 
@@ -244,23 +245,24 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 
 		if (c > 0)
 		{
+			int ret;
 			char *tok = malloc(sizeof(char) * c + 1);
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
 			elog(DEBUG3, "token: \"%s\"; size: %lu", tok, sizeof(char) * c);
 
-			addToken(t, tok);
+			ret = addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
 			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
-			/*
-			 * XXX don't do that!
-			 * free(tok);
-			*/
+			/* Only free the token if it was not added to the list, otherwise it
+			 * will be freed when the list is destroyed */
+			if (ret == -2)
+				free(tok);
 
 			c = 0;
 		}
@@ -330,23 +332,24 @@ void tokenizeBySpace(TokenList *t, char *s)
 
 		if (c > 0)
 		{
+			int ret;
 			char *tok = malloc(sizeof(char) * c + 1);
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
 			elog(DEBUG3, "token: \"%s\"; size: %lu", tok, sizeof(char) * c);
 
-			addToken(t, tok);
+			ret = addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
 			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
-			/*
-			 * XXX don't do that!
-			 * free(tok);
-			 */
+			/* Only free the token if it was not added to the list, otherwise it
+			 * will be freed when the list is destroyed */
+			if (ret == -2)
+				free(tok);
 
 			c = 0;
 		}
@@ -374,42 +377,60 @@ void tokenizeByGram(TokenList *t, char *s)
 #ifdef PGS_FULL_NGRAM
 	for (i = (PGS_GRAM_LEN - 1); i > 0; i--)
 	{
+		int 	ret;
 		char	*buf;
 		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		memset(buf, PGS_BLANK_CHAR, i);
 		strncpy((buf + i), s, PGS_GRAM_LEN - i);
 		buf[PGS_GRAM_LEN] = '\0';
 
-		addToken(t, buf);
+		ret = addToken(t, buf);
 
 		elog(DEBUG1, "qgram (b): \"%s\"", buf);
+
+		/* Only free the token if it was not added to the list, otherwise it
+		 * will be freed when the list is destroyed */
+		if (ret == -2)
+			free(buf);
 	}
 #else
 	{
+		int 	ret;
 		char	*buf;
 		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		memset(buf, PGS_BLANK_CHAR, 1);
 		strncpy((buf + 1), s, PGS_GRAM_LEN - 1);
 		buf[PGS_GRAM_LEN] = '\0';
 
-		addToken(t, buf);
+		ret = addToken(t, buf);
 
 		elog(DEBUG1, "qgram (b): \"%s\"", buf);
+
+		/* Only free the token if it was not added to the list, otherwise it
+		 * will be freed when the list is destroyed */
+		if (ret == -2)
+			free(buf);
 	}
 #endif
 
 	for (i = 0; i <= (slen - PGS_GRAM_LEN); i++)
 	{
+		int 	ret;
 		char	*buf;
 		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		strncpy(buf, p, PGS_GRAM_LEN);
 		buf[PGS_GRAM_LEN] = '\0';
 
-		addToken(t, buf);
+		ret = addToken(t, buf);
 
 		p++;
 
 		elog(DEBUG1, "qgram (m): \"%s\"", buf);
+
+		/* Only free the token if it was not added to the list, otherwise it
+		 * will be freed when the list is destroyed */
+		if (ret == -2)
+			free(buf);
 	}
 
 	/*
@@ -418,29 +439,41 @@ void tokenizeByGram(TokenList *t, char *s)
 #ifdef PGS_FULL_NGRAM
 	for (i = 1; i < PGS_GRAM_LEN; i++)
 	{
+		int 	ret;
 		char	*buf;
 		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		strncpy(buf, p, PGS_GRAM_LEN - i);
 		memset((buf + (PGS_GRAM_LEN - i)), PGS_BLANK_CHAR, i);
 		buf[PGS_GRAM_LEN] = '\0';
 
-		addToken(t, buf);
+		ret = addToken(t, buf);
 
 		p++;
 
 		elog(DEBUG1, "qgram (a): \"%s\"", buf);
+
+		/* Only free the token if it was not added to the list, otherwise it
+		 * will be freed when the list is destroyed */
+		if (ret == -2)
+			free(buf);
 	}
 #else
 	{
+		int 	ret;
 		char	*buf;
 		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		strncpy(buf, p, PGS_GRAM_LEN - 1);
 		memset((buf + (PGS_GRAM_LEN - 1)), PGS_BLANK_CHAR, 1);
 		buf[PGS_GRAM_LEN] = '\0';
 
-		addToken(t, buf);
+		ret = addToken(t, buf);
 
 		elog(DEBUG1, "qgram (a): \"%s\"", buf);
+
+		/* Only free the token if it was not added to the list, otherwise it
+		 * will be freed when the list is destroyed */
+		if (ret == -2)
+			free(buf);
 	}
 #endif
 }
@@ -496,7 +529,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 			elog(DEBUG4, "\"%c\" is not uppercase", *cptr);
 
 		/*
-		 * if the first caracter is uppercase enter the loop because sometimes 
+		 * if the first caracter is uppercase enter the loop because sometimes
 		 * the first char in a camel-case notation is uppercase
 		 */
 		while (c == 0 || (!isupper(*cptr) && *cptr != '\0'))
@@ -517,23 +550,24 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 
 		if (c > 0)
 		{
+			int ret;
 			char *tok = malloc(sizeof(char) * c + 1);
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
 			elog(DEBUG3, "token: \"%s\"; size: %lu", tok, sizeof(char) * c);
 
-			addToken(t, tok);
+			ret = addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
 			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
-			/*
-			 * XXX don't do that!
-			 * free(tok);
-			 */
+			/* Only free the token if it was not added to the list, otherwise it
+			 * will be freed when the list is destroyed */
+			if (ret == -2)
+				free(tok);
 
 			c = 0;
 		}
