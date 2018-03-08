@@ -44,7 +44,7 @@ void destroyTokenList(TokenList *t)
 	while (t->size > 0)
 	{
 		len = strlen(t->head->data);
-		n = (char *) malloc(sizeof(char) * len + 1);
+		n = (char *) malloc(sizeof(char) * (len + 1));
 		strcpy(n, t->head->data);
 
 		i = removeToken(t);
@@ -246,7 +246,7 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 		if (c > 0)
 		{
 			int ret;
-			char *tok = malloc(sizeof(char) * c + 1);
+			char *tok = malloc(sizeof(char) * (c + 1));
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
@@ -333,7 +333,7 @@ void tokenizeBySpace(TokenList *t, char *s)
 		if (c > 0)
 		{
 			int ret;
-			char *tok = malloc(sizeof(char) * c + 1);
+			char *tok = malloc(sizeof(char) * (c + 1));
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
@@ -551,7 +551,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 		if (c > 0)
 		{
 			int ret;
-			char *tok = malloc(sizeof(char) * c + 1);
+			char *tok = malloc(sizeof(char) * (c + 1));
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
