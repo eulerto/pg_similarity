@@ -255,7 +255,6 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 			ret = addToken(t, tok);
 
 			elog(DEBUG4, "actual token list size: %d", t->size);
-			elog(DEBUG4, "tok: \"%s\"; size: %u", tok, (unsigned int) strlen(tok));
 
 			Assert(strlen(tok) <= PGS_MAX_TOKEN_LEN);
 
