@@ -24,7 +24,7 @@
  * s = 2
  *
  *
- * Copyright (c) 2008-2012, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2018, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */

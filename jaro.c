@@ -50,7 +50,7 @@
  * http://www.census.gov/srd/papers/pdf/rrs2006-02.pdf.
  *
  *
- * Copyright (c) 2008-2012, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2018, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */
