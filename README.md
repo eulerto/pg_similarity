@@ -14,7 +14,7 @@ Introduction
 Installation
 ============
 
-**pg\_similarity** is distributed as a source package and can be downloaded at [PGFoundry](http://pgfoundry.org/projects/pgsimilarity/). This extension is supported on [those platforms](http://www.postgresql.org/docs/current/static/supported-platforms.html) that PostgreSQL is. The installation steps depend on your operating system.
+**pg\_similarity** is supported on [those platforms](http://www.postgresql.org/docs/current/static/supported-platforms.html) that PostgreSQL is. The installation steps depend on your operating system.
 
 You can also keep up with the latest fixes and features cloning the Git repository.
 
