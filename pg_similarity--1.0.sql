@@ -1,5 +1,3 @@
--- keep this file in sync with the pg_similarity.sql.in legacy install file
-
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION pg_similarity" to load this file. \quit
 

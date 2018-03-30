@@ -27,31 +27,18 @@ UNIX based Operating Systems
 
 Before you are able to use your extension, you should build it and load it at the desirable database.
 
-The new way (9.1 or later):
-
 ```
-$ tar -zxf pg_similarity-0.0.19.tgz
-$ cd pg_similarity-0.0.19
+$ tar -zxf pg_similarity-1.0.tgz
+$ cd pg_similarity-1.0
 $ $EDITOR Makefile # edit PG_CONFIG iif necessary
 $ USE_PGXS=1 make
 $ USE_PGXS=1 make install
 $ psql mydb
-psql (9.3.5)
+psql (10.3)
 Type "help" for help.
 
 mydb=# CREATE EXTENSION pg_similarity;
 CREATE EXTENSION
-```
-
-And the old way:
-
-```
-$ tar -zxf pg_similarity-0.0.19.tgz
-$ cd pg_similarity-0.0.19
-$ $EDITOR Makefile # edit PG_CONFIG iif necessary
-$ USE_PGXS=1 make
-$ USE_PGXS=1 make install
-$ psql -f SHAREDIR/contrib/pg_similarity.sql mydb # SHAREDIR is pg_config --sharedir
 ```
 
 The typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
