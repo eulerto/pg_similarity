@@ -69,8 +69,15 @@ Sorry, never tried^H^H^H^H^H Actually I tried that but it is not that easy as on
 - Download and untar pg_similarity under PostgreSQL contrib directory;
 - Edit contrib/Makefile and add *pg_similarity* to SUBDIRS variable;
 - Follow [Installation from Source Code on Windows](http://www.postgresql.org/docs/current/static/install-windows.html) for building but do not install it;
-- Instead of executing install (if you already have Windows binaries installed), just copy pg_similarity.dll to LIBDIR (get it executing `pg_config --libdir`) and pg_similarity.control and *--1.0.sql to SHAREDIR/extension (get it executing `pg_config --sharedir`).
+- Instead of executing install (if you already have Windows binaries installed), just copy `pg_similarity.dll` to LIBDIR (get it executing `pg_config --pkglibdir`) and `pg_similarity.control` and `pg_similarity--*.sql` to `SHAREDIR/extension` (get it executing `pg_config --sharedir`).
 - That is it! Do not forget to follow the instructions above to load the library and CREATE EXTENSION.
+
+It is also possible to build pg_similarity out of the tree (without PostgreSQL source code).
+
+- Edit `pg_similarity.vcxproj` replacing `c:\postgres\pg103` with PostgreSQL prefix directory;
+- Open this project file in MS Visual Studio and build it;
+- Copy `pg_similarity.dll` to `pg_config --pkglibdir`;
+- Copy `pg_similarity.control` and `pg_similarity--*.sql` to `SHAREDIR/extension` (SHAREDIR is `pg_config --sharedir`).
 
 Functions and Operators
 =======================
