@@ -21,12 +21,6 @@ INSERT INTO simtst (a) VALUES
 ('Oliveira, E. T.'),
 ('ETO');
 -- Levenshtein
-SHOW pg_similarity.levenshtein_threshold;
- pg_similarity.levenshtein_threshold 
--------------------------------------
- 0.7
-(1 row)
-
 SELECT a FROM simtst WHERE a ~== :a;
              a             
 ---------------------------
@@ -35,6 +29,12 @@ SELECT a FROM simtst WHERE a ~== :a;
  Euler T. de Oliveira
  EULER TAVEIRA OLIVEIRA
 (4 rows)
+
+SHOW pg_similarity.levenshtein_threshold;
+ pg_similarity.levenshtein_threshold 
+-------------------------------------
+ 0.7
+(1 row)
 
 SET pg_similarity.levenshtein_threshold to 0.4;
 SHOW pg_similarity.levenshtein_threshold;
