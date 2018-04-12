@@ -11,8 +11,8 @@
 
 
 static const char *stable =
-/*		 ABCDEFGHIJKLMNOPQRSTUVWXYZ */
-		"01230120022455012623010202";
+	/*		 ABCDEFGHIJKLMNOPQRSTUVWXYZ */
+	"01230120022455012623010202";
 
 /*
  * soundex code is only defined to ASCII characters
@@ -73,9 +73,9 @@ static char *_soundex(char *a)
 
 		if (isalpha(*a) && (curcode != lastcode) && curcode != '0')
 		{
-				scode[len] = curcode;
-				elog(DEBUG2, "scode[%d] = %d", len, curcode);
-				len++;
+			scode[len] = curcode;
+			elog(DEBUG2, "scode[%d] = %d", len, curcode);
+			len++;
 		}
 		lastcode = curcode;
 		a++;
@@ -102,14 +102,16 @@ soundex(PG_FUNCTION_ARGS)
 	char	*resb;
 	float8	res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
 				 errmsg("argument exceeds the maximum length of %d bytes",
-					 PGS_MAX_STR_LEN)));
+						PGS_MAX_STR_LEN)));
 
 	resa = _soundex(a);
 	resb = _soundex(b);
@@ -136,9 +138,9 @@ Datum soundex_op(PG_FUNCTION_ARGS)
 	float8	res;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					soundex,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 soundex,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	PG_RETURN_BOOL(res == 1.0);
 }

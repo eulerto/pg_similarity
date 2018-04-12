@@ -65,9 +65,7 @@ static double _mongeelkan(char *a, char *b)
 		float c = megapcost(a, b, i, 0);
 
 		if (i == 0)
-		{
 			matrix[0][0] = max2(0.0, c);
-		}
 		else
 		{
 			float	maxgapcost = 0.0;
@@ -90,9 +88,7 @@ static double _mongeelkan(char *a, char *b)
 		float c = megapcost(a, b, 0, j);
 
 		if (j == 0)
-		{
 			matrix[0][0] = max2(0.0, c);
-		}
 		else
 		{
 			float	maxgapcost = 0.0;
@@ -138,12 +134,13 @@ static double _mongeelkan(char *a, char *b)
 			matrix[i][j] = max4(0.0,
 								maxgapcost1,
 								maxgapcost2,
-								matrix[i-1][j-1] + c);
-			elog(DEBUG2, "(i, j) = (%d, %d); cost(%c, %c): %.3f; max(zero, top, left, diag) = (0.0, %.3f, %.3f, %.3f) = %.3f",
-							i, j, a[i-1], b[j-1], c,
-							maxgapcost1,
-							maxgapcost2,
-							matrix[i-1][j-1] + c, matrix[i][j]);
+								matrix[i - 1][j - 1] + c);
+			elog(DEBUG2,
+				 "(i, j) = (%d, %d); cost(%c, %c): %.3f; max(zero, top, left, diag) = (0.0, %.3f, %.3f, %.3f) = %.3f",
+				 i, j, a[i - 1], b[j - 1], c,
+				 maxgapcost1,
+				 maxgapcost2,
+				 matrix[i - 1][j - 1] + c, matrix[i][j]);
 
 			if (matrix[i][j] > maxvalue)
 				maxvalue = matrix[i][j];
@@ -169,14 +166,16 @@ mongeelkan(PG_FUNCTION_ARGS)
 	double		maxvalue;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	/* lists */
 	s = initTokenList(0);
@@ -253,9 +252,9 @@ Datum mongeelkan_op(PG_FUNCTION_ARGS)
 	pgs_mongeelkan_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					mongeelkan,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 mongeelkan,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_mongeelkan_is_normalized = tmp;

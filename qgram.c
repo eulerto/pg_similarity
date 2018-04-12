@@ -59,9 +59,9 @@ qgram(PG_FUNCTION_ARGS)
 	pgs_block_tokenizer = pgs_qgram_tokenizer;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-				block,
-				PG_GETARG_DATUM(0),
-				PG_GETARG_DATUM(1)));
+							 block,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_block_is_normalized = tmp;
@@ -84,9 +84,9 @@ Datum qgram_op(PG_FUNCTION_ARGS)
 	pgs_qgram_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					qgram,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 qgram,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_qgram_is_normalized = tmp;

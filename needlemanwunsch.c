@@ -6,7 +6,7 @@
  * sequences.
  *
  * It is a dynamic programming algorithm that is used to biological sequence
- * comparison. The operation costs (scores) are specified by similarity 
+ * comparison. The operation costs (scores) are specified by similarity
  * matrix. It also uses a linear gap penalty (like Levenshtein).
  *
  * For example:
@@ -112,17 +112,18 @@ static int _nwunsch(char *a, char *b, int gap)
 		{
 			/* TODO change it to a callback function */
 			/* get operation cost */
-			int scost = nwcost(a[i-1], b[j-1]);
+			int scost = nwcost(a[i - 1], b[j - 1]);
 
-			brow[j] = max3(brow[j-1] + gap,
-							arow[j] + gap,
-							arow[j-1] + scost);
-			elog(DEBUG2, "(i, j) = (%d, %d); cost(%c, %c): %d; max(top, left, diag) = (%d, %d, %d) = %d",
-							i, j, a[i-1], b[j-1], scost,
-							brow[j-1] + gap,
-							arow[j] + gap,
-							arow[j-1] + scost,
-							brow[j]);
+			brow[j] = max3(brow[j - 1] + gap,
+						   arow[j] + gap,
+						   arow[j - 1] + scost);
+			elog(DEBUG2,
+				 "(i, j) = (%d, %d); cost(%c, %c): %d; max(top, left, diag) = (%d, %d, %d) = %d",
+				 i, j, a[i - 1], b[j - 1], scost,
+				 brow[j - 1] + gap,
+				 arow[j] + gap,
+				 arow[j - 1] + scost,
+				 brow[j]);
 		}
 
 		/*
@@ -151,14 +152,16 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 	double		minvalue, maxvalue;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	maxvalue = (float8) max2(strlen(a), strlen(b));
 
@@ -169,9 +172,7 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "nwdistance(%s, %s) = %.3f", a, b, res);
 
 	if (maxvalue == 0.0)
-	{
 		PG_RETURN_FLOAT8(1.0);
-	}
 	else if (pgs_nw_is_normalized)
 	{
 		/* FIXME normalize nw result */
@@ -194,9 +195,7 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 
 		/* paranoia ? */
 		if (maxvalue == 0.0)
-		{
 			PG_RETURN_FLOAT8(0.0);
-		}
 		else
 		{
 			res = 1.0 - (res / maxvalue);
@@ -205,9 +204,7 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 		}
 	}
 	else
-	{
 		PG_RETURN_FLOAT8(res);
-	}
 }
 
 PG_FUNCTION_INFO_V1(needlemanwunsch_op);
@@ -224,9 +221,9 @@ Datum needlemanwunsch_op(PG_FUNCTION_ARGS)
 	pgs_nw_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					needlemanwunsch,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 needlemanwunsch,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_nw_is_normalized = tmp;

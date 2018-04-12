@@ -93,17 +93,18 @@ int _lev(char *a, char *b, int icost, int dcost)
 		{
 			/* TODO change it to a callback function */
 			/* get operation cost */
-			int scost = levcost(a[i-1], b[j-1]);
+			int scost = levcost(a[i - 1], b[j - 1]);
 
-			brow[j] = min3(brow[j-1] + icost,
-							arow[j] + dcost,
-							arow[j-1] + scost);
-			elog(DEBUG2, "(i, j) = (%d, %d); cost(%c, %c): %d; min(top, left, diag) = (%d, %d, %d) = %d",
-							i, j, a[i-1], b[j-1], scost,
-							brow[j-1] + icost,
-							arow[j] + dcost,
-							arow[j-1] + scost,
-							brow[j]);
+			brow[j] = min3(brow[j - 1] + icost,
+						   arow[j] + dcost,
+						   arow[j - 1] + scost);
+			elog(DEBUG2,
+				 "(i, j) = (%d, %d); cost(%c, %c): %d; min(top, left, diag) = (%d, %d, %d) = %d",
+				 i, j, a[i - 1], b[j - 1], scost,
+				 brow[j - 1] + icost,
+				 arow[j] + dcost,
+				 arow[j - 1] + scost,
+				 brow[j]);
 		}
 
 		/*
@@ -179,17 +180,18 @@ int _lev_slow(char *a, char *b, int icost, int dcost)
 		for (j = 1; j <= blen; j++)
 		{
 			/* get operation cost */
-			int scost = levcost(a[i-1], b[j-1]);
+			int scost = levcost(a[i - 1], b[j - 1]);
 
-			matrix[i][j] = min3(matrix[i-1][j] + dcost,
-								matrix[i][j-1] + icost,
-								matrix[i-1][j-1] + scost);
-			elog(DEBUG2, "(i, j) = (%d, %d); cost(%c, %c): %d; min(top, left, diag) = (%d, %d, %d) = %d",
-							i, j, a[i-1], b[j-1], scost,
-							matrix[i-1][j] + dcost,
-							matrix[i][j-1] + icost,
-							matrix[i-1][j-1] + scost,
-							matrix[i][j]);
+			matrix[i][j] = min3(matrix[i - 1][j] + dcost,
+								matrix[i][j - 1] + icost,
+								matrix[i - 1][j - 1] + scost);
+			elog(DEBUG2,
+				 "(i, j) = (%d, %d); cost(%c, %c): %d; min(top, left, diag) = (%d, %d, %d) = %d",
+				 i, j, a[i - 1], b[j - 1], scost,
+				 matrix[i - 1][j] + dcost,
+				 matrix[i][j - 1] + icost,
+				 matrix[i - 1][j - 1] + scost,
+				 matrix[i][j]);
 		}
 	}
 
@@ -211,14 +213,16 @@ lev(PG_FUNCTION_ARGS)
 	int		maxlen;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	maxlen = max2(strlen(a), strlen(b));
 
@@ -229,9 +233,7 @@ lev(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "levdistance(%s, %s) = %.3f", a, b, res);
 
 	if (maxlen == 0)
-	{
 		PG_RETURN_FLOAT8(1.0);
-	}
 	else if (pgs_levenshtein_is_normalized)
 	{
 		res = 1.0 - (res / maxlen);
@@ -239,9 +241,7 @@ lev(PG_FUNCTION_ARGS)
 		PG_RETURN_FLOAT8(res);
 	}
 	else
-	{
 		PG_RETURN_FLOAT8(res);
-	}
 }
 
 PG_FUNCTION_INFO_V1(lev_op);
@@ -258,9 +258,9 @@ Datum lev_op(PG_FUNCTION_ARGS)
 	pgs_levenshtein_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					lev,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 lev,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_levenshtein_is_normalized = tmp;
@@ -277,14 +277,16 @@ levslow(PG_FUNCTION_ARGS)
 	int		maxlen;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	maxlen = max2(strlen(a), strlen(b));
 
@@ -295,9 +297,7 @@ levslow(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "levdistance(%s, %s) = %.3f", a, b, res);
 
 	if (maxlen == 0)
-	{
 		PG_RETURN_FLOAT8(1.0);
-	}
 	else if (pgs_levenshtein_is_normalized)
 	{
 		res = 1.0 - (res / maxlen);
@@ -305,9 +305,7 @@ levslow(PG_FUNCTION_ARGS)
 		PG_RETURN_FLOAT8(res);
 	}
 	else
-	{
 		PG_RETURN_FLOAT8(res);
-	}
 }
 
 PG_FUNCTION_INFO_V1(levslow_op);
@@ -324,9 +322,9 @@ Datum levslow_op(PG_FUNCTION_ARGS)
 	pgs_levenshtein_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					levslow,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 levslow,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_levenshtein_is_normalized = tmp;

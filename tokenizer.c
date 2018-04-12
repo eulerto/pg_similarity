@@ -165,7 +165,8 @@ void printToken(TokenList *t)
 	n = t->head;
 	while (n != NULL)
 	{
-		elog(DEBUG3, "addr: %p; next: %p; word: %s; freq: %d", n, n->next, n->data, n->freq);
+		elog(DEBUG3, "addr: %p; next: %p; word: %s; freq: %d", n, n->next, n->data,
+			 n->freq);
 
 		n = n->next;
 	}
@@ -184,7 +185,7 @@ void printToken(TokenList *t)
 void tokenizeByNonAlnum(TokenList *t, char *s)
 {
 	const char		*cptr,	/* current pointer */
-				*sptr;	/* start token pointer */
+			  *sptr;	/* start token pointer */
 	int			c = 0;	/* number of bytes */
 
 	elog(DEBUG3, "sentence: \"%s\"", s);
@@ -219,7 +220,7 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 			elog(DEBUG4, "end of sentence");
 
 #ifdef PGS_IGNORE_CASE
-	*sptr = tolower(*sptr);
+		*sptr = tolower(*sptr);
 #endif
 
 		sptr = cptr;
@@ -271,7 +272,7 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 void tokenizeBySpace(TokenList *t, char *s)
 {
 	const char		*cptr,	/* current pointer */
-				*sptr;	/* start token pointer */
+			  *sptr;	/* start token pointer */
 	int			c = 0;	/* number of bytes */
 
 	elog(DEBUG3, "sentence: \"%s\"", s);
@@ -306,7 +307,7 @@ void tokenizeBySpace(TokenList *t, char *s)
 			elog(DEBUG4, "end of sentence");
 
 #ifdef PGS_IGNORE_CASE
-	*sptr = tolower(*sptr);
+		*sptr = tolower(*sptr);
 #endif
 
 		sptr = cptr;
@@ -480,7 +481,7 @@ void tokenizeByGram(TokenList *t, char *s)
 void tokenizeByCamelCase(TokenList *t, char *s)
 {
 	const char		*cptr,	/* current pointer */
-				*sptr;	/* start token pointer */
+			  *sptr;	/* start token pointer */
 	int			c = 0;	/* number of bytes */
 
 	elog(DEBUG3, "sentence: \"%s\"", s);
@@ -515,7 +516,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 			elog(DEBUG4, "end of sentence");
 
 #ifdef PGS_IGNORE_CASE
-	*sptr = tolower(*sptr);
+		*sptr = tolower(*sptr);
 #endif
 
 		sptr = cptr;

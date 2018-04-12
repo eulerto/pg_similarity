@@ -48,14 +48,16 @@ matchingcoefficient(PG_FUNCTION_ARGS)
 	int		atok, btok, comtok, maxtok;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	/* lists */
 	s = initTokenList(0);
@@ -151,9 +153,9 @@ Datum matchingcoefficient_op(PG_FUNCTION_ARGS)
 	pgs_matching_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					matchingcoefficient,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 matchingcoefficient,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_matching_is_normalized = tmp;

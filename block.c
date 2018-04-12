@@ -53,14 +53,16 @@ block(PG_FUNCTION_ARGS)
 	int			totdistance;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	/* lists */
 	s = initTokenList(0);
@@ -142,8 +144,8 @@ block(PG_FUNCTION_ARGS)
 			totdistance += (bcnt - acnt);
 
 		elog(DEBUG2,
-			"\"%s\" => acnt(%d); bcnt(%d); totdistance(%d)",
-					p->data, acnt, bcnt, totdistance);
+			 "\"%s\" => acnt(%d); bcnt(%d); totdistance(%d)",
+			 p->data, acnt, bcnt, totdistance);
 
 		p = p->next;
 	}
@@ -178,9 +180,9 @@ Datum block_op(PG_FUNCTION_ARGS)
 	pgs_block_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					block,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 block,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_block_is_normalized = tmp;

@@ -92,10 +92,10 @@ gin_extract_value_token(PG_FUNCTION_ARGS)
 			for (i = 0; i < tlist->size; i++)
 			{
 				text	*td;
-	
+
 				td = cstring_to_text_with_len(t->data, strlen(t->data));
 				tokens[i] = PointerGetDatum(td);
-	
+
 				t = t->next;
 			}
 		}
@@ -114,16 +114,16 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 	text			*value = (text *) PG_GETARG_TEXT_P(0);
 	int32			*ntokens = (int32 *) PG_GETARG_POINTER(1);
 
-/*
-	StrategyNumber	strategy = PG_GETARG_UINT16(2);
-	bool			**pmatch = (bool **) PG_GETARG_POINTER(3);
-	Pointer			**extra_data = (Pointer *) PG_GETARG_POINTER(4);
-*/
+	/*
+		StrategyNumber	strategy = PG_GETARG_UINT16(2);
+		bool			**pmatch = (bool **) PG_GETARG_POINTER(3);
+		Pointer			**extra_data = (Pointer *) PG_GETARG_POINTER(4);
+	*/
 
 #if	PG_VERSION_NUM >= 90100
-/*
-	bool			**null_flags = (bool **) PG_GETARG_POINTER(5);
-*/
+	/*
+		bool			**null_flags = (bool **) PG_GETARG_POINTER(5);
+	*/
 	int32			*search_mode = (int32 *) PG_GETARG_POINTER(6);
 #endif
 
@@ -174,10 +174,10 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 			for (i = 0; i < tlist->size; i++)
 			{
 				text	*td;
-	
+
 				td = cstring_to_text_with_len(t->data, strlen(t->data));
 				tokens[i] = PointerGetDatum(td);
-	
+
 				t = t->next;
 			}
 		}
@@ -198,22 +198,22 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 Datum
 gin_token_consistent(PG_FUNCTION_ARGS)
 {
-/*
-	bool			*check = (bool *) PG_GETARG_POINTER(0);
-	StrategyNumber	strategy = PG_GETARG_UINT16(1);
-	text			*query = PG_GETARG_TEXT_P(2);
-	int32			ntokens = PG_GETARG_INT32(3);
-	Pointer			*extra_data = (Pointer *) PG_GETARG_POINTER(4);
-*/
+	/*
+		bool			*check = (bool *) PG_GETARG_POINTER(0);
+		StrategyNumber	strategy = PG_GETARG_UINT16(1);
+		text			*query = PG_GETARG_TEXT_P(2);
+		int32			ntokens = PG_GETARG_INT32(3);
+		Pointer			*extra_data = (Pointer *) PG_GETARG_POINTER(4);
+	*/
 
 	bool			*recheck = (bool *) PG_GETARG_POINTER(5);
 
-/*
-#if PG_VERSION_NUM >= 90100
-	Datum			**query_tokens = PG_GETARG_POINTER(6);
-	bool			**null_flags = (bool **) PG_GETARG_POINTER(7);
-#endif
-*/
+	/*
+	#if PG_VERSION_NUM >= 90100
+		Datum			**query_tokens = PG_GETARG_POINTER(6);
+		bool			**null_flags = (bool **) PG_GETARG_POINTER(7);
+	#endif
+	*/
 
 	elog(DEBUG3, "gin_token_consistent() called");
 

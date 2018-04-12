@@ -61,7 +61,7 @@ hamming(PG_FUNCTION_ARGS)
 	if (alen != blen)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("bit strings must have the same length")));
+				 errmsg("bit strings must have the same length")));
 
 	/* alen and blen have the same length */
 	maxlen = alen;
@@ -88,9 +88,7 @@ hamming(PG_FUNCTION_ARGS)
 
 	/* if one string has zero length then return one */
 	if (maxlen == 0)
-	{
 		PG_RETURN_FLOAT8(1.0);
-	}
 	else if (pgs_hamming_is_normalized)
 	{
 		res = 1.0 - (res / maxlen);
@@ -101,9 +99,7 @@ hamming(PG_FUNCTION_ARGS)
 		PG_RETURN_FLOAT8(res);
 	}
 	else
-	{
 		PG_RETURN_FLOAT8(res);
-	}
 }
 
 PG_FUNCTION_INFO_V1(hamming_op);
@@ -120,9 +116,9 @@ Datum hamming_op(PG_FUNCTION_ARGS)
 	pgs_hamming_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					hamming,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 hamming,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_hamming_is_normalized = tmp;
@@ -141,8 +137,10 @@ hamming_text(PG_FUNCTION_ARGS)
 	int			maxlen;
 	float8		res = 0.0;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	alen = strlen(a);
 	blen = strlen(b);
@@ -150,15 +148,15 @@ hamming_text(PG_FUNCTION_ARGS)
 	if (alen > PGS_MAX_STR_LEN || blen > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	elog(DEBUG1, "alen: %d; blen: %d", alen, blen);
 
 	if (alen != blen)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("text strings must have the same length")));
+				 errmsg("text strings must have the same length")));
 
 	elog(DEBUG1, "a: %s ; b: %s", a, b);
 
@@ -178,23 +176,21 @@ hamming_text(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "is normalized: %d", pgs_hamming_is_normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
 
-	elog(DEBUG1, "hammingdistance(%s, %s) = %.3f", DatumGetCString(a), DatumGetCString(b), res);
+	elog(DEBUG1, "hammingdistance(%s, %s) = %.3f", DatumGetCString(a),
+		 DatumGetCString(b), res);
 
 	/* if one string has zero length then return one */
 	if (maxlen == 0)
-	{
 		PG_RETURN_FLOAT8(1.0);
-	}
 	else if (pgs_hamming_is_normalized)
 	{
 		res = 1.0 - (res / maxlen);
-		elog(DEBUG1, "hamming(%s, %s) = %.3f", DatumGetCString(a), DatumGetCString(b), res);
+		elog(DEBUG1, "hamming(%s, %s) = %.3f", DatumGetCString(a), DatumGetCString(b),
+			 res);
 		PG_RETURN_FLOAT8(res);
 	}
 	else
-	{
 		PG_RETURN_FLOAT8(res);
-	}
 }
 
 PG_FUNCTION_INFO_V1(hamming_text_op);
@@ -211,9 +207,9 @@ Datum hamming_text_op(PG_FUNCTION_ARGS)
 	pgs_hamming_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					hamming_text,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 hamming_text,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_hamming_is_normalized = tmp;

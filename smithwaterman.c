@@ -2,11 +2,11 @@
  *
  * smithwaterman.c
  *
- * Smith-Waterman is an algorithm that performs a global alignment on two 
+ * Smith-Waterman is an algorithm that performs a global alignment on two
  * sequences.
  *
  * It is a dynamic programming algorithm that is used to biological sequence
- * comparison. The operation costs (scores) are specified by similarity 
+ * comparison. The operation costs (scores) are specified by similarity
  * matrix. It also uses a linear gap penalty (like Levenshtein).
  *
  * For example:
@@ -114,38 +114,38 @@ static double _smithwaterman(char *a, char *b)
 	/* initial values */
 	for (i = 0; i <= alen; i++)
 	{
-/*
-		XXX why simmetrics does this way?
-		XXX original algorithm initializes first column with zeros
+		/*
+				XXX why simmetrics does this way?
+				XXX original algorithm initializes first column with zeros
 
-		float c = swcost(a, b, i, 0);
+				float c = swcost(a, b, i, 0);
 
-		if (i == 0)
-			matrix[0][0] = max3(0.0, -1 * PGS_SW_GAP_COST, c);
-		else
-			matrix[i][0] = max3(0.0, matrix[i-1][0] - PGS_SW_GAP_COST, c);
+				if (i == 0)
+					matrix[0][0] = max3(0.0, -1 * PGS_SW_GAP_COST, c);
+				else
+					matrix[i][0] = max3(0.0, matrix[i-1][0] - PGS_SW_GAP_COST, c);
 
-		if (matrix[i][0] > maxvalue)
-			maxvalue = matrix[i][0];
-*/
+				if (matrix[i][0] > maxvalue)
+					maxvalue = matrix[i][0];
+		*/
 		matrix[i][0] = 0.0;
 	}
 	for (j = 0; j <= blen; j++)
 	{
-/*
-		XXX why simmetrics does this way?
-		XXX original algorithm initializes first row with zeros
+		/*
+				XXX why simmetrics does this way?
+				XXX original algorithm initializes first row with zeros
 
-		float c = swcost(a, b, 0, j);
+				float c = swcost(a, b, 0, j);
 
-		if (j == 0)
-			matrix[0][0] = max3(0.0, -1 * PGS_SW_GAP_COST, c);
-		else
-			matrix[0][j] = max3(0.0, matrix[0][j-1] - PGS_SW_GAP_COST, c);
+				if (j == 0)
+					matrix[0][0] = max3(0.0, -1 * PGS_SW_GAP_COST, c);
+				else
+					matrix[0][j] = max3(0.0, matrix[0][j-1] - PGS_SW_GAP_COST, c);
 
-		if (matrix[0][j] > maxvalue)
-			maxvalue = matrix[0][j];
-*/
+				if (matrix[0][j] > maxvalue)
+					maxvalue = matrix[0][j];
+		*/
 		matrix[0][j] = 0.0;
 	}
 
@@ -157,14 +157,15 @@ static double _smithwaterman(char *a, char *b)
 			float c = swcost(a, b, i - 1, j - 1);
 
 			matrix[i][j] = max4(0.0,
-						matrix[i-1][j] + PGS_SW_GAP_COST,
-						matrix[i][j-1] + PGS_SW_GAP_COST,
-						matrix[i-1][j-1] + c);
-			elog(DEBUG2, "(i, j) = (%d, %d); cost(%c, %c): %.3f; max(zero, top, left, diag) = (0.0, %.3f, %.3f, %.3f) = %.3f -- %.3f (%d, %d)",
-						i, j, a[i-1], b[j-1], c,
-						matrix[i-1][j] + PGS_SW_GAP_COST,
-						matrix[i][j-1] + PGS_SW_GAP_COST,
-						matrix[i-1][j-1] + c, matrix[i][j], matrix[i][j-1], i, j-1);
+								matrix[i - 1][j] + PGS_SW_GAP_COST,
+								matrix[i][j - 1] + PGS_SW_GAP_COST,
+								matrix[i - 1][j - 1] + c);
+			elog(DEBUG2,
+				 "(i, j) = (%d, %d); cost(%c, %c): %.3f; max(zero, top, left, diag) = (0.0, %.3f, %.3f, %.3f) = %.3f -- %.3f (%d, %d)",
+				 i, j, a[i - 1], b[j - 1], c,
+				 matrix[i - 1][j] + PGS_SW_GAP_COST,
+				 matrix[i][j - 1] + PGS_SW_GAP_COST,
+				 matrix[i - 1][j - 1] + c, matrix[i][j], matrix[i][j - 1], i, j - 1);
 
 			if (matrix[i][j] > maxvalue)
 				maxvalue = matrix[i][j];
@@ -191,14 +192,16 @@ smithwaterman(PG_FUNCTION_ARGS)
 	double		maxvalue;
 	float8		res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	maxvalue = (float8) min2(strlen(a), strlen(b));
 
@@ -209,9 +212,7 @@ smithwaterman(PG_FUNCTION_ARGS)
 	elog(DEBUG1, "swdistance(%s, %s) = %.3f", a, b, res);
 
 	if (maxvalue == 0.0)
-	{
 		res = 1.0;
-	}
 	if (pgs_sw_is_normalized)
 	{
 		if (PGS_SW_MAX_COST > (-1 * PGS_SW_GAP_COST))
@@ -245,9 +246,9 @@ Datum smithwaterman_op(PG_FUNCTION_ARGS)
 	pgs_sw_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					smithwaterman,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 smithwaterman,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_sw_is_normalized = tmp;

@@ -88,8 +88,8 @@ static double _jaro(char *a, char *b)
 	if (alen > PGS_MAX_STR_LEN || blen > PGS_MAX_STR_LEN)
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
-				errmsg("argument exceeds the maximum length of %d bytes",
-					PGS_MAX_STR_LEN)));
+				 errmsg("argument exceeds the maximum length of %d bytes",
+						PGS_MAX_STR_LEN)));
 
 	/* if one string has zero length then return zero */
 	if (alen == 0 || blen == 0)
@@ -126,7 +126,7 @@ static double _jaro(char *a, char *b)
 	for (i = 0; i < alen; i++)
 	{
 		/*
-		 * calculate window test limits. limit inf to 0 and sup to blen 
+		 * calculate window test limits. limit inf to 0 and sup to blen
 		 */
 		int inf = max2(i - cd, 0);
 		int sup = i + cd + 1;
@@ -166,7 +166,7 @@ static double _jaro(char *a, char *b)
 	/* allocate vector of positions */
 	posa = palloc(sizeof(int) * cc);
 	posb = palloc(sizeof(int) * cc);
-	
+
 	k = 0;
 	for (i = 0; i < alen; i++)
 	{
@@ -205,10 +205,13 @@ static double _jaro(char *a, char *b)
 
 	elog(DEBUG1, "real transpositions: %d", tr);
 
-	res = PGS_JARO_W1 * cc / alen + PGS_JARO_W2 * cc / blen + PGS_JARO_WT * (cc - tr) / cc;
+	res = PGS_JARO_W1 * cc / alen + PGS_JARO_W2 * cc / blen + PGS_JARO_WT *
+		  (cc - tr) / cc;
 
-	elog(DEBUG1, "jaro(%s, %s) = %f * %d / %d + %f * %d / %d + %f * (%d - %d) / %d = %f",
-			a, b, PGS_JARO_W1, cc, alen, PGS_JARO_W2, cc, blen, PGS_JARO_WT, cc, tr, cc, res);
+	elog(DEBUG1,
+		 "jaro(%s, %s) = %f * %d / %d + %f * %d / %d + %f * (%d - %d) / %d = %f",
+		 a, b, PGS_JARO_W1, cc, alen, PGS_JARO_W2, cc, blen, PGS_JARO_WT, cc, tr, cc,
+		 res);
 
 	return res;
 }
@@ -221,8 +224,10 @@ jaro(PG_FUNCTION_ARGS)
 	char	*a, *b;
 	float8	res;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	res = _jaro(a, b);
 
@@ -247,9 +252,9 @@ Datum jaro_op(PG_FUNCTION_ARGS)
 	pgs_jaro_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					jaro,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 jaro,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_jaro_is_normalized = tmp;
@@ -267,8 +272,10 @@ jarowinkler(PG_FUNCTION_ARGS)
 	int	i;
 	int	plen = 0;
 
-	a = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(0))));
-	b = DatumGetPointer(DirectFunctionCall1(textout, PointerGetDatum(PG_GETARG_TEXT_P(1))));
+	a = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	b = DatumGetPointer(DirectFunctionCall1(textout,
+											PointerGetDatum(PG_GETARG_TEXT_P(1))));
 
 	resj = _jaro(a, b);
 
@@ -293,7 +300,7 @@ jarowinkler(PG_FUNCTION_ARGS)
 
 	elog(DEBUG1, "is normalized: %d", pgs_jarowinkler_is_normalized);
 	elog(DEBUG1, "jarowinkler(%s, %s) = %f + %d * %f * (1.0 - %f) = %f",
-			a, b, resj, plen, PGS_JARO_SCALING_FACTOR, resj, res);
+		 a, b, resj, plen, PGS_JARO_SCALING_FACTOR, resj, res);
 
 	/* normalized and unnormalized version are the same */
 	PG_RETURN_FLOAT8(res);
@@ -313,9 +320,9 @@ Datum jarowinkler_op(PG_FUNCTION_ARGS)
 	pgs_jarowinkler_is_normalized = true;
 
 	res = DatumGetFloat8(DirectFunctionCall2(
-					jarowinkler,
-					PG_GETARG_DATUM(0),
-					PG_GETARG_DATUM(1)));
+							 jarowinkler,
+							 PG_GETARG_DATUM(0),
+							 PG_GETARG_DATUM(1)));
 
 	/* we're done; back to the previous value */
 	pgs_jarowinkler_is_normalized = tmp;
