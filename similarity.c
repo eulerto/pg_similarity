@@ -410,7 +410,7 @@ _PG_init(void)
 
 	/* Jaro-Winkler */
 	DefineCustomRealVariable("pg_similarity.jarowinkler_threshold",
-							 "Sets the threshold used by the Jaro similarity measure.",
+							 "Sets the threshold used by the Jaro-Winkler similarity measure.",
 							 "Valid range is 0.0 .. 1.0.",
 							 &pgs_jarowinkler_threshold,
 							 0.7,
