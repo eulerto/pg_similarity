@@ -202,4 +202,8 @@ extern Datum PGDLLEXPORT smithwatermangotoh_op(PG_FUNCTION_ARGS);
 extern Datum PGDLLEXPORT soundex(PG_FUNCTION_ARGS);
 extern Datum PGDLLEXPORT soundex_op(PG_FUNCTION_ARGS);
 
+extern Datum PGDLLEXPORT gin_extract_value_token(PG_FUNCTION_ARGS);
+extern Datum PGDLLEXPORT gin_extract_query_token(PG_FUNCTION_ARGS);
+extern Datum PGDLLEXPORT gin_token_consistent(PG_FUNCTION_ARGS);
+
 #endif
