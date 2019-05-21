@@ -1,13 +1,5 @@
---
--- pg_similarity
--- testing similarity functions and operators
---
-
---
--- Clean up in case a prior regression run failed
---
-RESET client_min_messages;
-\set ECHO all
+-- reduce noise
+SET extra_float_digits TO 0;
 
 \set a '\'Euler Taveira de Oliveira\''
 

@@ -1,15 +1,4 @@
 --
--- pg_similarity
--- testing similarity variables
---
-
---
--- Clean up in case a prior regression run failed
---
-RESET client_min_messages;
-\set ECHO all
-
---
 -- errors
 --
 SHOW pg_similarity.foo_tokenizer;

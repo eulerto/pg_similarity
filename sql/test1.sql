@@ -1,5 +1,8 @@
 CREATE EXTENSION pg_similarity;
 
+-- reduce noise
+SET extra_float_digits TO 0;
+
 \set a '\'Euler Taveira de Oliveira\''
 \set b '\'Euler T Oliveira\''
 \set c '\'Oiler Taviera do Oliviera\''
