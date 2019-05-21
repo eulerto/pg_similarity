@@ -1,13 +1,6 @@
---
--- pg_similarity
--- testing similarity functions and operators
---
---
--- Turn off echoing so that expected file does not depend on contents of
--- this file
---
-SET client_min_messages to warning;
-\set ECHO none
+CREATE EXTENSION pg_similarity;
+-- reduce noise
+SET extra_float_digits TO 0;
 \set a '\'Euler Taveira de Oliveira\''
 \set b '\'Euler T Oliveira\''
 \set c '\'Oiler Taviera do Oliviera\''
@@ -65,12 +58,7 @@ select lev(:a, :b), lev_op(:a, :b), :a ~== :b as operator;
  0.64 | f      | f
 (1 row)
 
-select levslow(:a, :b), levslow_op(:a, :b);
- levslow | levslow_op 
----------+------------
-    0.64 | f
-(1 row)
-
+--select levslow(:a, :b), levslow_op(:a, :b);
 select matchingcoefficient(:a, :b), matchingcoefficient_op(:a, :b), :a ~^^ :b as operator;
  matchingcoefficient | matchingcoefficient_op | operator 
 ---------------------+------------------------+----------

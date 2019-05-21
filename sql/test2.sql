@@ -1,11 +1,8 @@
 --
 -- errors
 --
-SHOW pg_similarity.foo_tokenizer;
-SHOW pg_similarity.foo_is_normalized;
 SET pg_similarity.cosine_threshold to 1.1;
 SET pg_similarity.qgram_tokenizer to 'alnum';
-SHOW pg_similarity.jaro_tokenizer;
 
 --
 -- valid values

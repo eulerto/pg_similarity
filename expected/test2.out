@@ -1,26 +1,8 @@
 --
--- pg_similarity
--- testing similarity variables
---
---
--- Clean up in case a prior regression run failed
---
-RESET client_min_messages;
-\set ECHO all
---
 -- errors
 --
-SHOW pg_similarity.foo_tokenizer;
-ERROR:  unrecognized configuration parameter "pg_similarity.foo_tokenizer"
-SHOW pg_similarity.foo_is_normalized;
-ERROR:  unrecognized configuration parameter "pg_similarity.foo_is_normalized"
 SET pg_similarity.cosine_threshold to 1.1;
-ERROR:  1.1 is outside the valid range for parameter "pg_similarity.cosine_threshold" (0 .. 1)
 SET pg_similarity.qgram_tokenizer to 'alnum';
-ERROR:  invalid value for parameter "pg_similarity.qgram_tokenizer": "alnum"
-HINT:  Available values: gram.
-SHOW pg_similarity.jaro_tokenizer;
-ERROR:  unrecognized configuration parameter "pg_similarity.jaro_tokenizer"
 --
 -- valid values
 --

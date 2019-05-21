@@ -1,3 +1,5 @@
+LOAD 'pg_similarity';
+
 -- reduce noise
 SET extra_float_digits TO 0;
 
