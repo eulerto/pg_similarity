@@ -13,7 +13,7 @@ select jaccard(:a, :b), jaccard_op(:a, :b), :a ~?? :b as operator;
 select jaro(:a, :b), jaro_op(:a, :b), :a ~%% :b as operator;
 select jarowinkler(:a, :b), jarowinkler_op(:a, :b), :a ~@@ :b as operator;
 select lev(:a, :b), lev_op(:a, :b), :a ~== :b as operator;
-select levslow(:a, :b), levslow_op(:a, :b);
+--select levslow(:a, :b), levslow_op(:a, :b);
 select matchingcoefficient(:a, :b), matchingcoefficient_op(:a, :b), :a ~^^ :b as operator;
 --select mongeelkan(:a, :b), mongeelkan_op(:a, :b), :a ~|| :b as operator;
 --select needlemanwunsch(:a, :b), needlemanwunsch_op(:a, :b), :a ~#~ :b as operator;
