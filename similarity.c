@@ -725,4 +725,6 @@ _PG_init(void)
 #endif
 							 NULL,
 							 NULL);
+
+	EmitWarningsOnPlaceholders("pg_similarity");
 }
