@@ -1,17 +1,4 @@
---
--- pg_similarity
--- testing similarity functions and operators
---
-
---
--- Turn off echoing so that expected file does not depend on contents of
--- this file
---
-SET client_min_messages to warning;
-\set ECHO none
-\i pg_similarity.sql
-RESET client_min_messages;
-\set ECHO all
+CREATE EXTENSION pg_similarity;
 
 \set a '\'Euler Taveira de Oliveira\''
 \set b '\'Euler T Oliveira\''
