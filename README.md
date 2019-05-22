@@ -41,10 +41,10 @@ mydb=# CREATE EXTENSION pg_similarity;
 CREATE EXTENSION
 ```
 
-The typical usage is to copy a sample file at tarball (*pg_similarity.conf.sample*) to PGDATA (as *pg_similarity.conf*) and include the following line in *postgresql.conf*:
+The typical usage is to copy a sample file at tarball (`pg_similarity.conf.sample`) to PGDATA (renaming it as `pg_similarity.conf`) and include the following line in *postgresql.conf*:
 
 ```
-include 'pg_similarity.conf'
+include = 'pg_similarity.conf'
 ```
 
 Windows
