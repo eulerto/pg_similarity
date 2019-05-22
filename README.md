@@ -52,15 +52,6 @@ Windows
 
 Sorry, never tried^H^H^H^H^H Actually I tried that but it is not that easy as on UNIX. :( There are two ways to build PostgreSQL on Windows: (i) MingW and (ii) MSVC. The former is supported but it is not widely used and the latter is popular because Windows binaries (officially distributed) are built using MSVC. If you choose to use Mingw, just follow the UNIX instructions above to build pg_similarity. Otherwise, the MSVC steps are below:
 
-- Download and untar the *same* PostgreSQL version you are using;
-- Download and untar pg_similarity under PostgreSQL contrib directory;
-- Edit contrib/Makefile and add *pg_similarity* to SUBDIRS variable;
-- Follow [Installation from Source Code on Windows](http://www.postgresql.org/docs/current/static/install-windows.html) for building but do not install it;
-- Instead of executing install (if you already have Windows binaries installed), just copy `pg_similarity.dll` to LIBDIR (get it executing `pg_config --pkglibdir`) and `pg_similarity.control` and `pg_similarity--*.sql` to `SHAREDIR/extension` (get it executing `pg_config --sharedir`).
-- That is it! Do not forget to follow the instructions above to load the library and CREATE EXTENSION.
-
-It is also possible to build pg_similarity out of the tree (without PostgreSQL source code).
-
 - Edit `pg_similarity.vcxproj` replacing `c:\postgres\pg103` with PostgreSQL prefix directory;
 - Open this project file in MS Visual Studio and build it;
 - Copy `pg_similarity.dll` to `pg_config --pkglibdir`;
