@@ -87,9 +87,9 @@ static int _nwunsch(char *a, char *b, int gap)
 	brow = (int *) malloc((blen + 1) * sizeof(int));
 
 	if (arow == NULL)
-		elog(ERROR, "memory exaushted for array size %d", (alen + 1));
+		elog(ERROR, "memory exhausted for array size %d", (alen + 1));
 	if (brow == NULL)
-		elog(ERROR, "memory exaushted for array size %d", (blen + 1));
+		elog(ERROR, "memory exhausted for array size %d", (blen + 1));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");

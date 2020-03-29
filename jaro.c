@@ -75,8 +75,8 @@ static double _jaro(char *a, char *b)
 	int		cc = 0;		/* number of common characters */
 	int		tr = 0;		/* number of transpositions */
 	double	res;
-	int		*amatch;	/* matchs in string a; match = 1; unmatch = 0  !! USED? !!*/
-	int		*bmatch;	/* matchs in string b; match = 1; unmatch = 0 */
+	int		*amatch;	/* matches in string a; match = 1; unmatch = 0  !! USED? !!*/
+	int		*bmatch;	/* matches in string b; match = 1; unmatch = 0 */
 	int		*posa;		/* positions of matched characters in a */
 	int		*posb;		/* positions of matched characters in b */
 

@@ -242,7 +242,7 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 
 
 		if (*cptr == '\0')
-			elog(DEBUG4, "end of setence (2)");
+			elog(DEBUG4, "end of sentence (2)");
 
 		if (c > 0)
 		{
@@ -328,7 +328,7 @@ void tokenizeBySpace(TokenList *t, char *s)
 		}
 
 		if (*cptr == '\0')
-			elog(DEBUG4, "end of setence (2)");
+			elog(DEBUG4, "end of sentence (2)");
 
 		if (c > 0)
 		{
@@ -529,7 +529,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 			elog(DEBUG4, "\"%c\" is not uppercase", *cptr);
 
 		/*
-		 * if the first caracter is uppercase enter the loop because sometimes
+		 * if the first character is uppercase enter the loop because sometimes
 		 * the first char in a camel-case notation is uppercase
 		 */
 		while (c == 0 || (!isupper(*cptr) && *cptr != '\0'))
@@ -546,7 +546,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 		}
 
 		if (*cptr == '\0')
-			elog(DEBUG4, "end of setence (2)");
+			elog(DEBUG4, "end of sentence (2)");
 
 		if (c > 0)
 		{

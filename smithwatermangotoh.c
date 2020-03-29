@@ -35,13 +35,13 @@ static double _smithwatermangotoh(char *a, char *b)
 	matrix = (float **) malloc((alen + 1) * sizeof(float *));
 
 	if (matrix == NULL)
-		elog(ERROR, "memory exaushted for array size %d", alen);
+		elog(ERROR, "memory exhausted for array size %d", alen);
 
 	for (i = 0; i <= alen; i++)
 	{
 		matrix[i] = (float *) malloc((blen + 1) * sizeof(float));
 		if (matrix[i] == NULL)
-			elog(ERROR, "memory exaushted for array size %d", blen);
+			elog(ERROR, "memory exhausted for array size %d", blen);
 	}
 
 #ifdef PGS_IGNORE_CASE
