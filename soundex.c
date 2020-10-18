@@ -116,14 +116,16 @@ soundex(PG_FUNCTION_ARGS)
 	resa = _soundex(a);
 	resb = _soundex(b);
 
-	elog(DEBUG1, "soundex(%s) = %s", a, resa);
-	elog(DEBUG1, "soundex(%s) = %s", b, resb);
+	elog(DEBUG1, "soundex(%s) = %s", a, (resa) ? resa : "NULL");
+	elog(DEBUG1, "soundex(%s) = %s", b, (resb) ? resb : "NULL");
 
 	/*
 	 * we don't have threshold in soundex algorithm, instead same code means strings
 	 * are similar (i.e. threshold is 1.0) or it is not (i.e. threshold is 0.0).
 	 */
-	if (strncmp(resa, resb, PGS_SOUNDEX_LEN) == 0)
+	if (resa != NULL && resb != NULL && strncmp(resa, resb, PGS_SOUNDEX_LEN) == 0)
+		res = 1.0;
+	else if (resa == NULL && resb == NULL)
 		res = 1.0;
 	else
 		res = 0.0;
