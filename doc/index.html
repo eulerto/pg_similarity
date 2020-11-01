@@ -78,38 +78,38 @@
 
 					<div class="dashedbox">
 					<code>
-					$ tar -zxf pg_similarity-0.0.19.tgz<br />
-					$ cd pg_similarity-0.0.19<br />
+					$ tar -zxf pg_similarity-1.0.tgz<br />
+					$ cd pg_similarity-1.0<br />
 					$ $EDITOR Makefile	# edit PG_CONFIG iif necessary<br />
 					$ make<br />
 					$ make install<br />
-					$ psql -f SHAREDIR/contrib/pg_similarity.sql mydb	# SHAREDIR is pg_config --sharedir<br />
-					</code>
-					</div>
-
-					<p>To use it, simply load it to the server. You can load it
-					into and individual session:</p>
-
-					<div class="dashedbox">
-					<code>
 					$ psql mydb<br />
 					psql (13.0)<br />
 					Type "help" for help.<br /><br />
 
-					mydb=# load 'pg_similarity';<br />
-					LOAD
+					mydb=# CREATE EXTENSION pg_similarity;<br />
+					CREATE EXTENSION
 					</code>
 					</div>
 
-					<p>But the typical usage is to preload it into all sessions
-					by including <i>pg_similarity</i> in <a
-						href="http://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-PRELOAD-LIBRARIES">shared_preload_libraries</a>
-					at <i>postgresql.conf</i>. Keep in mind that there is an
-					overhead added to each new connection.</p>
+					<p>The typical usage is to copy a sample file at tarball (<i>pg_similarity.conf.sample</i>) to PGDATA (as <i>pg_similarity.conf</i>) and include the following line in <i>postgresql.conf</i>:
+
+					<div class="dashedbox">
+					<code>
+					include 'pg_similarity.conf';
+					</code>
+					</div>
 
 					<h2>Windows</h2>
 
-					<p>Sorry, never tried that!</p>
+					<p>Sorry, never tried^H^H^H^H^H Actually I tried that but it is not that easy as on UNIX. :( There are two ways to build PostgreSQL on Windows: (i) MingW and (ii) MSVC. The former is supported but it is not widely used and the latter is popular because Windows binaries (officially distributed) are built using MSVC. If you choose to use Mingw, just follow the UNIX instructions above to build <i>pg_similarity</i>. Otherwise, the MSVC steps are below:</p>
+
+					<ul>
+						<li>Edit `pg_similarity.vcxproj` replacing `c:\postgres\pg130` with PostgreSQL prefix directory;</li>
+						<li>Open this project file in MS Visual Studio and build it;</li>
+						<li>Copy `pg_similarity.dll` to `pg_config --pkglibdir`;</li>
+						<li>Copy `pg_similarity.control` and `pg_similarity--*.sql` to `SHAREDIR/extension` (SHAREDIR is `pg_config --sharedir`).</li>
+					</ul>
 
 				</div>
 				<div id="funcopr">
