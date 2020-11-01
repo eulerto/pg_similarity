@@ -81,8 +81,8 @@
 					$ tar -zxf pg_similarity-0.0.19.tgz<br />
 					$ cd pg_similarity-0.0.19<br />
 					$ $EDITOR Makefile	# edit PG_CONFIG iif necessary<br />
-					$ USE_PGXS=1 make<br />
-					$ USE_PGXS=1 make install<br />
+					$ make<br />
+					$ make install<br />
 					$ psql -f SHAREDIR/contrib/pg_similarity.sql mydb	# SHAREDIR is pg_config --sharedir<br />
 					</code>
 					</div>

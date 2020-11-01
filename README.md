@@ -31,8 +31,8 @@ Before you are able to use your extension, you should build it and load it at th
 $ tar -zxf pg_similarity-1.0.tgz
 $ cd pg_similarity-1.0
 $ $EDITOR Makefile # edit PG_CONFIG iif necessary
-$ USE_PGXS=1 make
-$ USE_PGXS=1 make install
+$ make
+$ make install
 $ psql mydb
 psql (10.3)
 Type "help" for help.
