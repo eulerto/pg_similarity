@@ -34,7 +34,7 @@ $ $EDITOR Makefile # edit PG_CONFIG iif necessary
 $ make
 $ make install
 $ psql mydb
-psql (10.3)
+psql (13.0)
 Type "help" for help.
 
 mydb=# CREATE EXTENSION pg_similarity;
@@ -52,7 +52,7 @@ Windows
 
 Sorry, never tried^H^H^H^H^H Actually I tried that but it is not that easy as on UNIX. :( There are two ways to build PostgreSQL on Windows: (i) MingW and (ii) MSVC. The former is supported but it is not widely used and the latter is popular because Windows binaries (officially distributed) are built using MSVC. If you choose to use Mingw, just follow the UNIX instructions above to build pg_similarity. Otherwise, the MSVC steps are below:
 
-- Edit `pg_similarity.vcxproj` replacing `c:\postgres\pg103` with PostgreSQL prefix directory;
+- Edit `pg_similarity.vcxproj` replacing `c:\postgres\pg130` with PostgreSQL prefix directory;
 - Open this project file in MS Visual Studio and build it;
 - Copy `pg_similarity.dll` to `pg_config --pkglibdir`;
 - Copy `pg_similarity.control` and `pg_similarity--*.sql` to `SHAREDIR/extension` (SHAREDIR is `pg_config --sharedir`).
