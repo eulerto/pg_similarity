@@ -11,7 +11,7 @@
  * (iii) n-gram: token is a n-character "window".
  *
  *
- * Copyright (c) 2008-2018, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2020, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */

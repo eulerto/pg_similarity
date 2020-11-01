@@ -34,7 +34,7 @@
  * http://en.wikipedia.org/wiki/Levenshtein_distance
  *
  *
- * Copyright (c) 2008-2018, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2020, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */

@@ -52,7 +52,7 @@
  * http://en.wikipedia.org/wiki/Needleman-Wunsch_algorithm
  *
  *
- * Copyright (c) 2008-2018, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2020, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */

@@ -23,7 +23,7 @@
  * PS> we call n-grams: (i) n-sequence of letters (ii) n-sequence of words
  *
  *
- * Copyright (c) 2008-2018, Euler Taveira de Oliveira
+ * Copyright (c) 2008-2020, Euler Taveira de Oliveira
  *
  *----------------------------------------------------------------------------
  */
