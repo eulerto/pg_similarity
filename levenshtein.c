@@ -116,7 +116,7 @@ int _lev(char *a, char *b, int icost, int dcost)
 		brow = trow;
 
 		elog(DEBUG2, "row: ");
-		for (j = 1; j <= alen; j++)
+		for (j = 1; j <= blen; j++)
 			elog(DEBUG2, "%d ", arow[j]);
 	}
 
