@@ -2,7 +2,10 @@
 -- errors
 --
 SET pg_similarity.cosine_threshold to 1.1;
+ERROR:  1.1 is outside the valid range for parameter "pg_similarity.cosine_threshold" (0 .. 1)
 SET pg_similarity.qgram_tokenizer to 'alnum';
+ERROR:  invalid value for parameter "pg_similarity.qgram_tokenizer": "alnum"
+HINT:  Available values: gram.
 --
 -- valid values
 --
@@ -10,5 +13,5 @@ SET pg_similarity.block_is_normalized to true;
 SET pg_similarity.cosine_threshold = 0.72;
 SET pg_similarity.dice_tokenizer to 'alnum';
 SET pg_similarity.euclidean_is_normalized to false;
-SET pg_similarity.jaro_winkler_is_normalized to false;
+SET pg_similarity.jarowinkler_is_normalized to false;
 SET pg_similarity.qgram_tokenizer to 'gram';

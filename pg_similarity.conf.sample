@@ -78,7 +78,7 @@
 #pg_similarity.overlap_is_normalized = true
 
 # - Q-Gram -
-#pg_similarity.qgram_tokenizer = 'qgram'
+#pg_similarity.qgram_tokenizer = 'gram'
 #pg_similarity.qgram_threshold = 0.7
 #pg_similarity.qgram_is_normalized = true
 
