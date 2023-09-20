@@ -34,7 +34,7 @@
 
 /* GUC variables */
 int		pgs_jaccard_tokenizer = PGS_UNIT_ALNUM;
-double	pgs_jaccard_threshold = 0.7f;
+double	pgs_jaccard_threshold = 0.7;
 bool	pgs_jaccard_is_normalized = true;
 
 PG_FUNCTION_INFO_V1(jaccard);

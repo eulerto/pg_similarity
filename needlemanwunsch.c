@@ -61,9 +61,9 @@
 
 
 /* GUC variables */
-double	pgs_nw_threshold = 0.7f;
+double	pgs_nw_threshold = 0.7;
 bool	pgs_nw_is_normalized = true;
-double	pgs_nw_gap_penalty = -5.0f;
+double	pgs_nw_gap_penalty = -5.0;
 
 
 static int _nwunsch(char *a, char *b, int gap)

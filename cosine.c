@@ -21,7 +21,7 @@
 
 /* GUC variables */
 int		pgs_cosine_tokenizer = PGS_UNIT_ALNUM;
-double	pgs_cosine_threshold = 0.7f;
+double	pgs_cosine_threshold = 0.7;
 bool	pgs_cosine_is_normalized = true;
 
 PG_FUNCTION_INFO_V1(cosine);

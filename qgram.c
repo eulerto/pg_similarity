@@ -32,7 +32,7 @@
 
 /* GUC variables */
 int		pgs_qgram_tokenizer = PGS_UNIT_GRAM;
-double	pgs_qgram_threshold = 0.7f;
+double	pgs_qgram_threshold = 0.7;
 bool	pgs_qgram_is_normalized = true;
 
 PG_FUNCTION_INFO_V1(qgram);

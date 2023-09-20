@@ -43,7 +43,7 @@
 
 
 /* GUC variables */
-double	pgs_levenshtein_threshold = 0.7f;
+double	pgs_levenshtein_threshold = 0.7;
 bool	pgs_levenshtein_is_normalized = true;
 
 

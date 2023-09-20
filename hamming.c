@@ -34,7 +34,7 @@
 
 
 /* GUC variables */
-double	pgs_hamming_threshold = 0.7f;
+double	pgs_hamming_threshold = 0.7;
 bool	pgs_hamming_is_normalized = true;
 
 PG_FUNCTION_INFO_V1(hamming);
