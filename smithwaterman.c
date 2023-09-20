@@ -66,7 +66,7 @@
 
 
 /* GUC variables */
-double	pgs_sw_threshold = 0.7f;
+double	pgs_sw_threshold = 0.7;
 bool	pgs_sw_is_normalized = true;
 
 /*

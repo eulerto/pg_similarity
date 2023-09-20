@@ -60,9 +60,9 @@
 #include <math.h>
 
 /* GUC variables */
-double	pgs_jaro_threshold = 0.7f;
+double	pgs_jaro_threshold = 0.7;
 bool	pgs_jaro_is_normalized = true;
-double	pgs_jarowinkler_threshold = 0.7f;
+double	pgs_jarowinkler_threshold = 0.7;
 bool	pgs_jarowinkler_is_normalized = true;
 
 

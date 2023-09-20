@@ -13,7 +13,7 @@
 
 /* GUC variables */
 int		pgs_mongeelkan_tokenizer = PGS_UNIT_ALNUM;
-double	pgs_mongeelkan_threshold = 0.7f;
+double	pgs_mongeelkan_threshold = 0.7;
 bool	pgs_mongeelkan_is_normalized = true;
 
 /*

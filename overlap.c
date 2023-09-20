@@ -34,7 +34,7 @@
 
 /* GUC variables */
 int		pgs_overlap_tokenizer = PGS_UNIT_ALNUM;
-double	pgs_overlap_threshold = 0.7f;
+double	pgs_overlap_threshold = 0.7;
 bool	pgs_overlap_is_normalized = true;
 
 PG_FUNCTION_INFO_V1(overlapcoefficient);

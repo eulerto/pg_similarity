@@ -9,7 +9,7 @@
 
 #include "similarity.h"
 
-double	pgs_swg_threshold = 0.7f;
+double	pgs_swg_threshold = 0.7;
 bool	pgs_swg_is_normalized = true;
 
 /*
