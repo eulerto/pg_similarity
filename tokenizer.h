@@ -7,6 +7,9 @@
  *----------------------------------------------------------------------------
  */
 
+#ifndef TOKENIZER_H
+#define TOKENIZER_H
+
 #include "postgres.h"
 
 #include <ctype.h>
@@ -46,3 +49,5 @@ void tokenizeByNonAlnum(TokenList *t, char *s);
 void tokenizeBySpace(TokenList *t, char *s);
 void tokenizeByGram(TokenList *t, char *s);
 void tokenizeByCamelCase(TokenList *t, char *s);
+
+#endif							/* TOKENIZER_H */
