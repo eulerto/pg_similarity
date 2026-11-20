@@ -6,3 +6,6 @@ pg_similarity.sql
 *.diffs
 *.out
 results/
+*.bc
+log/
+tmp_check/
