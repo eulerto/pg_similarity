@@ -65,6 +65,12 @@ addToken(TokenList *t, char *s)
 {
 	Token	*n;
 
+	/*
+	 * Every tokenizer calls this once per token, and the dedup search below
+	 * is O(n), so this is the place to let long tokenizations be cancelled.
+	 */
+	CHECK_FOR_INTERRUPTS();
+
 	if (t->isset)
 	{
 		Token *x = searchToken(t, s);

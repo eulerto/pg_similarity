@@ -12,6 +12,8 @@
 
 #include "postgres.h"
 
+#include "miscadmin.h"
+
 #include <ctype.h>
 #include <string.h>
 

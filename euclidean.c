@@ -122,6 +122,8 @@ euclidean(PG_FUNCTION_ARGS)
 		int		acnt = 0;
 		int		bcnt = 0;
 
+		CHECK_FOR_INTERRUPTS();
+
 		q = s->head;
 		while (q != NULL)
 		{

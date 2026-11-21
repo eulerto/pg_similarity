@@ -17,6 +17,7 @@
 #endif
 
 #include "fmgr.h"
+#include "miscadmin.h"
 #include "utils/builtins.h"
 #include "utils/guc.h"
 

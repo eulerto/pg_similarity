@@ -103,6 +103,8 @@ matchingcoefficient(PG_FUNCTION_ARGS)
 	{
 		int found = 0;
 
+		CHECK_FOR_INTERRUPTS();
+
 		q = t->head;
 		while (q != NULL)
 		{

@@ -125,11 +125,16 @@ static double _jaro(char *a, char *b)
 
 	for (int i = 0; i < alen; i++)
 	{
+		int inf;
+		int sup;
+
+		CHECK_FOR_INTERRUPTS();
+
 		/*
 		 * calculate window test limits. limit inf to 0 and sup to blen
 		 */
-		int inf = max2(i - cd, 0);
-		int sup = i + cd + 1;
+		inf = max2(i - cd, 0);
+		sup = i + cd + 1;
 		sup = min2(sup, blen);
 
 		/*

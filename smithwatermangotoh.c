@@ -49,7 +49,11 @@ static double _smithwatermangotoh(char *a, char *b)
 	/* initial values */
 	for (int i = 0; i <= alen; i++)
 	{
-		float c = megapcost(a, b, i, 0);
+		float c;
+
+		CHECK_FOR_INTERRUPTS();
+
+		c = megapcost(a, b, i, 0);
 
 		if (i == 0)
 			matrix[0][0] = max2(0.0, c);
@@ -71,7 +75,11 @@ static double _smithwatermangotoh(char *a, char *b)
 	}
 	for (int j = 0; j <= blen; j++)
 	{
-		float c = megapcost(a, b, 0, j);
+		float c;
+
+		CHECK_FOR_INTERRUPTS();
+
+		c = megapcost(a, b, 0, j);
 
 		if (j == 0)
 			matrix[0][0] = max2(0.0, c);
@@ -94,6 +102,8 @@ static double _smithwatermangotoh(char *a, char *b)
 
 	for (int i = 1; i <= alen; i++)
 	{
+		CHECK_FOR_INTERRUPTS();
+
 		for (int j = 1; j <= blen; j++)
 		{
 			int		wstart;

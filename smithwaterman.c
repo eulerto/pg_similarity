@@ -158,6 +158,8 @@ static double _smithwaterman(char *a, char *b)
 
 	for (int i = 1; i <= alen; i++)
 	{
+		CHECK_FOR_INTERRUPTS();
+
 		for (int j = 1; j <= blen; j++)
 		{
 			/* get operation cost */

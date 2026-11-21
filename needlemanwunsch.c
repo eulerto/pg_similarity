@@ -141,6 +141,8 @@ static int _nwunsch(char *a, char *b, int gap)
 
 	for (int i = 1; i <= alen; i++)
 	{
+		CHECK_FOR_INTERRUPTS();
+
 		/* first value is 'i' */
 		brow[0] = gap * i;
 

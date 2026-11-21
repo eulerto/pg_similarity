@@ -93,6 +93,8 @@ _lev(char *a, char *b, int icost, int dcost)
 
 	for (int i = 1; i <= alen; i++)
 	{
+		CHECK_FOR_INTERRUPTS();
+
 		/* first value is 'i' */
 		brow[0] = i;
 
@@ -177,6 +179,8 @@ _lev_slow(char *a, char *b, int icost, int dcost)
 
 	for (int i = 1; i <= alen; i++)
 	{
+		CHECK_FOR_INTERRUPTS();
+
 		for (int j = 1; j <= blen; j++)
 		{
 			/* get operation cost */
