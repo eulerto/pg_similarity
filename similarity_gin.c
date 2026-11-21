@@ -32,6 +32,11 @@
 #define PGS_BY_CAMELCASE	1
 */
 
+#if !defined(PGS_BY_WORD) && !defined(PGS_BY_ALNUM) && \
+	!defined(PGS_BY_GRAM) && !defined(PGS_BY_CAMELCASE)
+#error "choose a supported tokenizer (PGS_BY_*)"
+#endif
+
 PG_FUNCTION_INFO_V1(gin_extract_value_token);
 Datum gin_extract_value_token(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(gin_extract_query_token);
@@ -75,8 +80,6 @@ gin_extract_value_token(PG_FUNCTION_ARGS)
 		tokenizeByGram(tlist, buf);
 #elif PGS_BY_CAMELCASE
 		tokenizeByCamelCase(tlist, buf);
-#else
-		elog(ERROR, "choose a supported tokenizer");
 #endif
 
 		*ntokens = tlist->size;
@@ -157,8 +160,6 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 		tokenizeByGram(tlist, buf);
 #elif PGS_BY_CAMELCASE
 		tokenizeByCamelCase(tlist, buf);
-#else
-		elog(ERROR, "choose a supported tokenizer");
 #endif
 
 		*ntokens = tlist->size;
