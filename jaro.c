@@ -161,7 +161,11 @@ static double _jaro(char *a, char *b)
 
 	/* no common characters then return 0 */
 	if (cc == 0)
+	{
+		pfree(amatch);
+		pfree(bmatch);
 		return 0.0;
+	}
 
 	/* allocate vector of positions */
 	posa = palloc(sizeof(int) * cc);
