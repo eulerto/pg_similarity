@@ -19,6 +19,10 @@
 #include "tokenizer.h"
 
 
+static int addToken(TokenList *t, char *s);
+static int removeToken(TokenList *t);
+static Token *searchToken(TokenList *t, char *s);
+
 TokenList *initTokenList(int a)
 {
 	TokenList	*t;
@@ -59,7 +63,8 @@ void destroyTokenList(TokenList *t)
 	free(t);
 }
 
-int addToken(TokenList *t, char *s)
+static int
+addToken(TokenList *t, char *s)
 {
 	Token	*n;
 
@@ -101,7 +106,8 @@ int addToken(TokenList *t, char *s)
 /*
  * free up the head node and its content
  */
-int removeToken(TokenList *t)
+static int
+removeToken(TokenList *t)
 {
 	Token	*n;
 
@@ -126,7 +132,8 @@ int removeToken(TokenList *t)
 	return 0;
 }
 
-Token *searchToken(TokenList *t, char *s)
+static Token *
+searchToken(TokenList *t, char *s)
 {
 	Token	*n;
 

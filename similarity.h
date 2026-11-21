@@ -154,19 +154,54 @@ extern float8	pgs_swg_threshold;
 extern float8	pgs_nw_gap_penalty;
 
 /*
- * levenshtein.c
+ * Smith-Waterman-Gotoh cost functions
  */
-int _lev(char *a, char *b, int icost, int dcost);
-int _lev_slow(char *a, char *b, int icost, int dcost);
+static inline float
+swggapcost(int i, int j)
+{
+	if (i >= j)
+		return 0.0;
+	else
+		return (5.0 + ((j - 1)  - i));
+}
+
+static inline float
+megapcost(char *a, char *b, int i, int j)
+{
+	/* Monge-Elkan approximate sets */
+	static const char *const approx_set[7] =
+	{
+		"dt",
+		"gj",
+		"lr",
+		"mn",
+		"bpv",
+		"aeiou",
+		",."
+	};
+
+	/* XXX paranoia? check for out-of-range index */
+	if (i < 0 || i >= strlen(a))
+		return -3.0;
+	if (j < 0 || j >= strlen(b))
+		return -3.0;
+
+	if (a[i] == b[j])
+		return 5.0;
+
+	for (int k = 0; k < 7; k++)
+	{
+		if (strchr(approx_set[k], a[i]) != NULL &&
+				strchr(approx_set[k], b[j]) != NULL)
+			return 3.0;
+	}
+
+	return -3.0;
+}
 
 /*
  * similarity.c
  */
-int levcost(char a, char b);
-int nwcost(char a, char b);
-float swcost(char *a, char *b, int i, int j);
-float swggapcost(int i, int j);
-float megapcost(char *a, char *b, int i, int j);
 void _PG_init(void);
 
 /*

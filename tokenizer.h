@@ -40,9 +40,6 @@ typedef struct TokenList
 
 TokenList *initTokenList(int isset);
 void destroyTokenList(TokenList *t);
-int addToken(TokenList *t, char *s);
-int removeToken(TokenList *t);
-Token *searchToken(TokenList *t, char *s);
 void printToken(TokenList *t);
 
 void tokenizeByNonAlnum(TokenList *t, char *s);

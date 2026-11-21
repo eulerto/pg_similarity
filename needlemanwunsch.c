@@ -66,6 +66,48 @@ bool	pgs_nw_is_normalized = true;
 double	pgs_nw_gap_penalty = -5.0;
 
 
+/*
+ * TODO change it to a callback function
+ */
+static int
+nwcost(char a, char b)
+{
+	if (a == 'a' && b == 'a')
+		return 10;
+	else if (a == 'a' && b == 'g')
+		return -1;
+	else if (a == 'a' && b == 'c')
+		return -3;
+	else if (a == 'a' && b == 't')
+		return -4;
+	else if (a == 'g' && b == 'a')
+		return -1;
+	else if (a == 'g' && b == 'g')
+		return 7;
+	else if (a == 'g' && b == 'c')
+		return -5;
+	else if (a == 'g' && b == 't')
+		return -3;
+	else if (a == 'c' && b == 'a')
+		return -3;
+	else if (a == 'c' && b == 'g')
+		return -5;
+	else if (a == 'c' && b == 'c')
+		return 9;
+	else if (a == 'c' && b == 't')
+		return 0;
+	else if (a == 't' && b == 'a')
+		return -4;
+	else if (a == 't' && b == 'g')
+		return -3;
+	else if (a == 't' && b == 'c')
+		return 0;
+	else if (a == 't' && b == 't')
+		return 8;
+	else
+		return -99;	/* shouldn't happen */
+}
+
 static int _nwunsch(char *a, char *b, int gap)
 {
 	int	*arow, *brow, *trow;

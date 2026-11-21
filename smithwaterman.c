@@ -69,6 +69,21 @@
 double	pgs_sw_threshold = 0.7;
 bool	pgs_sw_is_normalized = true;
 
+static float
+swcost(char *a, char *b, int i, int j)
+{
+	/* XXX paranoia? check for out-of-range index */
+	if (i < 0 || i >= strlen(a))
+		return 0.0;
+	if (j < 0 || j >= strlen(b))
+		return 0.0;
+
+	if (a[i] == b[j])
+		return PGS_SW_MAX_COST;
+	else
+		return PGS_SW_MIN_COST;
+}
+
 /*
  * TODO move this function to similarity.c
  */

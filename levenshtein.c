@@ -47,7 +47,20 @@ double	pgs_levenshtein_threshold = 0.7;
 bool	pgs_levenshtein_is_normalized = true;
 
 
-int _lev(char *a, char *b, int icost, int dcost)
+/*
+ * cost functions
+ */
+static int
+levcost(char a, char b)
+{
+	if (a == b)
+		return PGS_LEV_MIN_COST;
+	else
+		return PGS_LEV_MAX_COST;
+}
+
+static int
+_lev(char *a, char *b, int icost, int dcost)
 {
 	int			*arow, *brow, *trow; /* above, below, and temp row */
 	int			alen, blen;
@@ -132,7 +145,8 @@ int _lev(char *a, char *b, int icost, int dcost)
  * wastes more memory and execution time
  * XXX the purpose of this function is merely academic
  */
-int _lev_slow(char *a, char *b, int icost, int dcost)
+static int
+_lev_slow(char *a, char *b, int icost, int dcost)
 {
 	int			**matrix;		/* dynamic programming matrix */
 	int			alen, blen;
