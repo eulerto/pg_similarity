@@ -11,7 +11,14 @@
 
 #include <float.h>
 
+#ifdef PG_MODULE_MAGIC_EXT
+PG_MODULE_MAGIC_EXT(
+	.name = "pg_similarity",
+	.version = PGS_VERSION
+);
+#else
 PG_MODULE_MAGIC;
+#endif
 
 /*
  * Module load callback

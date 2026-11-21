@@ -17,6 +17,9 @@
 #include "utils/guc.h"
 
 
+/* library version, reported by PG_MODULE_MAGIC_EXT (PostgreSQL 18+) */
+#define		PGS_VERSION				"1.0"
+
 /* case insensitive ? */
 #define		PGS_IGNORE_CASE			1
 
