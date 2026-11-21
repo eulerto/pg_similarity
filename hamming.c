@@ -44,7 +44,7 @@ hamming(PG_FUNCTION_ARGS)
 {
 	VarBit		*a, *b;
 	int		alen, blen;
-	bits8		*pa, *pb;
+	uint8		*pa, *pb;
 	int		maxlen;
 	float8		res = 0.0;
 	int		i;
