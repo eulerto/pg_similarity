@@ -23,6 +23,20 @@
 
 #define	PGS_FULL_NGRAM
 
+/*
+ * The tokenizer API is shared by several files but is not SQL-callable, so
+ * keep it out of the shared library's dynamic symbol table. PostgreSQL 16
+ * and later already build extensions with -fvisibility=hidden; older
+ * versions don't.
+ *
+ * XXX Remove PGS_INTERNAL once PostgreSQL < 16 is no longer supported.
+ */
+#if (defined(__GNUC__) || defined(__clang__)) && !defined(WIN32)
+#define	PGS_INTERNAL	__attribute__((visibility("hidden")))
+#else
+#define	PGS_INTERNAL
+#endif
+
 typedef struct Token
 {
 	char		*data;	/* token data */
@@ -38,13 +52,13 @@ typedef struct TokenList
 	Token	*tail;	/* last token */
 } TokenList;
 
-TokenList *initTokenList(int isset);
-void destroyTokenList(TokenList *t);
-void printToken(TokenList *t);
+extern PGS_INTERNAL TokenList *initTokenList(int isset);
+extern PGS_INTERNAL void destroyTokenList(TokenList *t);
+extern PGS_INTERNAL void printToken(TokenList *t);
 
-void tokenizeByNonAlnum(TokenList *t, char *s);
-void tokenizeBySpace(TokenList *t, char *s);
-void tokenizeByGram(TokenList *t, char *s);
-void tokenizeByCamelCase(TokenList *t, char *s);
+extern PGS_INTERNAL void tokenizeByNonAlnum(TokenList *t, char *s);
+extern PGS_INTERNAL void tokenizeBySpace(TokenList *t, char *s);
+extern PGS_INTERNAL void tokenizeByGram(TokenList *t, char *s);
+extern PGS_INTERNAL void tokenizeByCamelCase(TokenList *t, char *s);
 
 #endif							/* TOKENIZER_H */
