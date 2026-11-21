@@ -69,7 +69,7 @@ bool	pgs_jarowinkler_is_normalized = true;
 static double _jaro(char *a, char *b)
 {
 	int		alen, blen;
-	int		i, j, k;
+	int		k;
 
 	int		cd;		/* common window distance */
 	int		cc = 0;		/* number of common characters */
@@ -102,9 +102,9 @@ static double _jaro(char *a, char *b)
 	amatch = palloc(sizeof(int) * alen);
 	bmatch = palloc(sizeof(int) * blen);
 
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		amatch[i] = 0;
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		bmatch[j] = 0;
 
 	/* common window distance is floor(max(alen, blen) / 2) - 1 */
@@ -117,13 +117,13 @@ static double _jaro(char *a, char *b)
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = tolower(a[i]);
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		b[j] = tolower(b[j]);
 #endif
 
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 	{
 		/*
 		 * calculate window test limits. limit inf to 0 and sup to blen
@@ -139,7 +139,7 @@ static double _jaro(char *a, char *b)
 		if (inf >= sup)
 			break;
 
-		for (j = inf; j < sup; j++)
+		for (int j = inf; j < sup; j++)
 		{
 			/*
 			 * if found some match and it's not matched yet:
@@ -172,7 +172,7 @@ static double _jaro(char *a, char *b)
 	posb = palloc(sizeof(int) * cc);
 
 	k = 0;
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 	{
 		if (amatch[i] == 1)
 		{
@@ -182,7 +182,7 @@ static double _jaro(char *a, char *b)
 	}
 
 	k = 0;
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 	{
 		if (bmatch[j] == 1)
 		{
@@ -195,7 +195,7 @@ static double _jaro(char *a, char *b)
 	pfree(bmatch);
 
 	/* counting half-transpositions */
-	for (i = 0; i < cc; i++)
+	for (int i = 0; i < cc; i++)
 		if (a[posa[i]] != b[posb[i]])
 			tr++;
 
@@ -273,7 +273,6 @@ jarowinkler(PG_FUNCTION_ARGS)
 {
 	char	*a, *b;
 	float8	resj, res;
-	int	i;
 	int	plen = 0;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
@@ -289,7 +288,7 @@ jarowinkler(PG_FUNCTION_ARGS)
 
 	if (resj > PGS_JARO_BOOST_THRESHOLD)
 	{
-		for (i = 0; i < strlen(a) && i < strlen(b) && i < PGS_JARO_PREFIX_SIZE; i++)
+		for (int i = 0; i < strlen(a) && i < strlen(b) && i < PGS_JARO_PREFIX_SIZE; i++)
 		{
 			if (a[i] == b[i])
 				plen++;

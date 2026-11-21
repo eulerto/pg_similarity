@@ -91,7 +91,6 @@ static double _smithwaterman(char *a, char *b)
 {
 	float		**matrix;		/* dynamic programming matrix */
 	int		alen, blen;
-	int		i, j;
 	double		maxvalue;
 
 	alen = strlen(a);
@@ -106,21 +105,21 @@ static double _smithwaterman(char *a, char *b)
 
 	matrix = (float **) palloc((alen + 1) * sizeof(float *));
 
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		matrix[i] = (float *) palloc((blen + 1) * sizeof(float));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = tolower(a[i]);
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		b[j] = tolower(b[j]);
 #endif
 
 	maxvalue = 0.0;
 
 	/* initial values */
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 	{
 		/*
 				XXX why simmetrics does this way?
@@ -138,7 +137,7 @@ static double _smithwaterman(char *a, char *b)
 		*/
 		matrix[i][0] = 0.0;
 	}
-	for (j = 0; j <= blen; j++)
+	for (int j = 0; j <= blen; j++)
 	{
 		/*
 				XXX why simmetrics does this way?
@@ -157,9 +156,9 @@ static double _smithwaterman(char *a, char *b)
 		matrix[0][j] = 0.0;
 	}
 
-	for (i = 1; i <= alen; i++)
+	for (int i = 1; i <= alen; i++)
 	{
-		for (j = 1; j <= blen; j++)
+		for (int j = 1; j <= blen; j++)
 		{
 			/* get operation cost */
 			float c = swcost(a, b, i - 1, j - 1);
@@ -180,11 +179,11 @@ static double _smithwaterman(char *a, char *b)
 		}
 	}
 
-	for (i = 0; i <= alen; i++)
-		for (j = 0; j <= blen; j++)
+	for (int i = 0; i <= alen; i++)
+		for (int j = 0; j <= blen; j++)
 			elog(DEBUG1, "(%d, %d) = %.3f", i, j, matrix[i][j]);
 
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		pfree(matrix[i]);
 	pfree(matrix);
 

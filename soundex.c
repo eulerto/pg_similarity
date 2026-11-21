@@ -30,7 +30,6 @@ static char convert_soundex(char a)
 static char *_soundex(char *a)
 {
 	int		alen;
-	int		i;
 	int		len;
 	char	*scode;
 	int		lastcode = PGS_SOUNDEX_INV_CODE;
@@ -44,7 +43,7 @@ static char *_soundex(char *a)
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = toupper(a[i]);
 #endif
 

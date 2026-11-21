@@ -64,7 +64,6 @@ _lev(char *a, char *b, int icost, int dcost)
 {
 	int			*arow, *brow, *trow; /* above, below, and temp row */
 	int			alen, blen;
-	int			i, j;
 	int			res;
 
 	alen = strlen(a);
@@ -82,22 +81,22 @@ _lev(char *a, char *b, int icost, int dcost)
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = tolower(a[i]);
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		b[j] = tolower(b[j]);
 #endif
 
 	/* initial values */
-	for (i = 0; i <= blen; i++)
+	for (int i = 0; i <= blen; i++)
 		arow[i] = i;
 
-	for (i = 1; i <= alen; i++)
+	for (int i = 1; i <= alen; i++)
 	{
 		/* first value is 'i' */
 		brow[0] = i;
 
-		for (j = 1; j <= blen; j++)
+		for (int j = 1; j <= blen; j++)
 		{
 			/* TODO change it to a callback function */
 			/* get operation cost */
@@ -124,7 +123,7 @@ _lev(char *a, char *b, int icost, int dcost)
 		brow = trow;
 
 		elog(DEBUG2, "row: ");
-		for (j = 1; j <= blen; j++)
+		for (int j = 1; j <= blen; j++)
 			elog(DEBUG2, "%d ", arow[j]);
 	}
 
@@ -145,7 +144,6 @@ _lev_slow(char *a, char *b, int icost, int dcost)
 {
 	int			**matrix;		/* dynamic programming matrix */
 	int			alen, blen;
-	int			i, j;
 	int			res;
 
 	alen = strlen(a);
@@ -160,26 +158,26 @@ _lev_slow(char *a, char *b, int icost, int dcost)
 
 	matrix = (int **) palloc((alen + 1) * sizeof(int *));
 
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		matrix[i] = (int *) palloc((blen + 1) * sizeof(int));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = tolower(a[i]);
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		b[j] = tolower(b[j]);
 #endif
 
 	/* initial values */
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		matrix[i][0] = i;
-	for (j = 0; j <= blen; j++)
+	for (int j = 0; j <= blen; j++)
 		matrix[0][j] = j;
 
-	for (i = 1; i <= alen; i++)
+	for (int i = 1; i <= alen; i++)
 	{
-		for (j = 1; j <= blen; j++)
+		for (int j = 1; j <= blen; j++)
 		{
 			/* get operation cost */
 			int scost = levcost(a[i - 1], b[j - 1]);
@@ -199,7 +197,7 @@ _lev_slow(char *a, char *b, int icost, int dcost)
 
 	res = matrix[alen][blen];
 
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		pfree(matrix[i]);
 	pfree(matrix);
 

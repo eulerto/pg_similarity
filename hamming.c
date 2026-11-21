@@ -47,7 +47,6 @@ hamming(PG_FUNCTION_ARGS)
 	uint8		*pa, *pb;
 	int		maxlen;
 	float8		res = 0.0;
-	int		i;
 	int		n;
 
 	a = PG_GETARG_VARBIT_P(0);
@@ -69,7 +68,7 @@ hamming(PG_FUNCTION_ARGS)
 	pa = VARBITS(a);
 	pb = VARBITS(b);
 
-	for (i = 0; i < VARBITBYTES(a); i++)
+	for (int i = 0; i < VARBITBYTES(a); i++)
 	{
 		n = *pa++ ^ *pb++;
 		while (n)

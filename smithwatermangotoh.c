@@ -19,7 +19,6 @@ static double _smithwatermangotoh(char *a, char *b)
 {
 	float		**matrix;		/* dynamic programming matrix */
 	int		alen, blen;
-	int		i, j;
 	double		maxvalue;
 
 	alen = strlen(a);
@@ -34,21 +33,21 @@ static double _smithwatermangotoh(char *a, char *b)
 
 	matrix = (float **) palloc((alen + 1) * sizeof(float *));
 
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		matrix[i] = (float *) palloc((blen + 1) * sizeof(float));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = tolower(a[i]);
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		b[j] = tolower(b[j]);
 #endif
 
 	maxvalue = 0.0;
 
 	/* initial values */
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 	{
 		float c = megapcost(a, b, i, 0);
 
@@ -58,12 +57,11 @@ static double _smithwatermangotoh(char *a, char *b)
 		{
 			float	maxgapcost = 0.0;
 			int		wstart = i - PGS_SWG_WINDOW_SIZE;
-			int		k;
 
 			if (wstart < 1)
 				wstart = 1;
 
-			for (k = wstart; k < i; k++)
+			for (int k = wstart; k < i; k++)
 				maxgapcost = max2(maxgapcost, matrix[i - k][0] - swggapcost(i - k, i));
 			matrix[i][0] = max3(0.0, maxgapcost, c);
 		}
@@ -71,7 +69,7 @@ static double _smithwatermangotoh(char *a, char *b)
 		if (matrix[i][0] > maxvalue)
 			maxvalue = matrix[i][0];
 	}
-	for (j = 0; j <= blen; j++)
+	for (int j = 0; j <= blen; j++)
 	{
 		float c = megapcost(a, b, 0, j);
 
@@ -81,12 +79,11 @@ static double _smithwatermangotoh(char *a, char *b)
 		{
 			float	maxgapcost = 0.0;
 			int		wstart = j - PGS_SWG_WINDOW_SIZE;
-			int		k;
 
 			if (wstart < 1)
 				wstart = 1;
 
-			for (k = wstart; k < j; k++)
+			for (int k = wstart; k < j; k++)
 				maxgapcost = max2(maxgapcost, matrix[0][j - k] - swggapcost(j - k, j));
 			matrix[0][j] = max3(0.0, maxgapcost, c);
 		}
@@ -95,12 +92,11 @@ static double _smithwatermangotoh(char *a, char *b)
 			maxvalue = matrix[0][j];
 	}
 
-	for (i = 1; i <= alen; i++)
+	for (int i = 1; i <= alen; i++)
 	{
-		for (j = 1; j <= blen; j++)
+		for (int j = 1; j <= blen; j++)
 		{
 			int		wstart;
-			int		k;
 			float	maxgapcost1 = 0.0,
 					maxgapcost2 = 0.0;
 
@@ -110,13 +106,13 @@ static double _smithwatermangotoh(char *a, char *b)
 			wstart = i - PGS_SWG_WINDOW_SIZE;
 			if (wstart < 1)
 				wstart = 1;
-			for (k = wstart; k < i; k++)
+			for (int k = wstart; k < i; k++)
 				maxgapcost1 = max2(maxgapcost1, matrix[i - k][0] - swggapcost(i - k, i));
 
 			wstart = j - PGS_SWG_WINDOW_SIZE;
 			if (wstart < 1)
 				wstart = 1;
-			for (k = wstart; k < j; k++)
+			for (int k = wstart; k < j; k++)
 				maxgapcost2 = max2(maxgapcost2, matrix[0][j - k] - swggapcost(j - k, j));
 
 			matrix[i][j] = max4(0.0,
@@ -135,7 +131,7 @@ static double _smithwatermangotoh(char *a, char *b)
 		}
 	}
 
-	for (i = 0; i <= alen; i++)
+	for (int i = 0; i <= alen; i++)
 		pfree(matrix[i]);
 	pfree(matrix);
 

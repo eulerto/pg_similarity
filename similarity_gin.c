@@ -86,13 +86,11 @@ gin_extract_value_token(PG_FUNCTION_ARGS)
 
 		if (tlist->size > 0)
 		{
-			int		i;
-
 			tokens = (Datum *) palloc(sizeof(Datum) * tlist->size);
 
 			t = tlist->head;
 
-			for (i = 0; i < tlist->size; i++)
+			for (int i = 0; i < tlist->size; i++)
 			{
 				text	*td;
 
@@ -166,13 +164,11 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 
 		if (tlist->size > 0)
 		{
-			int		i;
-
 			tokens = (Datum *) palloc(sizeof(Datum) * tlist->size);
 
 			t = tlist->head;
 
-			for (i = 0; i < tlist->size; i++)
+			for (int i = 0; i < tlist->size; i++)
 			{
 				text	*td;
 

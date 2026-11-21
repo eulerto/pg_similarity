@@ -112,7 +112,6 @@ static int _nwunsch(char *a, char *b, int gap)
 {
 	int	*arow, *brow, *trow;
 	int	alen, blen;
-	int	i, j;
 	int	res;
 
 	alen = strlen(a);
@@ -130,22 +129,22 @@ static int _nwunsch(char *a, char *b, int gap)
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
-	for (i = 0; i < alen; i++)
+	for (int i = 0; i < alen; i++)
 		a[i] = tolower(a[i]);
-	for (j = 0; j < blen; j++)
+	for (int j = 0; j < blen; j++)
 		b[j] = tolower(b[j]);
 #endif
 
 	/* initial values */
-	for (i = 0; i <= blen; i++)
+	for (int i = 0; i <= blen; i++)
 		arow[i] = gap * i;
 
-	for (i = 1; i <= alen; i++)
+	for (int i = 1; i <= alen; i++)
 	{
 		/* first value is 'i' */
 		brow[0] = gap * i;
 
-		for (j = 1; j <= blen; j++)
+		for (int j = 1; j <= blen; j++)
 		{
 			/* TODO change it to a callback function */
 			/* get operation cost */
