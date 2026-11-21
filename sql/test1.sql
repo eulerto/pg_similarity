@@ -25,3 +25,5 @@ select qgram(:a, :b), qgram_op(:a, :b), :a ~~~ :b as operator;
 --select smithwaterman(:a, :b), smithwaterman_op(:a, :b), :a ~=~ :b as operator;
 --select smithwatermangotoh(:a, :b), smithwatermangotoh_op(:a, :b), :a ~!~ :b as operator;
 select soundex(:a, :b), soundex_op(:a, :b), :a ~*~ :b as operator;
+-- error: no alphabetic character
+select soundex('1234', 'abc');

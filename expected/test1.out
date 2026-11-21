@@ -87,3 +87,6 @@ select soundex(:a, :b), soundex_op(:a, :b), :a ~*~ :b as operator;
        1 | t          | t
 (1 row)
 
+-- error: no alphabetic character
+select soundex('1234', 'abc');
+ERROR:  argument must contain at least one alphabetic character

@@ -57,7 +57,9 @@ static char *_soundex(char *a)
 		a++;
 
 	if (*a == '\0')
-		elog(ERROR, "string doesn't contain non-alpha character(s)");
+		ereport(ERROR,
+				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
+				 errmsg("argument must contain at least one alphabetic character")));
 
 	/* get the first letter */
 	scode[0] = *a++;
