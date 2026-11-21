@@ -125,13 +125,8 @@ static int _nwunsch(char *a, char *b, int gap)
 	if (blen == 0)
 		return alen;
 
-	arow = (int *) malloc((blen + 1) * sizeof(int));
-	brow = (int *) malloc((blen + 1) * sizeof(int));
-
-	if (arow == NULL)
-		elog(ERROR, "memory exhausted for array size %d", (alen + 1));
-	if (brow == NULL)
-		elog(ERROR, "memory exhausted for array size %d", (blen + 1));
+	arow = (int *) palloc((blen + 1) * sizeof(int));
+	brow = (int *) palloc((blen + 1) * sizeof(int));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
@@ -179,8 +174,8 @@ static int _nwunsch(char *a, char *b, int gap)
 
 	res = arow[blen];
 
-	free(arow);
-	free(brow);
+	pfree(arow);
+	pfree(brow);
 
 	return res;
 }

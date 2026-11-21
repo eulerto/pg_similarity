@@ -104,17 +104,10 @@ static double _smithwaterman(char *a, char *b)
 	if (blen == 0)
 		return alen;
 
-	matrix = (float **) malloc((alen + 1) * sizeof(float *));
-
-	if (matrix == NULL)
-		elog(ERROR, "memory exhausted for array size %d", alen);
+	matrix = (float **) palloc((alen + 1) * sizeof(float *));
 
 	for (i = 0; i <= alen; i++)
-	{
-		matrix[i] = (float *) malloc((blen + 1) * sizeof(float));
-		if (matrix[i] == NULL)
-			elog(ERROR, "memory exhausted for array size %d", blen);
-	}
+		matrix[i] = (float *) palloc((blen + 1) * sizeof(float));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
@@ -192,8 +185,8 @@ static double _smithwaterman(char *a, char *b)
 			elog(DEBUG1, "(%d, %d) = %.3f", i, j, matrix[i][j]);
 
 	for (i = 0; i <= alen; i++)
-		free(matrix[i]);
-	free(matrix);
+		pfree(matrix[i]);
+	pfree(matrix);
 
 	return maxvalue;
 }

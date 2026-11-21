@@ -77,13 +77,8 @@ _lev(char *a, char *b, int icost, int dcost)
 	if (blen == 0)
 		return alen;
 
-	arow = (int *) malloc((blen + 1) * sizeof(int));
-	brow = (int *) malloc((blen + 1) * sizeof(int));
-
-	if (arow == NULL)
-		elog(ERROR, "memory exhausted for array size %d", (alen + 1));
-	if (brow == NULL)
-		elog(ERROR, "memory exhausted for array size %d", (blen + 1));
+	arow = (int *) palloc((blen + 1) * sizeof(int));
+	brow = (int *) palloc((blen + 1) * sizeof(int));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
@@ -135,8 +130,8 @@ _lev(char *a, char *b, int icost, int dcost)
 
 	res = arow[blen];
 
-	free(arow);
-	free(brow);
+	pfree(arow);
+	pfree(brow);
 
 	return res;
 }
@@ -163,17 +158,10 @@ _lev_slow(char *a, char *b, int icost, int dcost)
 	if (blen == 0)
 		return alen;
 
-	matrix = (int **) malloc((alen + 1) * sizeof(int *));
-
-	if (matrix == NULL)
-		elog(ERROR, "memory exhausted for array size %d", (alen + 1));
+	matrix = (int **) palloc((alen + 1) * sizeof(int *));
 
 	for (i = 0; i <= alen; i++)
-	{
-		matrix[i] = (int *) malloc((blen + 1) * sizeof(int));
-		if (matrix[i] == NULL)
-			elog(ERROR, "memory exhausted for array size %d", (blen + 1));
-	}
+		matrix[i] = (int *) palloc((blen + 1) * sizeof(int));
 
 #ifdef PGS_IGNORE_CASE
 	elog(DEBUG2, "case-sensitive turns off");
@@ -212,8 +200,8 @@ _lev_slow(char *a, char *b, int icost, int dcost)
 	res = matrix[alen][blen];
 
 	for (i = 0; i <= alen; i++)
-		free(matrix[i]);
-	free(matrix);
+		pfree(matrix[i]);
+	pfree(matrix);
 
 	return res;
 }

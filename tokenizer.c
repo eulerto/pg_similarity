@@ -27,7 +27,7 @@ TokenList *initTokenList(int a)
 {
 	TokenList	*t;
 
-	t = (TokenList *) malloc(sizeof(TokenList));
+	t = (TokenList *) palloc(sizeof(TokenList));
 
 	t->isset = a;
 	t->size = 0;
@@ -43,13 +43,10 @@ void destroyTokenList(TokenList *t)
 {
 	char	*n;
 	int		i;
-	int		len;
 
 	while (t->size > 0)
 	{
-		len = strlen(t->head->data);
-		n = (char *) malloc(sizeof(char) * (len + 1));
-		strcpy(n, t->head->data);
+		n = pstrdup(t->head->data);
 
 		i = removeToken(t);
 		if (i == 0)
@@ -57,10 +54,10 @@ void destroyTokenList(TokenList *t)
 		else
 			elog(DEBUG3, "failed to remove token: \"%s\"", n);
 
-		free(n);
+		pfree(n);
 	}
 
-	free(t);
+	pfree(t);
 }
 
 static int
@@ -82,9 +79,7 @@ addToken(TokenList *t, char *s)
 		}
 	}
 
-	n = (Token *) malloc(sizeof(Token));
-	if (n == NULL)
-		return -1;
+	n = (Token *) palloc(sizeof(Token));
 
 	/*
 	 * memory is allocated by tokenizeByXXX()
@@ -124,8 +119,8 @@ removeToken(TokenList *t)
 	if (t->size == 1)
 		t->tail = NULL;
 
-	free(n->data);
-	free(n);
+	pfree(n->data);
+	pfree(n);
 
 	t->size--;
 
@@ -254,7 +249,7 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 		if (c > 0)
 		{
 			int ret;
-			char *tok = malloc(sizeof(char) * (c + 1));
+			char *tok = palloc(sizeof(char) * (c + 1));
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
@@ -269,7 +264,7 @@ void tokenizeByNonAlnum(TokenList *t, char *s)
 			/* Only free the token if it was not added to the list, otherwise it
 			 * will be freed when the list is destroyed */
 			if (ret == -2)
-				free(tok);
+				pfree(tok);
 
 			c = 0;
 		}
@@ -340,7 +335,7 @@ void tokenizeBySpace(TokenList *t, char *s)
 		if (c > 0)
 		{
 			int ret;
-			char *tok = malloc(sizeof(char) * (c + 1));
+			char *tok = palloc(sizeof(char) * (c + 1));
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
@@ -356,7 +351,7 @@ void tokenizeBySpace(TokenList *t, char *s)
 			/* Only free the token if it was not added to the list, otherwise it
 			 * will be freed when the list is destroyed */
 			if (ret == -2)
-				free(tok);
+				pfree(tok);
 
 			c = 0;
 		}
@@ -386,7 +381,7 @@ void tokenizeByGram(TokenList *t, char *s)
 	{
 		int 	ret;
 		char	*buf;
-		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
+		buf = (char *) palloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		memset(buf, PGS_BLANK_CHAR, i);
 		strncpy((buf + i), s, PGS_GRAM_LEN - i);
 		buf[PGS_GRAM_LEN] = '\0';
@@ -398,13 +393,13 @@ void tokenizeByGram(TokenList *t, char *s)
 		/* Only free the token if it was not added to the list, otherwise it
 		 * will be freed when the list is destroyed */
 		if (ret == -2)
-			free(buf);
+			pfree(buf);
 	}
 #else
 	{
 		int 	ret;
 		char	*buf;
-		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
+		buf = (char *) palloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		memset(buf, PGS_BLANK_CHAR, 1);
 		strncpy((buf + 1), s, PGS_GRAM_LEN - 1);
 		buf[PGS_GRAM_LEN] = '\0';
@@ -416,7 +411,7 @@ void tokenizeByGram(TokenList *t, char *s)
 		/* Only free the token if it was not added to the list, otherwise it
 		 * will be freed when the list is destroyed */
 		if (ret == -2)
-			free(buf);
+			pfree(buf);
 	}
 #endif
 
@@ -424,7 +419,7 @@ void tokenizeByGram(TokenList *t, char *s)
 	{
 		int 	ret;
 		char	*buf;
-		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
+		buf = (char *) palloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		strncpy(buf, p, PGS_GRAM_LEN);
 		buf[PGS_GRAM_LEN] = '\0';
 
@@ -437,7 +432,7 @@ void tokenizeByGram(TokenList *t, char *s)
 		/* Only free the token if it was not added to the list, otherwise it
 		 * will be freed when the list is destroyed */
 		if (ret == -2)
-			free(buf);
+			pfree(buf);
 	}
 
 	/*
@@ -448,7 +443,7 @@ void tokenizeByGram(TokenList *t, char *s)
 	{
 		int 	ret;
 		char	*buf;
-		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
+		buf = (char *) palloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		strncpy(buf, p, PGS_GRAM_LEN - i);
 		memset((buf + (PGS_GRAM_LEN - i)), PGS_BLANK_CHAR, i);
 		buf[PGS_GRAM_LEN] = '\0';
@@ -462,13 +457,13 @@ void tokenizeByGram(TokenList *t, char *s)
 		/* Only free the token if it was not added to the list, otherwise it
 		 * will be freed when the list is destroyed */
 		if (ret == -2)
-			free(buf);
+			pfree(buf);
 	}
 #else
 	{
 		int 	ret;
 		char	*buf;
-		buf = (char *) malloc((PGS_GRAM_LEN + 1) * sizeof(char));
+		buf = (char *) palloc((PGS_GRAM_LEN + 1) * sizeof(char));
 		strncpy(buf, p, PGS_GRAM_LEN - 1);
 		memset((buf + (PGS_GRAM_LEN - 1)), PGS_BLANK_CHAR, 1);
 		buf[PGS_GRAM_LEN] = '\0';
@@ -480,7 +475,7 @@ void tokenizeByGram(TokenList *t, char *s)
 		/* Only free the token if it was not added to the list, otherwise it
 		 * will be freed when the list is destroyed */
 		if (ret == -2)
-			free(buf);
+			pfree(buf);
 	}
 #endif
 }
@@ -558,7 +553,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 		if (c > 0)
 		{
 			int ret;
-			char *tok = malloc(sizeof(char) * (c + 1));
+			char *tok = palloc(sizeof(char) * (c + 1));
 			strncpy(tok, sptr, c);
 			tok[c] = '\0';
 
@@ -574,7 +569,7 @@ void tokenizeByCamelCase(TokenList *t, char *s)
 			/* Only free the token if it was not added to the list, otherwise it
 			 * will be freed when the list is destroyed */
 			if (ret == -2)
-				free(tok);
+				pfree(tok);
 
 			c = 0;
 		}
