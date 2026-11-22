@@ -12,6 +12,10 @@
 
 #include "postgres.h"
 
+#if PG_VERSION_NUM < 130000
+#error "pg_similarity requires PostgreSQL 13 or later"
+#endif
+
 #include "fmgr.h"
 #include "utils/builtins.h"
 #include "utils/guc.h"
