@@ -15,8 +15,8 @@ CREATE OPERATOR ~++ (
 	RIGHTARG = text,
 	PROCEDURE = block_op,
 	COMMUTATOR = '~++',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Cosine
@@ -33,8 +33,8 @@ CREATE OPERATOR ~## (
 	RIGHTARG = text,
 	PROCEDURE = cosine_op,
 	COMMUTATOR = '~##',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Dice
@@ -51,8 +51,8 @@ CREATE OPERATOR ~-~ (
 	RIGHTARG = text,
 	PROCEDURE = dice_op,
 	COMMUTATOR = '~-~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Euclidean
@@ -69,8 +69,8 @@ CREATE OPERATOR ~!! (
 	RIGHTARG = text,
 	PROCEDURE = euclidean_op,
 	COMMUTATOR = '~!!',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Hamming
@@ -95,8 +95,8 @@ CREATE OPERATOR ~@~ (
 	RIGHTARG = text,
 	PROCEDURE = hamming_text_op,
 	COMMUTATOR = '~@~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Jaccard
@@ -113,8 +113,8 @@ CREATE OPERATOR ~?? (
 	RIGHTARG = text,
 	PROCEDURE = jaccard_op,
 	COMMUTATOR = '~??',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Jaro
@@ -131,8 +131,8 @@ CREATE OPERATOR ~%% (
 	RIGHTARG = text,
 	PROCEDURE = jaro_op,
 	COMMUTATOR = '~%%',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Jaro-Winkler
@@ -149,8 +149,8 @@ CREATE OPERATOR ~@@ (
 	RIGHTARG = text,
 	PROCEDURE = jarowinkler_op,
 	COMMUTATOR = '~@@',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Levenshtein
@@ -167,8 +167,8 @@ CREATE OPERATOR ~== (
 	RIGHTARG = text,
 	PROCEDURE = lev_op,
 	COMMUTATOR = '~==',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Those functions are here just for academic purposes
@@ -185,8 +185,8 @@ CREATE OPERATOR ~== (
 --	RIGHTARG = text,
 --	PROCEDURE = levslow_op,
 --	COMMUTATOR = '~@@',
---	RESTRICT = contsel,
---	JOIN = contjoinsel
+--	RESTRICT = pg_catalog.contsel,
+--	JOIN = pg_catalog.contjoinsel
 --);
 
 -- Matching Coefficient
@@ -203,8 +203,8 @@ CREATE OPERATOR ~^^ (
 	RIGHTARG = text,
 	PROCEDURE = matchingcoefficient_op,
 	COMMUTATOR = '~^^',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Monge-Elkan
@@ -221,8 +221,8 @@ CREATE OPERATOR ~|| (
 	RIGHTARG = text,
 	PROCEDURE = mongeelkan_op,
 	COMMUTATOR = '~||',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Needleman-Wunsch
@@ -239,8 +239,8 @@ CREATE OPERATOR ~#~ (
 	RIGHTARG = text,
 	PROCEDURE = needlemanwunsch_op,
 	COMMUTATOR = '~#~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Overlap Coefficient
@@ -257,8 +257,8 @@ CREATE OPERATOR ~** (
 	RIGHTARG = text,
 	PROCEDURE = overlapcoefficient_op,
 	COMMUTATOR = '~**',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Q-Gram
@@ -275,8 +275,8 @@ CREATE OPERATOR ~~~ (
 	RIGHTARG = text,
 	PROCEDURE = qgram_op,
 	COMMUTATOR = '~~~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Smith-Waterman
@@ -293,8 +293,8 @@ CREATE OPERATOR ~=~ (
 	RIGHTARG = text,
 	PROCEDURE = smithwaterman_op,
 	COMMUTATOR = '~=~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Smith-Waterman-Gotoh
@@ -311,8 +311,8 @@ CREATE OPERATOR ~!~ (
 	RIGHTARG = text,
 	PROCEDURE = smithwatermangotoh_op,
 	COMMUTATOR = '~!~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 -- Soundex
@@ -329,8 +329,8 @@ CREATE OPERATOR ~*~ (
 	RIGHTARG = text,
 	PROCEDURE = soundex_op,
 	COMMUTATOR = '~*~',
-	RESTRICT = contsel,
-	JOIN = contjoinsel
+	RESTRICT = pg_catalog.contsel,
+	JOIN = pg_catalog.contjoinsel
 );
 
 --
@@ -371,7 +371,7 @@ AS
 --    OPERATOR    14  ~=~,		-- smithwaterman
 --    OPERATOR    15  ~!~,		-- smithwatermangotoh
 --    OPERATOR    16  ~*~,		-- soundex
-    FUNCTION    1   bttextcmp(text, text),
+    FUNCTION    1   pg_catalog.bttextcmp(text, text),
     FUNCTION    2   gin_extract_value_token(internal, internal, internal),
     FUNCTION    3   gin_extract_query_token(internal, internal, int2, internal, internal, internal, internal),
     FUNCTION    4   gin_token_consistent(internal, int2, internal, int4, internal, internal, internal, internal),
