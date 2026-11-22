@@ -41,12 +41,9 @@
 double	pgs_hamming_threshold = 0.7;
 bool	pgs_hamming_is_normalized = true;
 
-PG_FUNCTION_INFO_V1(hamming);
-
-Datum
-hamming(PG_FUNCTION_ARGS)
+static float8
+hamming_internal(VarBit *a, VarBit *b, bool normalized)
 {
-	VarBit		*a, *b;
 	int		alen, blen;
 	uint8		*pa, *pb;
 	int		maxlen;
@@ -54,9 +51,6 @@ hamming(PG_FUNCTION_ARGS)
 	int		nbytes;
 	uint64		dist = 0;
 	char		buf[PGS_HAMMING_CHUNK];
-
-	a = PG_GETARG_VARBIT_P(0);
-	b = PG_GETARG_VARBIT_P(1);
 
 	alen = VARBITLEN(a);
 	blen = VARBITLEN(b);
@@ -92,7 +86,7 @@ hamming(PG_FUNCTION_ARGS)
 	}
 	res = (float8) dist;
 
-	elog(DEBUG1, "is normalized: %d", pgs_hamming_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
 	/*
 	 * FIXME print string of bits
@@ -101,48 +95,45 @@ hamming(PG_FUNCTION_ARGS)
 
 	/* if one string has zero length then return one */
 	if (maxlen == 0)
-		PG_RETURN_FLOAT8(1.0);
-	else if (pgs_hamming_is_normalized)
+		return 1.0;
+	else if (normalized)
 	{
 		res = 1.0 - (res / maxlen);
 		/*
 		 * FIXME print string of bits
 		elog(DEBUG1, "hamming(%s, %s) = %.3f", DatumGetCString(varbit_out(VarBitPGetDatum(a))), DatumGetCString(varbit_out(VarBitPGetDatum(b))), res);
 		*/
-		PG_RETURN_FLOAT8(res);
+		return res;
 	}
 	else
-		PG_RETURN_FLOAT8(res);
+		return res;
+}
+
+PG_FUNCTION_INFO_V1(hamming);
+
+Datum
+hamming(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(hamming_internal(PG_GETARG_VARBIT_P(0),
+									  PG_GETARG_VARBIT_P(1),
+									  pgs_hamming_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(hamming_op);
 
-Datum hamming_op(PG_FUNCTION_ARGS)
+Datum
+hamming_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_hamming_is_normalized;
-	pgs_hamming_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 hamming,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_hamming_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = hamming_internal(PG_GETARG_VARBIT_P(0),
+									   PG_GETARG_VARBIT_P(1),
+									   true);
 
 	PG_RETURN_BOOL(res >= pgs_hamming_threshold);
 }
 
-PG_FUNCTION_INFO_V1(hamming_text);
-
-Datum
-hamming_text(PG_FUNCTION_ARGS)
+static float8
+hamming_text_internal(text *ta, text *tb, bool normalized)
 {
 	char		*a, *b;
 	int			alen, blen;
@@ -151,9 +142,9 @@ hamming_text(PG_FUNCTION_ARGS)
 	float8		res = 0.0;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	alen = strlen(a);
 	blen = strlen(b);
@@ -186,44 +177,43 @@ hamming_text(PG_FUNCTION_ARGS)
 			res += 1.0;
 	}
 
-	elog(DEBUG1, "is normalized: %d", pgs_hamming_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
 
 	elog(DEBUG1, "hammingdistance(%s, %s) = %.3f", a, b, res);
 
 	/* if one string has zero length then return one */
 	if (maxlen == 0)
-		PG_RETURN_FLOAT8(1.0);
-	else if (pgs_hamming_is_normalized)
+		return 1.0;
+	else if (normalized)
 	{
 		res = 1.0 - (res / maxlen);
 		elog(DEBUG1, "hamming(%s, %s) = %.3f", a, b, res);
-		PG_RETURN_FLOAT8(res);
+		return res;
 	}
 	else
-		PG_RETURN_FLOAT8(res);
+		return res;
+}
+
+PG_FUNCTION_INFO_V1(hamming_text);
+
+Datum
+hamming_text(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(hamming_text_internal(PG_GETARG_TEXT_P(0),
+										   PG_GETARG_TEXT_P(1),
+										   pgs_hamming_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(hamming_text_op);
 
-Datum hamming_text_op(PG_FUNCTION_ARGS)
+Datum
+hamming_text_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_hamming_is_normalized;
-	pgs_hamming_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 hamming_text,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_hamming_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = hamming_text_internal(PG_GETARG_TEXT_P(0),
+											PG_GETARG_TEXT_P(1),
+											true);
 
 	PG_RETURN_BOOL(res >= pgs_hamming_threshold);
 }

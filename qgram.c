@@ -40,56 +40,22 @@ PG_FUNCTION_INFO_V1(qgram);
 Datum
 qgram(PG_FUNCTION_ARGS)
 {
-	float8		res;
-	bool		tmp;
-	int			tmp2;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	tmp = pgs_block_is_normalized;
-	pgs_block_is_normalized = pgs_qgram_is_normalized;
-
-	/*
-	 * store *_tokenizer value temporarily 'cause
-	 * we're using block function
-	 */
-	tmp2 = pgs_block_tokenizer;
-	pgs_block_tokenizer = pgs_qgram_tokenizer;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 block,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_block_is_normalized = tmp;
-	pgs_block_tokenizer = tmp2;
-
-	PG_RETURN_FLOAT8(res);
+	PG_RETURN_FLOAT8(pgs_block_internal(PG_GETARG_TEXT_P(0),
+										PG_GETARG_TEXT_P(1),
+										pgs_qgram_tokenizer,
+										pgs_qgram_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(qgram_op);
 
-Datum qgram_op(PG_FUNCTION_ARGS)
+Datum
+qgram_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_qgram_is_normalized;
-	pgs_qgram_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 qgram,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_qgram_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = pgs_block_internal(PG_GETARG_TEXT_P(0),
+										 PG_GETARG_TEXT_P(1),
+										 pgs_qgram_tokenizer,
+										 true);
 
 	PG_RETURN_BOOL(res >= pgs_qgram_threshold);
 }

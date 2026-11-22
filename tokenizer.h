@@ -62,4 +62,11 @@ extern PGS_INTERNAL void tokenizeBySpace(TokenList *t, char *s);
 extern PGS_INTERNAL void tokenizeByGram(TokenList *t, char *s);
 extern PGS_INTERNAL void tokenizeByCamelCase(TokenList *t, char *s);
 
+/*
+ * Block distance with an explicit tokenizer and normalization; shared by
+ * block() and qgram() (block.c).
+ */
+extern PGS_INTERNAL float8 pgs_block_internal(text *ta, text *tb,
+											  int tokenizer, bool normalized);
+
 #endif							/* TOKENIZER_H */

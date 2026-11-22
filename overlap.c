@@ -37,10 +37,8 @@ int		pgs_overlap_tokenizer = PGS_UNIT_ALNUM;
 double	pgs_overlap_threshold = 0.7;
 bool	pgs_overlap_is_normalized = true;
 
-PG_FUNCTION_INFO_V1(overlapcoefficient);
-
-Datum
-overlapcoefficient(PG_FUNCTION_ARGS)
+static float8
+overlapcoefficient_internal(text *ta, text *tb, bool normalized)
 {
 	char		*a, *b;
 	TokenList	*s, *t;
@@ -49,9 +47,9 @@ overlapcoefficient(PG_FUNCTION_ARGS)
 	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
@@ -122,7 +120,7 @@ overlapcoefficient(PG_FUNCTION_ARGS)
 
 	mintok = min2(atok, btok);
 
-	elog(DEBUG1, "is normalized: %d", pgs_overlap_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "token list A size: %d", atok);
 	elog(DEBUG1, "token list B size: %d", btok);
 	elog(DEBUG1, "all tokens size: %d", alltok);
@@ -132,29 +130,28 @@ overlapcoefficient(PG_FUNCTION_ARGS)
 	/* normalized and unnormalized version are the same */
 	res = (float8) comtok / mintok;
 
-	PG_RETURN_FLOAT8(res);
+	return res;
+}
+
+PG_FUNCTION_INFO_V1(overlapcoefficient);
+
+Datum
+overlapcoefficient(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(overlapcoefficient_internal(PG_GETARG_TEXT_P(0),
+												 PG_GETARG_TEXT_P(1),
+												 pgs_overlap_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(overlapcoefficient_op);
 
-Datum overlapcoefficient_op(PG_FUNCTION_ARGS)
+Datum
+overlapcoefficient_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_overlap_is_normalized;
-	pgs_overlap_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 overlapcoefficient,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_overlap_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = overlapcoefficient_internal(PG_GETARG_TEXT_P(0),
+												  PG_GETARG_TEXT_P(1),
+												  true);
 
 	PG_RETURN_BOOL(res >= pgs_overlap_threshold);
 }

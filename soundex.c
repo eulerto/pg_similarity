@@ -93,10 +93,8 @@ static char *_soundex(char *a)
 	return scode;
 }
 
-PG_FUNCTION_INFO_V1(soundex);
-
-Datum
-soundex(PG_FUNCTION_ARGS)
+static float8
+soundex_internal(text *ta, text *tb)
 {
 	char	*a, *b;
 	char	*resa;
@@ -104,9 +102,9 @@ soundex(PG_FUNCTION_ARGS)
 	float8	res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
@@ -131,19 +129,25 @@ soundex(PG_FUNCTION_ARGS)
 	else
 		res = 0.0;
 
-	PG_RETURN_FLOAT8(res);
+	return res;
+}
+
+PG_FUNCTION_INFO_V1(soundex);
+
+Datum
+soundex(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(soundex_internal(PG_GETARG_TEXT_P(0),
+									  PG_GETARG_TEXT_P(1)));
 }
 
 PG_FUNCTION_INFO_V1(soundex_op);
 
-Datum soundex_op(PG_FUNCTION_ARGS)
+Datum
+soundex_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 soundex,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
+	float8		res = soundex_internal(PG_GETARG_TEXT_P(0),
+									   PG_GETARG_TEXT_P(1));
 
 	PG_RETURN_BOOL(res == 1.0);
 }

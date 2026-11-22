@@ -192,19 +192,17 @@ static double _smithwaterman(char *a, char *b)
 	return maxvalue;
 }
 
-PG_FUNCTION_INFO_V1(smithwaterman);
-
-Datum
-smithwaterman(PG_FUNCTION_ARGS)
+static float8
+smithwaterman_internal(text *ta, text *tb, bool normalized)
 {
 	char		*a, *b;
 	double		maxvalue;
 	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
@@ -216,13 +214,13 @@ smithwaterman(PG_FUNCTION_ARGS)
 
 	res = _smithwaterman(a, b);
 
-	elog(DEBUG1, "is normalized: %d", pgs_sw_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "maximum length: %.3f", maxvalue);
 	elog(DEBUG1, "swdistance(%s, %s) = %.3f", a, b, res);
 
 	if (maxvalue == 0.0)
 		res = 1.0;
-	if (pgs_sw_is_normalized)
+	if (normalized)
 	{
 		if (PGS_SW_MAX_COST > (-1 * PGS_SW_GAP_COST))
 			maxvalue *= PGS_SW_MAX_COST;
@@ -238,29 +236,28 @@ smithwaterman(PG_FUNCTION_ARGS)
 
 	elog(DEBUG1, "sw(%s, %s) = %.3f", a, b, res);
 
-	PG_RETURN_FLOAT8(res);
+	return res;
+}
+
+PG_FUNCTION_INFO_V1(smithwaterman);
+
+Datum
+smithwaterman(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(smithwaterman_internal(PG_GETARG_TEXT_P(0),
+											PG_GETARG_TEXT_P(1),
+											pgs_sw_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(smithwaterman_op);
 
-Datum smithwaterman_op(PG_FUNCTION_ARGS)
+Datum
+smithwaterman_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_sw_is_normalized;
-	pgs_sw_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 smithwaterman,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_sw_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = smithwaterman_internal(PG_GETARG_TEXT_P(0),
+											 PG_GETARG_TEXT_P(1),
+											 true);
 
 	PG_RETURN_BOOL(res >= pgs_sw_threshold);
 }

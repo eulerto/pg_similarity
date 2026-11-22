@@ -225,65 +225,60 @@ static double _jaro(char *a, char *b)
 	return res;
 }
 
-PG_FUNCTION_INFO_V1(jaro);
-
-Datum
-jaro(PG_FUNCTION_ARGS)
+static float8
+jaro_internal(text *ta, text *tb, bool normalized)
 {
 	char	*a, *b;
 	float8	res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	res = _jaro(a, b);
 
-	elog(DEBUG1, "is normalized: %d", pgs_jaro_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "jaro(%s, %s) = %f", a, b, res);
 
 	/* normalized and unnormalized version are the same */
-	PG_RETURN_FLOAT8(res);
+	return res;
+}
+
+PG_FUNCTION_INFO_V1(jaro);
+
+Datum
+jaro(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(jaro_internal(PG_GETARG_TEXT_P(0),
+								   PG_GETARG_TEXT_P(1),
+								   pgs_jaro_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(jaro_op);
 
-Datum jaro_op(PG_FUNCTION_ARGS)
+Datum
+jaro_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_jaro_is_normalized;
-	pgs_jaro_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 jaro,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_jaro_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = jaro_internal(PG_GETARG_TEXT_P(0),
+									PG_GETARG_TEXT_P(1),
+									true);
 
 	PG_RETURN_BOOL(res >= pgs_jaro_threshold);
 }
 
-PG_FUNCTION_INFO_V1(jarowinkler);
-
-Datum
-jarowinkler(PG_FUNCTION_ARGS)
+static float8
+jarowinkler_internal(text *ta, text *tb, bool normalized)
 {
 	char	*a, *b;
 	float8	resj, res;
 	int	plen = 0;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	resj = _jaro(a, b);
 
@@ -306,34 +301,33 @@ jarowinkler(PG_FUNCTION_ARGS)
 		res += PGS_JARO_SCALING_FACTOR * plen * (1.0 - resj);
 	}
 
-	elog(DEBUG1, "is normalized: %d", pgs_jarowinkler_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "jarowinkler(%s, %s) = %f + %d * %f * (1.0 - %f) = %f",
 		 a, b, resj, plen, PGS_JARO_SCALING_FACTOR, resj, res);
 
 	/* normalized and unnormalized version are the same */
-	PG_RETURN_FLOAT8(res);
+	return res;
+}
+
+PG_FUNCTION_INFO_V1(jarowinkler);
+
+Datum
+jarowinkler(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(jarowinkler_internal(PG_GETARG_TEXT_P(0),
+										  PG_GETARG_TEXT_P(1),
+										  pgs_jarowinkler_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(jarowinkler_op);
 
-Datum jarowinkler_op(PG_FUNCTION_ARGS)
+Datum
+jarowinkler_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_jarowinkler_is_normalized;
-	pgs_jarowinkler_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 jarowinkler,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_jarowinkler_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = jarowinkler_internal(PG_GETARG_TEXT_P(0),
+										   PG_GETARG_TEXT_P(1),
+										   true);
 
 	PG_RETURN_BOOL(res >= pgs_jarowinkler_threshold);
 }

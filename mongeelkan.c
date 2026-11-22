@@ -153,10 +153,8 @@ static double _mongeelkan(char *a, char *b)
 	return maxvalue;
 }
 
-PG_FUNCTION_INFO_V1(mongeelkan);
-
-Datum
-mongeelkan(PG_FUNCTION_ARGS)
+static float8
+mongeelkan_internal(text *ta, text *tb, bool normalized)
 {
 	char		*a, *b;
 	TokenList	*s, *t;
@@ -166,9 +164,9 @@ mongeelkan(PG_FUNCTION_ARGS)
 	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
@@ -228,7 +226,7 @@ mongeelkan(PG_FUNCTION_ARGS)
 	/* normalized and unnormalized version are the same */
 	res = summatches / s->size;
 
-	elog(DEBUG1, "is normalized: %d", pgs_mongeelkan_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "sum matches: %.3f", summatches);
 	elog(DEBUG1, "s size: %d", s->size);
 	elog(DEBUG1, "medistance(%s, %s) = %.3f", a, b, res);
@@ -236,29 +234,28 @@ mongeelkan(PG_FUNCTION_ARGS)
 	destroyTokenList(s);
 	destroyTokenList(t);
 
-	PG_RETURN_FLOAT8(res);
+	return res;
+}
+
+PG_FUNCTION_INFO_V1(mongeelkan);
+
+Datum
+mongeelkan(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(mongeelkan_internal(PG_GETARG_TEXT_P(0),
+										 PG_GETARG_TEXT_P(1),
+										 pgs_mongeelkan_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(mongeelkan_op);
 
-Datum mongeelkan_op(PG_FUNCTION_ARGS)
+Datum
+mongeelkan_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_mongeelkan_is_normalized;
-	pgs_mongeelkan_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 mongeelkan,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_mongeelkan_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = mongeelkan_internal(PG_GETARG_TEXT_P(0),
+										  PG_GETARG_TEXT_P(1),
+										  true);
 
 	PG_RETURN_BOOL(res >= pgs_mongeelkan_threshold);
 }

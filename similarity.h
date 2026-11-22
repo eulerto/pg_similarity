@@ -214,6 +214,12 @@ void _PG_init(void);
 
 /*
  * external function declarations
+ *
+ * These are exported so that the fmgr can find them, which also means that
+ * another library loaded into the backend with a symbol of the same name
+ * (e.g. fuzzystrmatch soundex()) can take their place. So never call them
+ * from inside pg_similarity: each one is a thin wrapper around a static
+ * worker, and the *_op functions call that worker directly.
  */
 extern Datum PGDLLEXPORT block(PG_FUNCTION_ARGS);
 extern Datum PGDLLEXPORT block_op(PG_FUNCTION_ARGS);

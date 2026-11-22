@@ -181,19 +181,17 @@ static int _nwunsch(char *a, char *b, int gap)
 	return res;
 }
 
-PG_FUNCTION_INFO_V1(needlemanwunsch);
-
-Datum
-needlemanwunsch(PG_FUNCTION_ARGS)
+static float8
+needlemanwunsch_internal(text *ta, text *tb, bool normalized)
 {
 	char		*a, *b;
 	double		minvalue, maxvalue;
 	float8		res;
 
 	a = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(0))));
+											PointerGetDatum(ta)));
 	b = DatumGetPointer(DirectFunctionCall1(textout,
-											PointerGetDatum(PG_GETARG_TEXT_P(1))));
+											PointerGetDatum(tb)));
 
 	if (strlen(a) > PGS_MAX_STR_LEN || strlen(b) > PGS_MAX_STR_LEN)
 		ereport(ERROR,
@@ -205,13 +203,13 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 
 	res = (float8) _nwunsch(a, b, pgs_nw_gap_penalty);
 
-	elog(DEBUG1, "is normalized: %d", pgs_nw_is_normalized);
+	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "maximum length: %.3f", maxvalue);
 	elog(DEBUG1, "nwdistance(%s, %s) = %.3f", a, b, res);
 
 	if (maxvalue == 0.0)
-		PG_RETURN_FLOAT8(1.0);
-	else if (pgs_nw_is_normalized)
+		return 1.0;
+	else if (normalized)
 	{
 		/* FIXME normalize nw result */
 		minvalue = maxvalue;
@@ -233,38 +231,37 @@ needlemanwunsch(PG_FUNCTION_ARGS)
 
 		/* paranoia ? */
 		if (maxvalue == 0.0)
-			PG_RETURN_FLOAT8(0.0);
+			return 0.0;
 		else
 		{
 			res = 1.0 - (res / maxvalue);
 			elog(DEBUG1, "nw(%s, %s) = %.3f", a, b, res);
-			PG_RETURN_FLOAT8(res);
+			return res;
 		}
 	}
 	else
-		PG_RETURN_FLOAT8(res);
+		return res;
+}
+
+PG_FUNCTION_INFO_V1(needlemanwunsch);
+
+Datum
+needlemanwunsch(PG_FUNCTION_ARGS)
+{
+	PG_RETURN_FLOAT8(needlemanwunsch_internal(PG_GETARG_TEXT_P(0),
+											  PG_GETARG_TEXT_P(1),
+											  pgs_nw_is_normalized));
 }
 
 PG_FUNCTION_INFO_V1(needlemanwunsch_op);
 
-Datum needlemanwunsch_op(PG_FUNCTION_ARGS)
+Datum
+needlemanwunsch_op(PG_FUNCTION_ARGS)
 {
-	float8	res;
-
-	/*
-	 * store *_is_normalized value temporarily 'cause
-	 * threshold (we're comparing against) is normalized
-	 */
-	bool	tmp = pgs_nw_is_normalized;
-	pgs_nw_is_normalized = true;
-
-	res = DatumGetFloat8(DirectFunctionCall2(
-							 needlemanwunsch,
-							 PG_GETARG_DATUM(0),
-							 PG_GETARG_DATUM(1)));
-
-	/* we're done; back to the previous value */
-	pgs_nw_is_normalized = tmp;
+	/* the threshold is normalized, so compare a normalized result */
+	float8		res = needlemanwunsch_internal(PG_GETARG_TEXT_P(0),
+											   PG_GETARG_TEXT_P(1),
+											   true);
 
 	PG_RETURN_BOOL(res >= pgs_nw_threshold);
 }
