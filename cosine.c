@@ -110,8 +110,14 @@ cosine_internal(text *ta, text *tb, bool normalized)
 	elog(DEBUG1, "all tokens size: %d", alltok);
 	elog(DEBUG1, "common tokens size: %d", comtok);
 
-	/* normalized and unnormalized version are the same */
-	res = (float8) comtok / (sqrt(atok) * sqrt(btok));
+	/*
+	 * normalized and unnormalized version are the same. No tokens on either
+	 * side means identical; on one side only, nothing in common.
+	 */
+	if (atok == 0 || btok == 0)
+		res = (atok == btok) ? 1.0 : 0.0;
+	else
+		res = (float8) comtok / (sqrt(atok) * sqrt(btok));
 
 	return res;
 }

@@ -158,7 +158,10 @@ pgs_block_internal(text *ta, text *tb, int tokenizer, bool normalized)
 	destroyTokenList(t);
 	destroyTokenList(u);
 
-	if (normalized)
+	/* no tokens on either side: identical (the distance is already 0) */
+	if (normalized && totpossible == 0)
+		res = 1.0;
+	else if (normalized)
 		res = (float8) (totpossible - totdistance) / totpossible;
 	else
 		res = totdistance;

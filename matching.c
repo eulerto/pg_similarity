@@ -131,7 +131,10 @@ matchingcoefficient_internal(text *ta, text *tb, bool normalized)
 	elog(DEBUG1, "common tokens size: %d", comtok);
 	elog(DEBUG1, "maximum token size: %d", maxtok);
 
-	if (normalized)
+	/* no tokens on either side: identical */
+	if (normalized && maxtok == 0)
+		res = 1.0;
+	else if (normalized)
 		res = (float8) comtok / maxtok;
 	else
 		res = comtok;

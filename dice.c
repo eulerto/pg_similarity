@@ -123,8 +123,14 @@ dice_internal(text *ta, text *tb, bool normalized)
 	elog(DEBUG1, "all tokens size: %d", alltok);
 	elog(DEBUG1, "common tokens size: %d", comtok);
 
-	/* normalized and unnormalized version are the same */
-	res = (float8) (2.0 * comtok) / (atok + btok);
+	/*
+	 * normalized and unnormalized version are the same. No tokens on either
+	 * side means identical.
+	 */
+	if (atok + btok == 0)
+		res = 1.0;
+	else
+		res = (float8) (2.0 * comtok) / (atok + btok);
 
 	return res;
 }

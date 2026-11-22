@@ -7,7 +7,7 @@ OBJS = tokenizer.o similarity.o similarity_gin.o \
        jaro.o levenshtein.o matching.o mongeelkan.o needlemanwunsch.o \
 	   overlap.o qgram.o smithwaterman.o smithwatermangotoh.o soundex.o
 DATA = pg_similarity--1.0.sql
-REGRESS = test1 test2 test3 test4
+REGRESS = test1 test2 test3 test4 test5
 #DOCS = README.md
 
 PG_CONFIG = pg_config

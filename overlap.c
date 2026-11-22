@@ -127,8 +127,14 @@ overlapcoefficient_internal(text *ta, text *tb, bool normalized)
 	elog(DEBUG1, "common tokens size: %d", comtok);
 	elog(DEBUG1, "min between A and B sizes: %d", mintok);
 
-	/* normalized and unnormalized version are the same */
-	res = (float8) comtok / mintok;
+	/*
+	 * normalized and unnormalized version are the same. No tokens on either
+	 * side means identical; on one side only, nothing in common.
+	 */
+	if (mintok == 0)
+		res = (atok == btok) ? 1.0 : 0.0;
+	else
+		res = (float8) comtok / mintok;
 
 	return res;
 }

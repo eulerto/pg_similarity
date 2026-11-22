@@ -165,7 +165,10 @@ euclidean_internal(text *ta, text *tb, bool normalized)
 	destroyTokenList(t);
 	destroyTokenList(u);
 
-	if (normalized)
+	/* no tokens on either side: identical (the distance is already 0) */
+	if (normalized && totpossible == 0.0)
+		res = 1.0;
+	else if (normalized)
 		res = (totpossible - totdistance) / totpossible;
 	else
 		res = totdistance;

@@ -223,8 +223,15 @@ mongeelkan_internal(text *ta, text *tb, bool normalized)
 		p = p->next;
 	}
 
-	/* normalized and unnormalized version are the same */
-	res = summatches / s->size;
+	/*
+	 * normalized and unnormalized version are the same. No tokens in a means
+	 * identical if b has none either, nothing in common otherwise (no tokens
+	 * in b alone already gives 0).
+	 */
+	if (s->size == 0)
+		res = (t->size == 0) ? 1.0 : 0.0;
+	else
+		res = summatches / s->size;
 
 	elog(DEBUG1, "is normalized: %d", normalized);
 	elog(DEBUG1, "sum matches: %.3f", summatches);
