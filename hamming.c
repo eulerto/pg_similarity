@@ -30,7 +30,11 @@
  */
 
 #include "similarity.h"
+#include "port/pg_bitutils.h"
 #include "utils/varbit.h"
+
+/* bytes XORed per pg_popcount() call */
+#define	PGS_HAMMING_CHUNK	8192
 
 
 /* GUC variables */
@@ -46,8 +50,10 @@ hamming(PG_FUNCTION_ARGS)
 	int		alen, blen;
 	uint8		*pa, *pb;
 	int		maxlen;
-	float8		res = 0.0;
-	int		n;
+	float8		res;
+	int		nbytes;
+	uint64		dist = 0;
+	char		buf[PGS_HAMMING_CHUNK];
 
 	a = PG_GETARG_VARBIT_P(0);
 	b = PG_GETARG_VARBIT_P(1);
@@ -68,15 +74,23 @@ hamming(PG_FUNCTION_ARGS)
 	pa = VARBITS(a);
 	pb = VARBITS(b);
 
-	for (int i = 0; i < VARBITBYTES(a); i++)
+	/*
+	 * The distance is the number of bits set in a XOR b. XOR a chunk at a time
+	 * into a local buffer and let pg_popcount() count it. The pad bits of the
+	 * last byte are always zero in both strings, so they don't count.
+	 */
+	nbytes = VARBITBYTES(a);
+	for (int off = 0; off < nbytes; off += PGS_HAMMING_CHUNK)
 	{
-		n = *pa++ ^ *pb++;
-		while (n)
-		{
-			res += n & 1;
-			n >>= 1;
-		}
+		int		len = Min(PGS_HAMMING_CHUNK, nbytes - off);
+
+		CHECK_FOR_INTERRUPTS();
+
+		for (int i = 0; i < len; i++)
+			buf[i] = pa[off + i] ^ pb[off + i];
+		dist += pg_popcount(buf, len);
 	}
+	res = (float8) dist;
 
 	elog(DEBUG1, "is normalized: %d", pgs_hamming_is_normalized);
 	elog(DEBUG1, "maximum length: %d", maxlen);
