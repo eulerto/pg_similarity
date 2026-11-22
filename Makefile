@@ -6,7 +6,7 @@ OBJS = tokenizer.o similarity.o similarity_gin.o \
        block.o cosine.o dice.o euclidean.o hamming.o jaccard.o \
        jaro.o levenshtein.o matching.o mongeelkan.o needlemanwunsch.o \
 	   overlap.o qgram.o smithwaterman.o smithwatermangotoh.o soundex.o
-DATA = pg_similarity--1.0.sql pg_similarity--unpackaged--1.0.sql
+DATA = pg_similarity--1.0.sql
 REGRESS = test1 test2 test3 test4
 #DOCS = README.md
 
