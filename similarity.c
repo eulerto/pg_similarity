@@ -538,5 +538,9 @@ _PG_init(void)
 							 NULL,
 							 NULL);
 
+#if PG_VERSION_NUM >= 150000
+	MarkGUCPrefixReserved("pg_similarity");
+#else
 	EmitWarningsOnPlaceholders("pg_similarity");
+#endif
 }
