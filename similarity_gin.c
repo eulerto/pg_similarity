@@ -121,12 +121,10 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 		Pointer			**extra_data = (Pointer *) PG_GETARG_POINTER(4);
 	*/
 
-#if	PG_VERSION_NUM >= 90100
 	/*
 		bool			**null_flags = (bool **) PG_GETARG_POINTER(5);
 	*/
 	int32			*search_mode = (int32 *) PG_GETARG_POINTER(6);
-#endif
 
 	Datum			*tokens = NULL;
 	char			*buf;
@@ -182,10 +180,8 @@ gin_extract_query_token(PG_FUNCTION_ARGS)
 		destroyTokenList(tlist);
 	}
 
-#if	PG_VERSION_NUM >= 90100
 	if (*ntokens == 0)
 		*search_mode = GIN_SEARCH_MODE_ALL;
-#endif
 
 	PG_FREE_IF_COPY(value, 0);
 
@@ -206,10 +202,8 @@ gin_token_consistent(PG_FUNCTION_ARGS)
 	bool			*recheck = (bool *) PG_GETARG_POINTER(5);
 
 	/*
-	#if PG_VERSION_NUM >= 90100
 		Datum			**query_tokens = PG_GETARG_POINTER(6);
 		bool			**null_flags = (bool **) PG_GETARG_POINTER(7);
-	#endif
 	*/
 
 	elog(DEBUG3, "gin_token_consistent() called");
