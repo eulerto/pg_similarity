@@ -21,6 +21,9 @@
 #include "utils/builtins.h"
 #include "utils/guc.h"
 
+/* PGS_INTERNAL */
+#include "tokenizer.h"
+
 
 /* library version, reported by PG_MODULE_MAGIC_EXT (PostgreSQL 18+) */
 #define		PGS_VERSION				"1.0"
@@ -95,22 +98,22 @@ XXX simmetrics uses these values
 /*
  * normalized results?
  */
-extern bool	pgs_block_is_normalized;
-extern bool	pgs_cosine_is_normalized;
-extern bool	pgs_dice_is_normalized;
-extern bool	pgs_euclidean_is_normalized;
-extern bool	pgs_hamming_is_normalized;
-extern bool	pgs_jaccard_is_normalized;
-extern bool	pgs_jaro_is_normalized;
-extern bool	pgs_jarowinkler_is_normalized;
-extern bool	pgs_levenshtein_is_normalized;
-extern bool	pgs_matching_is_normalized;
-extern bool	pgs_mongeelkan_is_normalized;
-extern bool	pgs_nw_is_normalized;
-extern bool	pgs_overlap_is_normalized;
-extern bool	pgs_qgram_is_normalized;
-extern bool	pgs_sw_is_normalized;
-extern bool	pgs_swg_is_normalized;
+extern PGS_INTERNAL bool	pgs_block_is_normalized;
+extern PGS_INTERNAL bool	pgs_cosine_is_normalized;
+extern PGS_INTERNAL bool	pgs_dice_is_normalized;
+extern PGS_INTERNAL bool	pgs_euclidean_is_normalized;
+extern PGS_INTERNAL bool	pgs_hamming_is_normalized;
+extern PGS_INTERNAL bool	pgs_jaccard_is_normalized;
+extern PGS_INTERNAL bool	pgs_jaro_is_normalized;
+extern PGS_INTERNAL bool	pgs_jarowinkler_is_normalized;
+extern PGS_INTERNAL bool	pgs_levenshtein_is_normalized;
+extern PGS_INTERNAL bool	pgs_matching_is_normalized;
+extern PGS_INTERNAL bool	pgs_mongeelkan_is_normalized;
+extern PGS_INTERNAL bool	pgs_nw_is_normalized;
+extern PGS_INTERNAL bool	pgs_overlap_is_normalized;
+extern PGS_INTERNAL bool	pgs_qgram_is_normalized;
+extern PGS_INTERNAL bool	pgs_sw_is_normalized;
+extern PGS_INTERNAL bool	pgs_swg_is_normalized;
 
 /*
  * how to separate things?
@@ -126,40 +129,40 @@ enum
 /*
  * tokenizers per function
  */
-extern int	pgs_block_tokenizer;
-extern int	pgs_cosine_tokenizer;
-extern int	pgs_dice_tokenizer;
-extern int	pgs_euclidean_tokenizer;
-extern int	pgs_jaccard_tokenizer;
-extern int	pgs_matching_tokenizer;
-extern int	pgs_mongeelkan_tokenizer;
-extern int	pgs_overlap_tokenizer;
-extern int	pgs_qgram_tokenizer;
+extern PGS_INTERNAL int	pgs_block_tokenizer;
+extern PGS_INTERNAL int	pgs_cosine_tokenizer;
+extern PGS_INTERNAL int	pgs_dice_tokenizer;
+extern PGS_INTERNAL int	pgs_euclidean_tokenizer;
+extern PGS_INTERNAL int	pgs_jaccard_tokenizer;
+extern PGS_INTERNAL int	pgs_matching_tokenizer;
+extern PGS_INTERNAL int	pgs_mongeelkan_tokenizer;
+extern PGS_INTERNAL int	pgs_overlap_tokenizer;
+extern PGS_INTERNAL int	pgs_qgram_tokenizer;
 
 /*
  * thresholds per function
  */
-extern float8	pgs_block_threshold;
-extern float8	pgs_cosine_threshold;
-extern float8	pgs_dice_threshold;
-extern float8	pgs_euclidean_threshold;
-extern float8	pgs_hamming_threshold;
-extern float8	pgs_jaccard_threshold;
-extern float8	pgs_jaro_threshold;
-extern float8	pgs_jarowinkler_threshold;
-extern float8	pgs_levenshtein_threshold;
-extern float8	pgs_matching_threshold;
-extern float8	pgs_mongeelkan_threshold;
-extern float8	pgs_nw_threshold;
-extern float8	pgs_overlap_threshold;
-extern float8	pgs_qgram_threshold;
-extern float8	pgs_sw_threshold;
-extern float8	pgs_swg_threshold;
+extern PGS_INTERNAL float8	pgs_block_threshold;
+extern PGS_INTERNAL float8	pgs_cosine_threshold;
+extern PGS_INTERNAL float8	pgs_dice_threshold;
+extern PGS_INTERNAL float8	pgs_euclidean_threshold;
+extern PGS_INTERNAL float8	pgs_hamming_threshold;
+extern PGS_INTERNAL float8	pgs_jaccard_threshold;
+extern PGS_INTERNAL float8	pgs_jaro_threshold;
+extern PGS_INTERNAL float8	pgs_jarowinkler_threshold;
+extern PGS_INTERNAL float8	pgs_levenshtein_threshold;
+extern PGS_INTERNAL float8	pgs_matching_threshold;
+extern PGS_INTERNAL float8	pgs_mongeelkan_threshold;
+extern PGS_INTERNAL float8	pgs_nw_threshold;
+extern PGS_INTERNAL float8	pgs_overlap_threshold;
+extern PGS_INTERNAL float8	pgs_qgram_threshold;
+extern PGS_INTERNAL float8	pgs_sw_threshold;
+extern PGS_INTERNAL float8	pgs_swg_threshold;
 
 /*
  * gap penalty
  */
-extern float8	pgs_nw_gap_penalty;
+extern PGS_INTERNAL float8	pgs_nw_gap_penalty;
 
 /*
  * Smith-Waterman-Gotoh cost functions

@@ -25,8 +25,9 @@
 #define	PGS_FULL_NGRAM
 
 /*
- * The tokenizer API is shared by several files but is not SQL-callable, so
- * keep it out of the shared library's dynamic symbol table. PostgreSQL 16
+ * The tokenizer API, the block worker and the GUC variables (similarity.h)
+ * are shared by several files but are not SQL-callable, so keep them out of
+ * the shared library's dynamic symbol table. PostgreSQL 16
  * and later already build extensions with -fvisibility=hidden; older
  * versions don't.
  *
